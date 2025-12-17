@@ -873,14 +873,14 @@ export function FileManagerGrid({
   ]);
 
   return (
-    <div className="h-full flex flex-col bg-dark-bg overflow-hidden relative">
-      <div className="flex-shrink-0 border-b border-dark-border">
-        <div className="flex items-center gap-1 p-2 border-b border-dark-border">
+    <div className="h-full flex flex-col bg-background overflow-hidden relative">
+      <div className="flex-shrink-0 border-b border-border">
+        <div className="flex items-center gap-1 p-2 border-b border-border">
           <button
             onClick={goBack}
             disabled={historyIndex <= 0}
             className={cn(
-              "p-1 rounded hover:bg-dark-hover",
+              "p-1 rounded hover:bg-accent",
               historyIndex <= 0 && "opacity-50 cursor-not-allowed",
             )}
             title={t("common.back")}
@@ -891,7 +891,7 @@ export function FileManagerGrid({
             onClick={goForward}
             disabled={historyIndex >= navigationHistory.length - 1}
             className={cn(
-              "p-1 rounded hover:bg-dark-hover",
+              "p-1 rounded hover:bg-accent",
               historyIndex >= navigationHistory.length - 1 &&
                 "opacity-50 cursor-not-allowed",
             )}
@@ -903,7 +903,7 @@ export function FileManagerGrid({
             onClick={goUp}
             disabled={currentPath === "/"}
             className={cn(
-              "p-1 rounded hover:bg-dark-hover",
+              "p-1 rounded hover:bg-accent",
               currentPath === "/" && "opacity-50 cursor-not-allowed",
             )}
             title={t("fileManager.parentDirectory")}
@@ -912,7 +912,7 @@ export function FileManagerGrid({
           </button>
           <button
             onClick={onRefresh}
-            className="p-1 rounded hover:bg-dark-hover"
+            className="p-1 rounded hover:bg-accent"
             title={t("common.refresh")}
           >
             <RefreshCw className="w-4 h-4" />
@@ -933,7 +933,7 @@ export function FileManagerGrid({
                     cancelEditingPath();
                   }
                 }}
-                className="flex-1 px-2 py-1 bg-dark-hover border border-dark-border rounded text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                className="flex-1 px-2 py-1 bg-muted border border-border rounded text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                 placeholder={t("fileManager.enterPath")}
                 autoFocus
               />
@@ -973,7 +973,7 @@ export function FileManagerGrid({
               ))}
               <button
                 onClick={startEditingPath}
-                className="ml-2 p-1 rounded hover:bg-dark-hover opacity-60 hover:opacity-100 flex items-center justify-center"
+                className="ml-2 p-1 rounded hover:bg-accent opacity-60 hover:opacity-100 flex items-center justify-center"
                 title={t("fileManager.editPath")}
               >
                 <Edit className="w-3 h-3" />
@@ -1091,7 +1091,7 @@ export function FileManagerGrid({
                             onKeyDown={handleEditKeyDown}
                             onBlur={handleEditConfirm}
                             className={cn(
-                              "max-w-[120px] min-w-[60px] w-fit rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-xs shadow-xs transition-[color,box-shadow] outline-none",
+                              "max-w-[120px] min-w-[60px] w-fit rounded-md border border-border bg-input px-2 py-1 text-xs shadow-xs transition-[color,box-shadow] outline-none",
                               "text-center text-foreground placeholder:text-muted-foreground",
                               "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px]",
                             )}
@@ -1180,7 +1180,7 @@ export function FileManagerGrid({
                           onKeyDown={handleEditKeyDown}
                           onBlur={handleEditConfirm}
                           className={cn(
-                            "flex-1 min-w-0 max-w-[200px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none",
+                            "flex-1 min-w-0 max-w-[200px] rounded-md border border-border bg-input px-2 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none",
                             "text-foreground placeholder:text-muted-foreground",
                             "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px]",
                           )}
@@ -1246,7 +1246,7 @@ export function FileManagerGrid({
         </div>
       </div>
 
-      <div className="flex-shrink-0 border-t border-dark-border px-4 py-2 text-xs text-muted-foreground">
+      <div className="flex-shrink-0 border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
           <span>{t("fileManager.itemCount", { count: files.length })}</span>
           {selectedFiles.length > 0 && (
@@ -1370,7 +1370,7 @@ function CreateIntentGridItem({
           onChange={(e) => setInputName(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={() => onConfirm?.(inputName.trim())}
-          className="w-full max-w-[120px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-xs text-center text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px] outline-none"
+          className="w-full max-w-[120px] rounded-md border border-border bg-input px-2 py-1 text-xs text-center text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px] outline-none"
           placeholder={
             intent.type === "directory"
               ? t("fileManager.folderName")
@@ -1426,7 +1426,7 @@ function CreateIntentListItem({
         onChange={(e) => setInputName(e.target.value)}
         onKeyDown={handleKeyDown}
         onBlur={() => onConfirm?.(inputName.trim())}
-        className="flex-1 min-w-0 max-w-[200px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px] outline-none"
+        className="flex-1 min-w-0 max-w-[200px] rounded-md border border-border bg-input px-2 py-1 text-sm text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px] outline-none"
         placeholder={
           intent.type === "directory"
             ? t("fileManager.folderName")

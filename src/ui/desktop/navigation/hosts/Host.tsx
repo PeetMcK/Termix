@@ -127,7 +127,7 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
           {host.enableTerminal && (
             <Button
               variant="outline"
-              className="!px-2 border-1 border-dark-border"
+              className="!px-2 border-1 border-border"
               onClick={handleTerminalClick}
             >
               <Terminal />
@@ -138,7 +138,7 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className={`!px-2 border-1 border-dark-border ${
+                className={`!px-2 border-1 border-border ${
                   host.enableTerminal ? "rounded-tl-none rounded-bl-none" : ""
                 }`}
               >
@@ -149,13 +149,13 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
             <DropdownMenuContent
               align="start"
               side="right"
-              className="w-56 bg-dark-bg border-dark-border text-white"
+              className="w-56 bg-popover border-border text-popover-foreground"
             >
               <DropdownMenuItem
                 onClick={() =>
                   addTab({ type: "server", title, hostConfig: host })
                 }
-                className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-dark-hover text-gray-300"
+                className="flex items-center gap-2 cursor-pointer px-3 py-2"
               >
                 <Server className="h-4 w-4" />
                 <span className="flex-1">Open Server Details</span>
@@ -164,7 +164,7 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
                 onClick={() =>
                   addTab({ type: "file_manager", title, hostConfig: host })
                 }
-                className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-dark-hover text-gray-300"
+                className="flex items-center gap-2 cursor-pointer px-3 py-2"
               >
                 <FolderOpen className="h-4 w-4" />
                 <span className="flex-1">Open File Manager</span>
@@ -178,7 +178,7 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
                     initialTab: "add_host",
                   })
                 }
-                className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-dark-hover text-gray-300"
+                className="flex items-center gap-2 cursor-pointer px-3 py-2"
               >
                 <Pencil className="h-4 w-4" />
                 <span className="flex-1">Edit</span>
@@ -193,7 +193,7 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
           {tags.map((tag: string) => (
             <div
               key={tag}
-              className="bg-dark-bg border-1 border-dark-border pl-2 pr-2 rounded-[10px]"
+              className="bg-background border-1 border-border pl-2 pr-2 rounded-[10px]"
             >
               <p className="text-sm">{tag}</p>
             </div>

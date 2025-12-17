@@ -89,7 +89,7 @@ export function HostManager({
     <div>
       <div className="w-full">
         <div
-          className="bg-dark-bg text-white p-4 pt-0 rounded-lg border-2 border-dark-border flex flex-col min-h-0 overflow-hidden"
+          className="bg-card text-foreground p-4 pt-0 rounded-lg border-2 border-border flex flex-col min-h-0 overflow-hidden"
           style={{
             marginLeft: leftMarginPx,
             marginRight: rightSidebarOpen
@@ -107,7 +107,7 @@ export function HostManager({
             onValueChange={handleTabChange}
             className="flex-1 flex flex-col h-full min-h-0"
           >
-            <TabsList className="bg-dark-bg border-2 border-dark-border mt-1.5">
+            <TabsList className="bg-muted border-2 border-border mt-1.5">
               <TabsTrigger value="host_viewer">
                 {t("hosts.hostViewer")}
               </TabsTrigger>
@@ -118,7 +118,7 @@ export function HostManager({
                     : t("hosts.cloneHost")
                   : t("hosts.addHost")}
               </TabsTrigger>
-              <div className="h-6 w-px bg-dark-border mx-1"></div>
+              <div className="h-6 w-px bg-border mx-1"></div>
               <TabsTrigger value="credentials">
                 {t("credentials.credentialsViewer")}
               </TabsTrigger>

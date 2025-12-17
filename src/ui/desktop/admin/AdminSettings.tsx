@@ -737,7 +737,7 @@ export function AdminSettings({
   return (
     <div
       style={wrapperStyle}
-      className="bg-dark-bg text-white rounded-lg border-2 border-dark-border overflow-hidden"
+      className="bg-card text-foreground rounded-lg border-2 border-border overflow-hidden"
     >
       <div className="h-full w-full flex flex-col">
         <div className="flex items-center justify-between px-3 pt-2 pb-2">
@@ -747,7 +747,7 @@ export function AdminSettings({
 
         <div className="px-6 py-4 overflow-auto">
           <Tabs defaultValue="registration" className="w-full">
-            <TabsList className="mb-4 bg-dark-bg border-2 border-dark-border">
+            <TabsList className="mb-4 bg-muted border-2 border-border">
               <TabsTrigger
                 value="registration"
                 className="flex items-center gap-2"
@@ -1126,7 +1126,7 @@ export function AdminSettings({
                                         username: user.username,
                                       })
                                     }
-                                    className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                                    className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 dark:hover:bg-blue-500/10"
                                     title="Link to password account"
                                   >
                                     <Link2 className="h-4 w-4" />
@@ -1139,7 +1139,7 @@ export function AdminSettings({
                                     onClick={() =>
                                       handleUnlinkOIDC(user.id, user.username)
                                     }
-                                    className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+                                    className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 dark:hover:bg-orange-500/10"
                                     title="Unlink OIDC (keep password only)"
                                   >
                                     <Unlink className="h-4 w-4" />
@@ -1151,7 +1151,7 @@ export function AdminSettings({
                                   onClick={() =>
                                     handleDeleteUser(user.username)
                                   }
-                                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                  className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-500/10"
                                   disabled={user.is_admin}
                                 >
                                   <Trash2 className="h-4 w-4" />
@@ -1269,7 +1269,7 @@ export function AdminSettings({
                                       onClick={() =>
                                         handleRevokeSession(session.id)
                                       }
-                                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                      className="text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-500/10"
                                       disabled={session.isRevoked}
                                     >
                                       <Trash2 className="h-4 w-4" />
@@ -1283,7 +1283,7 @@ export function AdminSettings({
                                             session.userId,
                                           )
                                         }
-                                        className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 text-xs"
+                                        className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 dark:hover:bg-orange-500/10 text-xs"
                                         title="Revoke all sessions for this user"
                                       >
                                         Revoke All
@@ -1307,7 +1307,7 @@ export function AdminSettings({
                 <h3 className="text-lg font-semibold">
                   {t("admin.adminManagement")}
                 </h3>
-                <div className="space-y-4 p-4 border rounded-md bg-dark-bg-panel">
+                <div className="space-y-4 p-4 border rounded-md bg-muted">
                   <h4 className="font-semibold">{t("admin.makeUserAdmin")}</h4>
                   <form onSubmit={handleMakeUserAdmin} className="space-y-4">
                     <div className="space-y-2">
@@ -1383,7 +1383,7 @@ export function AdminSettings({
                                   onClick={() =>
                                     handleRemoveAdminStatus(admin.username)
                                   }
-                                  className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+                                  className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 dark:hover:bg-orange-500/10"
                                 >
                                   <Shield className="h-4 w-4" />
                                   {t("admin.removeAdminButton")}
@@ -1407,7 +1407,7 @@ export function AdminSettings({
                 </div>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                  <div className="p-4 border rounded-lg bg-dark-bg-panel">
+                  <div className="p-4 border rounded-lg bg-muted">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <Download className="h-4 w-4 text-blue-500" />
@@ -1458,7 +1458,7 @@ export function AdminSettings({
                     </div>
                   </div>
 
-                  <div className="p-4 border rounded-lg bg-dark-bg-panel">
+                  <div className="p-4 border rounded-lg bg-muted">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <Upload className="h-4 w-4 text-green-500" />
@@ -1538,7 +1538,7 @@ export function AdminSettings({
           open={linkAccountAlertOpen}
           onOpenChange={setLinkAccountAlertOpen}
         >
-          <DialogContent className="sm:max-w-[500px] bg-dark-bg border-2 border-dark-border">
+          <DialogContent className="sm:max-w-[500px] bg-card border-2 border-border">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Link2 className="w-5 h-5" />

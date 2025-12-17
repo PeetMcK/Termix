@@ -39,7 +39,9 @@ import { useTranslation } from "react-i18next";
 import { CredentialSelector } from "@/ui/desktop/apps/credentials/CredentialSelector.tsx";
 import CodeMirror from "@uiw/react-codemirror";
 import { oneDark } from "@codemirror/theme-one-dark";
+import { githubLight } from "@uiw/codemirror-theme-github";
 import { EditorView } from "@codemirror/view";
+import { useTheme } from "@/components/theme-provider";
 import type { StatsConfig } from "@/types/stats-widgets";
 import { DEFAULT_STATS_CONFIG } from "@/types/stats-widgets";
 import { Checkbox } from "@/components/ui/checkbox.tsx";
@@ -327,6 +329,10 @@ export function HostManagerEditor({
   onFormSubmit,
 }: SSHManagerHostEditorProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const editorTheme = isDark ? oneDark : githubLight;
+
   const [folders, setFolders] = useState<string[]>([]);
   const [sshConfigurations, setSshConfigurations] = useState<string[]>([]);
   const [hosts, setHosts] = useState<SSHHost[]>([]);
@@ -1293,7 +1299,7 @@ export function HostManagerEditor({
                           {folderDropdownOpen && filteredFolders.length > 0 && (
                             <div
                               ref={folderDropdownRef}
-                              className="absolute top-full left-0 z-50 mt-1 w-full bg-dark-bg border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
+                              className="absolute top-full left-0 z-50 mt-1 w-full bg-popover border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
                             >
                               <div className="grid grid-cols-1 gap-1 p-0">
                                 {filteredFolders.map((folder) => (
@@ -1302,7 +1308,7 @@ export function HostManagerEditor({
                                     type="button"
                                     variant="ghost"
                                     size="sm"
-                                    className="w-full justify-start text-left rounded px-2 py-1.5 hover:bg-white/15 focus:bg-white/20 focus:outline-none"
+                                    className="w-full justify-start text-left rounded px-2 py-1.5 hover:bg-accent focus:bg-accent focus:outline-none"
                                     onClick={() => handleFolderClick(folder)}
                                   >
                                     {folder}
@@ -1322,16 +1328,16 @@ export function HostManagerEditor({
                         <FormItem className="col-span-10 overflow-visible">
                           <FormLabel>{t("hosts.tags")}</FormLabel>
                           <FormControl>
-                            <div className="flex flex-wrap items-center gap-1 border border-input rounded-md px-3 py-2 bg-dark-bg-input focus-within:ring-2 ring-ring min-h-[40px]">
+                            <div className="flex flex-wrap items-center gap-1 border border-input rounded-md px-3 py-2 bg-input focus-within:ring-2 ring-ring min-h-[40px]">
                               {field.value.map((tag: string, idx: number) => (
                                 <span
                                   key={tag + idx}
-                                  className="flex items-center bg-gray-200 text-gray-800 rounded-full px-2 py-0.5 text-xs"
+                                  className="flex items-center bg-muted text-foreground rounded-full px-2 py-0.5 text-xs"
                                 >
                                   {tag}
                                   <button
                                     type="button"
-                                    className="ml-1 text-gray-500 hover:text-red-500 focus:outline-none"
+                                    className="ml-1 text-muted-foreground hover:text-red-500 focus:outline-none"
                                     onClick={() => {
                                       const newTags = field.value.filter(
                                         (_: string, i: number) => i !== idx,
@@ -1523,7 +1529,7 @@ export function HostManagerEditor({
                                     placeholder={t(
                                       "placeholders.pastePrivateKey",
                                     )}
-                                    theme={oneDark}
+                                    theme={editorTheme}
                                     className="border border-input rounded-md"
                                     minHeight="120px"
                                     basicSetup={{
@@ -1577,7 +1583,7 @@ export function HostManagerEditor({
                                     ref={keyTypeButtonRef}
                                     type="button"
                                     variant="outline"
-                                    className="w-full justify-start text-left rounded-md px-2 py-2 bg-dark-bg border border-input text-foreground"
+                                    className="w-full justify-start text-left rounded-md px-2 py-2 bg-background border border-input text-foreground"
                                     onClick={() =>
                                       setKeyTypeDropdownOpen((open) => !open)
                                     }
@@ -1589,7 +1595,7 @@ export function HostManagerEditor({
                                   {keyTypeDropdownOpen && (
                                     <div
                                       ref={keyTypeDropdownRef}
-                                      className="absolute bottom-full left-0 z-50 mb-1 w-full bg-dark-bg border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
+                                      className="absolute bottom-full left-0 z-50 mb-1 w-full bg-popover border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
                                     >
                                       <div className="grid grid-cols-1 gap-1 p-0">
                                         {keyTypeOptions.map((opt) => (
@@ -1598,7 +1604,7 @@ export function HostManagerEditor({
                                             type="button"
                                             variant="ghost"
                                             size="sm"
-                                            className="w-full justify-start text-left rounded-md px-2 py-1.5 bg-dark-bg text-foreground hover:bg-white/15 focus:bg-white/20 focus:outline-none"
+                                            className="w-full justify-start text-left rounded-md px-2 py-1.5 bg-background text-foreground hover:bg-accent focus:bg-accent focus:outline-none"
                                             onClick={() => {
                                               field.onChange(opt.value);
                                               setKeyTypeDropdownOpen(false);
@@ -2743,7 +2749,7 @@ export function HostManagerEditor({
                                                       index
                                                     ] = el;
                                                   }}
-                                                  className="absolute top-full left-0 z-50 mt-1 w-full bg-dark-bg border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
+                                                  className="absolute top-full left-0 z-50 mt-1 w-full bg-popover border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
                                                 >
                                                   <div className="grid grid-cols-1 gap-1 p-0">
                                                     {getFilteredSshConfigs(
@@ -2754,7 +2760,7 @@ export function HostManagerEditor({
                                                         type="button"
                                                         variant="ghost"
                                                         size="sm"
-                                                        className="w-full justify-start text-left rounded px-2 py-1.5 hover:bg-white/15 focus:bg-white/20 focus:outline-none"
+                                                        className="w-full justify-start text-left rounded px-2 py-1.5 hover:bg-accent focus:bg-accent focus:outline-none"
                                                         onClick={() =>
                                                           handleSshConfigClick(
                                                             config,

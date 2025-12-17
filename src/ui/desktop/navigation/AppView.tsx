@@ -295,9 +295,13 @@ export function AppView({
             <div key={t.id} style={finalStyle}>
               <div
                 className="absolute inset-0 rounded-md overflow-hidden"
-                style={{
-                  backgroundColor: isTerminal ? backgroundColor : "#18181b",
-                }}
+                style={
+                  isTerminal
+                    ? {
+                        backgroundColor: backgroundColor,
+                      }
+                    : undefined
+                }
               >
                 {t.type === "terminal" ? (
                   <Terminal
@@ -338,7 +342,7 @@ export function AppView({
       variant="ghost"
       onClick={onClick}
       aria-label="Reset split sizes"
-      className="absolute top-0 right-0 h-[28px] w-[28px] !rounded-none border-l-1 border-b-1 border-dark-border-panel bg-dark-bg-panel hover:bg-dark-bg-panel-hover text-white flex items-center justify-center p-0"
+      className="absolute top-0 right-0 h-[28px] w-[28px] !rounded-none border-l-1 border-b-1 border-border bg-muted hover:bg-accent text-foreground flex items-center justify-center p-0"
     >
       <RefreshCcw className="h-4 w-4" />
     </Button>
@@ -358,7 +362,7 @@ export function AppView({
     const handleStyle = {
       pointerEvents: "auto",
       zIndex: 12,
-      background: "var(--color-dark-border)",
+      background: "hsl(var(--border))",
     } as React.CSSProperties;
     const commonGroupProps: {
       onLayout: () => void;
@@ -391,7 +395,7 @@ export function AppView({
                 }}
                 className="h-full w-full flex flex-col bg-transparent relative"
               >
-                <div className="bg-dark-bg-panel text-white text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-dark-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                <div className="bg-muted text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                   {a.title}
                 </div>
               </div>
@@ -410,7 +414,7 @@ export function AppView({
                 }}
                 className="h-full w-full flex flex-col bg-transparent relative"
               >
-                <div className="bg-dark-bg-panel text-white text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-dark-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                <div className="bg-muted text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                   {b.title}
                   <ResetButton onClick={handleReset} />
                 </div>
@@ -458,7 +462,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-dark-bg-panel text-white text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-dark-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-muted text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {a.title}
                     </div>
                   </div>
@@ -477,7 +481,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-dark-bg-panel text-white text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-dark-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-muted text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {b.title}
                       <ResetButton onClick={handleReset} />
                     </div>
@@ -499,7 +503,7 @@ export function AppView({
                 }}
                 className="h-full w-full flex flex-col relative"
               >
-                <div className="bg-dark-bg-panel text-white text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-dark-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                <div className="bg-muted text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                   {c.title}
                 </div>
               </div>
@@ -546,7 +550,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-dark-bg-panel text-white text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-dark-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-muted text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {a.title}
                     </div>
                   </div>
@@ -565,7 +569,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-dark-bg-panel text-white text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-dark-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-muted text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {b.title}
                       <ResetButton onClick={handleReset} />
                     </div>
@@ -601,7 +605,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-dark-bg-panel text-white text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-dark-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-muted text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {c.title}
                     </div>
                   </div>
@@ -620,7 +624,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-dark-bg-panel text-white text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-dark-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-muted text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {d.title}
                     </div>
                   </div>
@@ -652,9 +656,9 @@ export function AppView({
   const leftMarginPx = sidebarState === "collapsed" ? 26 : 8;
   const bottomMarginPx = 8;
 
-  let containerBackground = "var(--color-dark-bg)";
+  let containerBackground = "var(--background)";
   if (isFileManager && !isSplitScreen) {
-    containerBackground = "var(--color-dark-bg-darkest)";
+    containerBackground = "var(--muted)";
   } else if (isTerminal) {
     containerBackground = terminalBackgroundColor;
   }
@@ -662,7 +666,7 @@ export function AppView({
   return (
     <div
       ref={containerRef}
-      className="border-2 border-dark-border rounded-lg overflow-hidden overflow-x-hidden relative"
+      className="border-2 border-border rounded-lg overflow-hidden overflow-x-hidden relative"
       style={{
         background: containerBackground,
         marginLeft: leftMarginPx,

@@ -48,7 +48,9 @@ import {
 import { Button } from "@/components/ui/button";
 import CodeMirror from "@uiw/react-codemirror";
 import { oneDark } from "@codemirror/theme-one-dark";
+import { githubLight } from "@uiw/codemirror-theme-github";
 import { loadLanguage } from "@uiw/codemirror-extensions-langs";
+import { useTheme } from "@/components/theme-provider";
 import { EditorView, keymap } from "@codemirror/view";
 import { searchKeymap, search, openSearchPanel } from "@codemirror/search";
 import {
@@ -133,14 +135,14 @@ function getLanguageIcon(filename: string): React.ReactNode {
     yml: <SiYaml className="w-6 h-6 text-red-400" />,
     toml: <SiToml className="w-6 h-6 text-orange-400" />,
     sql: <SiMysql className="w-6 h-6 text-blue-500" />,
-    sh: <SiGnubash className="w-6 h-6 text-gray-700" />,
-    bash: <SiGnubash className="w-6 h-6 text-gray-700" />,
-    zsh: <SiShell className="w-6 h-6 text-gray-700" />,
+    sh: <SiGnubash className="w-6 h-6 text-muted-foreground" />,
+    bash: <SiGnubash className="w-6 h-6 text-muted-foreground" />,
+    zsh: <SiShell className="w-6 h-6 text-muted-foreground" />,
     vue: <SiVuedotjs className="w-6 h-6 text-green-500" />,
     svelte: <SiSvelte className="w-6 h-6 text-orange-500" />,
-    md: <SiMarkdown className="w-6 h-6 text-gray-600" />,
-    conf: <SiShell className="w-6 h-6 text-gray-600" />,
-    ini: <Code className="w-6 h-6 text-gray-600" />,
+    md: <SiMarkdown className="w-6 h-6 text-muted-foreground" />,
+    conf: <SiShell className="w-6 h-6 text-muted-foreground" />,
+    ini: <Code className="w-6 h-6 text-muted-foreground" />,
   };
 
   return iconMap[ext] || <Code className="w-6 h-6 text-yellow-500" />;
@@ -238,7 +240,7 @@ function getFileType(filename: string): {
     return {
       type: "unknown",
       icon: <FileIcon className="w-6 h-6" />,
-      color: "text-gray-500",
+      color: "text-muted-foreground",
     };
   }
 }
@@ -309,6 +311,10 @@ export function FileViewer({
   onMediaDimensionsChange,
 }: FileViewerProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const editorTheme = isDark ? oneDark : githubLight;
+
   const [editedContent, setEditedContent] = useState(content);
   const [, setOriginalContent] = useState(savedContent || content);
   const [hasChanges, setHasChanges] = useState(false);
@@ -423,7 +429,7 @@ export function FileViewer({
       <div className="h-full flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-sm text-gray-600">Loading file...</p>
+          <p className="text-sm text-muted-foreground">Loading file...</p>
         </div>
       </div>
     );
@@ -818,7 +824,7 @@ export function FileViewer({
                     },
                   }),
                 ]}
-                theme={oneDark}
+                theme={editorTheme}
                 placeholder={t("fileManager.startTyping")}
                 className="h-full"
                 basicSetup={{
@@ -874,10 +880,9 @@ export function FileViewer({
                   <div className="relative">
                     <video
                       controls
-                      className="w-full rounded-lg shadow-sm"
+                      className="w-full rounded-lg shadow-sm bg-black"
                       style={{
                         maxHeight: "calc(100vh - 200px)",
-                        backgroundColor: "#000",
                       }}
                       preload="metadata"
                       onError={(e) => {
@@ -1252,7 +1257,7 @@ export function FileViewer({
               </div>
             </div>
 
-            <div className="flex-1 overflow-auto p-6 bg-gray-100 dark:bg-gray-900">
+            <div className="flex-1 overflow-auto p-6 bg-muted">
               <div className="flex justify-center">
                 {pdfError ? (
                   <div className="text-center text-muted-foreground p-8">

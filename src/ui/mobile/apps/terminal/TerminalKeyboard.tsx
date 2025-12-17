@@ -2,6 +2,8 @@ import React, { useState, useCallback, useEffect } from "react";
 import Keyboard from "react-simple-keyboard";
 import "react-simple-keyboard/build/css/index.css";
 import "./kb-dark-theme.css";
+import "./kb-light-theme.css";
+import { useTheme } from "@/components/theme-provider";
 
 interface TerminalKeyboardProps {
   onSendInput: (input: string) => void;
@@ -12,6 +14,8 @@ export function TerminalKeyboard({
   onSendInput,
   onLayoutChange,
 }: TerminalKeyboardProps) {
+  const { theme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
   const [layoutName, setLayoutName] = useState("default");
   const [isCtrl, setIsCtrl] = useState(false);
   const [isAlt, setIsAlt] = useState(false);
@@ -195,7 +199,7 @@ export function TerminalKeyboard({
           "{pgUp}": "pgUp",
           "{pgDn}": "pgDn",
         }}
-        theme={"hg-theme-default dark-theme"}
+        theme={`hg-theme-default ${isDark ? "dark-theme" : "light-theme"}`}
         useTouchEvents={true}
         disableButtonHold={true}
         buttonTheme={buttonTheme}

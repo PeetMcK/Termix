@@ -11,7 +11,15 @@ import {
 } from "@/components/ui/tabs.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
 import { Switch } from "@/components/ui/switch.tsx";
-import { User, Shield, AlertCircle } from "lucide-react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select.tsx";
+import { User, Shield, AlertCircle, Sun, Moon, Monitor } from "lucide-react";
+import { useTheme } from "@/components/theme-provider";
 import { TOTPSetup } from "@/ui/desktop/user/TOTPSetup.tsx";
 import {
   getUserInfo,
@@ -78,6 +86,9 @@ export function UserProfile({
 }: UserProfileProps) {
   const { t } = useTranslation();
   const { state: sidebarState } = useSidebar();
+  const { theme, setTheme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const shadowColor = isDark ? "rgba(0, 0, 0, 0.5)" : "rgba(0, 0, 0, 0.15)";
   const [userInfo, setUserInfo] = useState<{
     username: string;
     is_admin: boolean;
@@ -196,7 +207,7 @@ export function UserProfile({
     return (
       <div
         style={wrapperStyle}
-        className="bg-dark-bg text-white rounded-lg border-2 border-dark-border overflow-hidden"
+        className="bg-card text-foreground rounded-lg border-2 border-border overflow-hidden"
       >
         <div className="h-full w-full flex flex-col">
           <div className="flex items-center justify-between px-3 pt-2 pb-2">
@@ -204,7 +215,7 @@ export function UserProfile({
           </div>
           <Separator className="p-0.25 w-full" />
           <div className="flex-1 flex items-center justify-center">
-            <div className="animate-pulse text-gray-300">
+            <div className="animate-pulse text-muted-foreground">
               {t("common.loading")}
             </div>
           </div>
@@ -217,7 +228,7 @@ export function UserProfile({
     return (
       <div
         style={wrapperStyle}
-        className="bg-dark-bg text-white rounded-lg border-2 border-dark-border overflow-hidden"
+        className="bg-card text-foreground rounded-lg border-2 border-border overflow-hidden"
       >
         <div className="h-full w-full flex flex-col">
           <div className="flex items-center justify-between px-3 pt-2 pb-2">
@@ -247,7 +258,7 @@ export function UserProfile({
     <>
       <div
         style={wrapperStyle}
-        className="bg-dark-bg text-white rounded-lg border-2 border-dark-border overflow-hidden"
+        className="bg-card text-foreground rounded-lg border-2 border-border overflow-hidden"
       >
         <div className="h-full w-full flex flex-col">
           <div className="flex items-center justify-between px-3 pt-2 pb-2">
@@ -257,10 +268,10 @@ export function UserProfile({
 
           <div className="px-6 py-4 overflow-auto flex-1">
             <Tabs defaultValue="profile" className="w-full">
-              <TabsList className="mb-4 bg-dark-bg border-2 border-dark-border">
+              <TabsList className="mb-4 bg-muted border-2 border-border">
                 <TabsTrigger
                   value="profile"
-                  className="flex items-center gap-2 data-[state=active]:bg-dark-bg-button"
+                  className="flex items-center gap-2 data-[state=active]:bg-accent"
                 >
                   <User className="w-4 h-4" />
                   {t("nav.userProfile")}
@@ -268,7 +279,7 @@ export function UserProfile({
                 {(!userInfo.is_oidc || userInfo.is_dual_auth) && (
                   <TabsTrigger
                     value="security"
-                    className="flex items-center gap-2 data-[state=active]:bg-dark-bg-button"
+                    className="flex items-center gap-2 data-[state=active]:bg-accent"
                   >
                     <Shield className="w-4 h-4" />
                     {t("profile.security")}
@@ -277,34 +288,34 @@ export function UserProfile({
               </TabsList>
 
               <TabsContent value="profile" className="space-y-4">
-                <div className="rounded-lg border-2 border-dark-border bg-dark-bg-darker p-4">
+                <div className="rounded-lg border-2 border-border bg-muted p-4">
                   <h3 className="text-lg font-semibold mb-4">
                     {t("profile.accountInfo")}
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-gray-300">
+                      <Label className="text-muted-foreground">
                         {t("common.username")}
                       </Label>
-                      <p className="text-lg font-medium mt-1 text-white">
+                      <p className="text-lg font-medium mt-1 text-foreground">
                         {userInfo.username}
                       </p>
                     </div>
                     <div>
-                      <Label className="text-gray-300">
+                      <Label className="text-muted-foreground">
                         {t("profile.role")}
                       </Label>
-                      <p className="text-lg font-medium mt-1 text-white">
+                      <p className="text-lg font-medium mt-1 text-foreground">
                         {userInfo.is_admin
                           ? t("interface.administrator")
                           : t("interface.user")}
                       </p>
                     </div>
                     <div>
-                      <Label className="text-gray-300">
+                      <Label className="text-muted-foreground">
                         {t("profile.authMethod")}
                       </Label>
-                      <p className="text-lg font-medium mt-1 text-white">
+                      <p className="text-lg font-medium mt-1 text-foreground">
                         {userInfo.is_dual_auth
                           ? t("profile.externalAndLocal")
                           : userInfo.is_oidc
@@ -313,12 +324,12 @@ export function UserProfile({
                       </p>
                     </div>
                     <div>
-                      <Label className="text-gray-300">
+                      <Label className="text-muted-foreground">
                         {t("profile.twoFactorAuth")}
                       </Label>
                       <p className="text-lg font-medium mt-1">
                         {userInfo.is_oidc && !userInfo.is_dual_auth ? (
-                          <span className="text-gray-400">
+                          <span className="text-muted-foreground">
                             {t("auth.lockedOidcAuth")}
                           </span>
                         ) : userInfo.totp_enabled ? (
@@ -327,29 +338,29 @@ export function UserProfile({
                             {t("common.enabled")}
                           </span>
                         ) : (
-                          <span className="text-gray-400">
+                          <span className="text-muted-foreground">
                             {t("common.disabled")}
                           </span>
                         )}
                       </p>
                     </div>
                     <div>
-                      <Label className="text-gray-300">
+                      <Label className="text-muted-foreground">
                         {t("common.version")}
                       </Label>
-                      <p className="text-lg font-medium mt-1 text-white">
+                      <p className="text-lg font-medium mt-1 text-foreground">
                         {versionInfo?.version || t("common.loading")}
                       </p>
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-6 border-t border-dark-border">
+                  <div className="mt-6 pt-6 border-t border-border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label className="text-gray-300">
+                        <Label className="text-muted-foreground">
                           {t("common.language")}
                         </Label>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                           {t("profile.selectPreferredLanguage")}
                         </p>
                       </div>
@@ -357,13 +368,51 @@ export function UserProfile({
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-6 border-t border-dark-border">
+                  <div className="mt-6 pt-6 border-t border-border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label className="text-gray-300">
+                        <Label className="text-muted-foreground">
+                          {t("profile.appearance", "Appearance")}
+                        </Label>
+                        <p className="text-sm text-muted-foreground mt-1">
+                          {t("profile.appearanceDesc", "Choose your preferred theme")}
+                        </p>
+                      </div>
+                      <Select value={theme} onValueChange={setTheme}>
+                        <SelectTrigger className="w-[140px]">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="light">
+                            <div className="flex items-center gap-2">
+                              <Sun className="w-4 h-4" />
+                              {t("profile.themeLight", "Light")}
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="dark">
+                            <div className="flex items-center gap-2">
+                              <Moon className="w-4 h-4" />
+                              {t("profile.themeDark", "Dark")}
+                            </div>
+                          </SelectItem>
+                          <SelectItem value="system">
+                            <div className="flex items-center gap-2">
+                              <Monitor className="w-4 h-4" />
+                              {t("profile.themeSystem", "System")}
+                            </div>
+                          </SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-6 border-t border-border">
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <Label className="text-muted-foreground">
                           {t("profile.fileColorCoding")}
                         </Label>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                           {t("profile.fileColorCodingDesc")}
                         </p>
                       </div>
@@ -374,13 +423,13 @@ export function UserProfile({
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-6 border-t border-dark-border">
+                  <div className="mt-6 pt-6 border-t border-border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label className="text-gray-300">
+                        <Label className="text-muted-foreground">
                           {t("profile.commandAutocomplete")}
                         </Label>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                           {t("profile.commandAutocompleteDesc")}
                         </p>
                       </div>
@@ -391,13 +440,13 @@ export function UserProfile({
                     </div>
                   </div>
 
-                  <div className="mt-6 pt-6 border-t border-dark-border">
+                  <div className="mt-6 pt-6 border-t border-border">
                     <div className="flex items-center justify-between">
                       <div>
                         <Label className="text-red-400">
                           {t("leftSidebar.deleteAccount")}
                         </Label>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                           {t(
                             "leftSidebar.deleteAccountWarningShort",
                             "This action is not reversible and will permanently delete your account.",
@@ -438,15 +487,15 @@ export function UserProfile({
           }}
         >
           <div
-            className="w-[400px] h-full bg-dark-bg border-r-2 border-dark-border flex flex-col shadow-2xl relative isolate z-[9999999]"
+            className="w-[400px] h-full bg-card border-r-2 border-border flex flex-col shadow-2xl relative isolate z-[9999999]"
             style={{
-              boxShadow: "4px 0 20px rgba(0, 0, 0, 0.5)",
+              boxShadow: `4px 0 20px ${shadowColor}`,
               transform: "translateZ(0)",
             }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex items-center justify-between p-4 border-b border-dark-border">
-              <h2 className="text-lg font-semibold text-white">
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h2 className="text-lg font-semibold text-foreground">
                 {t("leftSidebar.deleteAccount")}
               </h2>
               <Button
@@ -466,7 +515,7 @@ export function UserProfile({
 
             <div className="flex-1 overflow-y-auto p-4">
               <div className="space-y-4">
-                <div className="text-sm text-gray-300">
+                <div className="text-sm text-muted-foreground">
                   {t("leftSidebar.deleteAccountWarning")}
                   <Alert variant="destructive" className="mb-5 mt-5">
                     <AlertTitle>{t("common.warning")}</AlertTitle>

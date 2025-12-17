@@ -30,29 +30,20 @@ export function SimpleLoader({
               transform: rotate(360deg);
             }
           }
-
-          .simple-spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(255, 255, 255, 0.1);
-            border-top-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-          }
         `}
       </style>
 
       <div
         className={cn(
-          "absolute inset-0 flex items-center justify-center z-50",
+          "absolute inset-0 flex items-center justify-center z-50 bg-background",
           className,
         )}
-        style={{ backgroundColor: backgroundColor || "#18181b" }}
+        style={backgroundColor ? { backgroundColor } : undefined}
       >
         <div className="flex flex-col items-center gap-4">
-          <div className="simple-spinner"></div>
+          <div className="w-10 h-10 border-4 border-border border-t-foreground rounded-full animate-spin"></div>
           {message && (
-            <p className="text-sm text-gray-300 font-medium">{message}</p>
+            <p className="text-sm text-muted-foreground font-medium">{message}</p>
           )}
         </div>
       </div>

@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import DesktopApp from "@/ui/desktop/DesktopApp.tsx";
 import { MobileApp } from "@/ui/mobile/MobileApp.tsx";
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider, useTheme } from "@/components/theme-provider";
 import { ElectronVersionCheck } from "@/ui/desktop/user/ElectronVersionCheck.tsx";
 import "./i18n/i18n";
 import { isElectron } from "./ui/main-axios.ts";
@@ -57,6 +57,7 @@ function RootApp() {
   const width = useWindowWidth();
   const isMobile = width < 768;
   const [showVersionCheck, setShowVersionCheck] = useState(true);
+  const { theme } = useTheme();
 
   const userAgent =
     navigator.userAgent || navigator.vendor || (window as any).opera || "";
@@ -74,18 +75,21 @@ function RootApp() {
     return isMobile ? <MobileApp key="mobile" /> : <DesktopApp key="desktop" />;
   };
 
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const stripeColor = isDark ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.03)";
+
   return (
     <>
       <div
         className="fixed inset-0 pointer-events-none"
         style={{
-          backgroundColor: "#09090b",
+          backgroundColor: "var(--background)",
           backgroundImage: `linear-gradient(
             135deg,
             transparent 0%,
             transparent 49%,
-            rgba(255, 255, 255, 0.03) 49%,
-            rgba(255, 255, 255, 0.03) 51%,
+            ${stripeColor} 49%,
+            ${stripeColor} 51%,
             transparent 51%,
             transparent 100%
           )`,

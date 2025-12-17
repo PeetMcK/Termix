@@ -3,6 +3,7 @@ import { Cpu } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { ServerMetrics } from "@/ui/main-axios.ts";
 import { RechartsPrimitive } from "@/components/ui/chart.tsx";
+import { useTheme } from "@/components/theme-provider";
 
 const {
   LineChart,
@@ -21,6 +22,10 @@ interface CpuWidgetProps {
 
 export function CpuWidget({ metrics, metricsHistory }: CpuWidgetProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const gridColor = isDark ? "#374151" : "#e5e7eb";
+  const axisColor = isDark ? "#9ca3af" : "#6b7280";
 
   const chartData = React.useMemo(() => {
     return metricsHistory.map((m, index) => ({
@@ -30,10 +35,10 @@ export function CpuWidget({ metrics, metricsHistory }: CpuWidgetProps) {
   }, [metricsHistory]);
 
   return (
-    <div className="h-full w-full p-4 rounded-lg bg-dark-bg/50 border border-dark-border/50 hover:bg-dark-bg/70 transition-colors duration-200 flex flex-col overflow-hidden">
+    <div className="h-full w-full p-4 rounded-lg bg-card/50 border border-border/50 hover:bg-card/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
         <Cpu className="h-5 w-5 text-blue-400" />
-        <h3 className="font-semibold text-lg text-white">
+        <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.cpuUsage")}
         </h3>
       </div>
@@ -45,13 +50,13 @@ export function CpuWidget({ metrics, metricsHistory }: CpuWidgetProps) {
               ? `${metrics.cpu.percent}%`
               : "N/A"}
           </div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-muted-foreground">
             {typeof metrics?.cpu?.cores === "number"
               ? t("serverStats.cpuCores", { count: metrics.cpu.cores })
               : t("serverStats.naCpus")}
           </div>
         </div>
-        <div className="text-xs text-gray-500 flex-shrink-0">
+        <div className="text-xs text-muted-foreground flex-shrink-0">
           {metrics?.cpu?.load
             ? t("serverStats.loadAverage", {
                 avg1: metrics.cpu.load[0].toFixed(2),
@@ -63,24 +68,24 @@ export function CpuWidget({ metrics, metricsHistory }: CpuWidgetProps) {
         <div className="flex-1 min-h-0">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={chartData}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <CartesianGrid strokeDasharray="3 3" stroke={gridColor} />
               <XAxis
                 dataKey="index"
-                stroke="#9ca3af"
-                tick={{ fill: "#9ca3af" }}
+                stroke={axisColor}
+                tick={{ fill: axisColor }}
                 hide
               />
               <YAxis
                 domain={[0, 100]}
-                stroke="#9ca3af"
-                tick={{ fill: "#9ca3af" }}
+                stroke={axisColor}
+                tick={{ fill: axisColor }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#1f2937",
-                  border: "1px solid #374151",
+                  backgroundColor: "hsl(var(--card))",
+                  border: "1px solid hsl(var(--border))",
                   borderRadius: "6px",
-                  color: "#fff",
+                  color: "hsl(var(--foreground))",
                 }}
                 formatter={(value: number) => [`${value.toFixed(1)}%`, "CPU"]}
               />

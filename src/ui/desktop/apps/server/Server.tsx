@@ -331,8 +331,8 @@ export function Server({
       };
 
   const containerClass = embedded
-    ? "h-full w-full text-white overflow-hidden bg-transparent"
-    : "bg-dark-bg text-white rounded-lg border-2 border-dark-border overflow-hidden";
+    ? "h-full w-full text-foreground overflow-hidden bg-transparent"
+    : "bg-card text-foreground rounded-lg border-2 border-border overflow-hidden";
 
   return (
     <div style={wrapperStyle} className={containerClass}>
@@ -462,11 +462,11 @@ export function Server({
           {(metricsEnabled && showStatsUI) ||
           (currentHostConfig?.quickActions &&
             currentHostConfig.quickActions.length > 0) ? (
-            <div className="rounded-lg border-2 border-dark-border m-3 bg-dark-bg-darker p-4 overflow-y-auto relative flex-1 flex flex-col">
+            <div className="rounded-lg border-2 border-border m-3 bg-muted p-4 overflow-y-auto relative flex-1 flex flex-col">
               {currentHostConfig?.quickActions &&
                 currentHostConfig.quickActions.length > 0 && (
                   <div className={metricsEnabled && showStatsUI ? "mb-4" : ""}>
-                    <h3 className="text-sm font-semibold text-gray-400 mb-2">
+                    <h3 className="text-sm font-semibold text-muted-foreground mb-2">
                       {t("serverStats.quickActions")}
                     </h3>
                     <div className="flex flex-wrap gap-2">
@@ -574,10 +574,10 @@ export function Server({
                       <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-red-500/20 flex items-center justify-center">
                         <div className="w-6 h-6 border-2 border-red-400 rounded-full"></div>
                       </div>
-                      <p className="text-gray-300 mb-1">
+                      <p className="text-foreground mb-1">
                         {t("serverStats.serverOffline")}
                       </p>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         {t("serverStats.cannotFetchMetrics")}
                       </p>
                     </div>
@@ -603,7 +603,7 @@ export function Server({
 
           {currentHostConfig?.tunnelConnections &&
             currentHostConfig.tunnelConnections.length > 0 && (
-              <div className="rounded-lg border-2 border-dark-border m-3 bg-dark-bg-darker h-[360px] overflow-hidden flex flex-col min-h-0">
+              <div className="rounded-lg border-2 border-border m-3 bg-muted h-[360px] overflow-hidden flex flex-col min-h-0">
                 <Tunnel
                   filterHostKey={
                     currentHostConfig?.name &&

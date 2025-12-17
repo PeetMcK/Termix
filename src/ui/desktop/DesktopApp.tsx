@@ -14,8 +14,13 @@ import { UserProfile } from "@/ui/desktop/user/UserProfile.tsx";
 import { Toaster } from "@/components/ui/sonner.tsx";
 import { CommandPalette } from "@/ui/desktop/apps/command-palette/CommandPalette.tsx";
 import { getUserInfo } from "@/ui/main-axios.ts";
+import { useTheme } from "@/components/theme-provider";
 
 function AppContent() {
+  const { theme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const stripeColor = isDark ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.03)";
+
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState<string | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -164,14 +169,14 @@ function AppContent() {
   if (authLoading) {
     return (
       <div
-        className="h-screen w-screen flex items-center justify-center bg-dark-bg-darkest"
+        className="h-screen w-screen flex items-center justify-center bg-background"
         style={{
           backgroundImage: `repeating-linear-gradient(
             225deg,
             transparent,
             transparent 35px,
-            rgba(255, 255, 255, 0.03) 35px,
-            rgba(255, 255, 255, 0.03) 37px
+            ${stripeColor} 35px,
+            ${stripeColor} 37px
           )`,
         }}
       >

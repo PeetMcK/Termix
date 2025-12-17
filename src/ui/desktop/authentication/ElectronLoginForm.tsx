@@ -235,8 +235,8 @@ export function ElectronLoginForm({
   const displayUrl = currentUrl.replace(/^https?:\/\//, "");
 
   return (
-    <div className="fixed inset-0 w-screen h-screen bg-dark-bg flex flex-col">
-      <div className="flex items-center justify-between p-4 bg-dark-bg border-b border-dark-border">
+    <div className="fixed inset-0 w-screen h-screen bg-background flex flex-col">
+      <div className="flex items-center justify-between p-4 bg-background border-b border-border">
         <button
           onClick={handleBack}
           className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
@@ -273,7 +273,7 @@ export function ElectronLoginForm({
 
       {loading && (
         <div
-          className="absolute inset-0 flex items-center justify-center bg-dark-bg z-40"
+          className="absolute inset-0 flex items-center justify-center bg-background z-40"
           style={{ marginTop: "60px" }}
         >
           <div className="flex items-center">
