@@ -55,8 +55,13 @@ export function AppView({
   const { theme: appTheme } = useTheme();
 
   // Auto-switch terminal theme based on app theme when using "termix" (default)
-  const isDarkMode = appTheme === "dark" ||
-    (appTheme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+  // Memoize to prevent recalculation on every render
+  const isDarkMode = useMemo(() => {
+    if (appTheme === "dark") return true;
+    if (appTheme === "light") return false;
+    // Only for "system" theme, check matchMedia
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }, [appTheme]);
 
   const terminalTabs = useMemo(
     () =>
