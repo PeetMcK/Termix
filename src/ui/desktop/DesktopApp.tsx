@@ -162,20 +162,8 @@ function AppContent() {
   const showProfile = currentTabData?.type === "user_profile";
 
   if (authLoading) {
-    const isDarkMode = window.matchMedia("(prefers-color-scheme: dark)").matches;
     return (
-      <div
-        className="h-screen w-screen flex items-center justify-center bg-muted-darkest"
-        style={{
-          backgroundImage: `repeating-linear-gradient(
-            225deg,
-            transparent,
-            transparent 35px,
-            ${isDarkMode ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.03)"} 35px,
-            ${isDarkMode ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.03)"} 37px
-          )`,
-        }}
-      >
+      <div className="h-screen w-screen flex items-center justify-center bg-background">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-primary/30 border-t-primary rounded-full animate-spin mx-auto" />
         </div>
