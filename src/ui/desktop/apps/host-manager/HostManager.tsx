@@ -86,28 +86,32 @@ export function HostManager({
   const bottomMarginPx = 8;
 
   return (
-    <div>
-      <div className="w-full">
-        <div
-          className="bg-dark-bg text-white p-4 pt-0 rounded-lg border-2 border-dark-border flex flex-col min-h-0 overflow-hidden"
-          style={{
-            marginLeft: leftMarginPx,
-            marginRight: rightSidebarOpen
-              ? `calc(var(--right-sidebar-width, ${rightSidebarWidth}px) + 8px)`
-              : 17,
-            marginTop: topMarginPx,
-            marginBottom: bottomMarginPx,
-            height: `calc(100vh - ${topMarginPx + bottomMarginPx}px)`,
-            transition:
-              "margin-left 200ms linear, margin-right 200ms linear, margin-top 200ms linear",
-          }}
-        >
+    <div
+      className="bg-muted text-foreground rounded-lg border-2 border-border overflow-hidden"
+      style={{
+        marginLeft: leftMarginPx,
+        marginRight: rightSidebarOpen
+          ? `calc(var(--right-sidebar-width, ${rightSidebarWidth}px) + 8px)`
+          : 17,
+        marginTop: topMarginPx,
+        marginBottom: bottomMarginPx,
+        height: `calc(100vh - ${topMarginPx + bottomMarginPx}px)`,
+        transition:
+          "margin-left 200ms linear, margin-right 200ms linear, margin-top 200ms linear",
+      }}
+    >
+      <div className="h-full w-full flex flex-col">
+        <div className="flex items-center justify-between px-3 pt-2 pb-2">
+          <h1 className="font-bold text-lg">{t("nav.hostManager")}</h1>
+        </div>
+        <Separator className="p-0.25 w-full" />
+        <div className="px-6 py-4 overflow-auto flex-1">
           <Tabs
             value={activeTab}
             onValueChange={handleTabChange}
             className="flex-1 flex flex-col h-full min-h-0"
           >
-            <TabsList className="bg-dark-bg border-2 border-dark-border mt-1.5">
+            <TabsList className="bg-muted border-2 border-border mb-4">
               <TabsTrigger value="host_viewer">
                 {t("hosts.hostViewer")}
               </TabsTrigger>
@@ -118,7 +122,7 @@ export function HostManager({
                     : t("hosts.cloneHost")
                   : t("hosts.addHost")}
               </TabsTrigger>
-              <div className="h-6 w-px bg-dark-border mx-1"></div>
+              <div className="h-6 w-px bg-border mx-1"></div>
               <TabsTrigger value="credentials">
                 {t("credentials.credentialsViewer")}
               </TabsTrigger>
@@ -132,15 +136,15 @@ export function HostManager({
               value="host_viewer"
               className="flex-1 flex flex-col h-full min-h-0"
             >
-              <Separator className="p-0.25 -mt-0.5 mb-1" />
-              <HostManagerViewer onEditHost={handleEditHost} />
+              <div className="rounded-lg border-2 border-border bg-card p-4 flex-1 flex flex-col min-h-0 overflow-auto">
+                <HostManagerViewer onEditHost={handleEditHost} />
+              </div>
             </TabsContent>
             <TabsContent
               value="add_host"
               className="flex-1 flex flex-col h-full min-h-0"
             >
-              <Separator className="p-0.25 -mt-0.5 mb-1" />
-              <div className="flex flex-col h-full min-h-0">
+              <div className="rounded-lg border-2 border-border bg-card p-4 flex-1 flex flex-col min-h-0 overflow-auto">
                 <HostManagerEditor
                   editingHost={editingHost}
                   onFormSubmit={handleFormSubmit}
@@ -151,8 +155,7 @@ export function HostManager({
               value="credentials"
               className="flex-1 flex flex-col h-full min-h-0"
             >
-              <Separator className="p-0.25 -mt-0.5 mb-1" />
-              <div className="flex flex-col h-full min-h-0 overflow-auto">
+              <div className="rounded-lg border-2 border-border bg-card p-4 flex-1 flex flex-col min-h-0 overflow-auto">
                 <CredentialsManager onEditCredential={handleEditCredential} />
               </div>
             </TabsContent>
@@ -160,8 +163,7 @@ export function HostManager({
               value="add_credential"
               className="flex-1 flex flex-col h-full min-h-0"
             >
-              <Separator className="p-0.25 -mt-0.5 mb-1" />
-              <div className="flex flex-col h-full min-h-0">
+              <div className="rounded-lg border-2 border-border bg-card p-4 flex-1 flex flex-col min-h-0 overflow-auto">
                 <CredentialEditor
                   editingCredential={editingCredential}
                   onFormSubmit={handleCredentialFormSubmit}

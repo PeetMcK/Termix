@@ -1096,7 +1096,7 @@ export function SSHToolsSidebar({
               className="pointer-events-auto"
             >
               <SidebarHeader>
-                <SidebarGroupLabel className="text-lg font-bold text-white">
+                <SidebarGroupLabel className="text-lg font-bold text-foreground">
                   {t("nav.tools")}
                   <div className="absolute right-5 flex gap-1">
                     <Button
@@ -1141,7 +1141,7 @@ export function SSHToolsSidebar({
                   </TabsList>
 
                   <TabsContent value="ssh-tools" className="space-y-4">
-                    <h3 className="font-semibold text-white">
+                    <h3 className="font-semibold text-foreground">
                       {t("sshTools.keyRecording")}
                     </h3>
 
@@ -1169,7 +1169,7 @@ export function SSHToolsSidebar({
                       {isRecording && (
                         <>
                           <div className="space-y-2">
-                            <label className="text-sm font-medium text-white">
+                            <label className="text-sm font-medium text-foreground">
                               {t("sshTools.selectTerminals")}
                             </label>
                             <div className="flex flex-wrap gap-2 max-h-32 overflow-y-auto">
@@ -1181,7 +1181,7 @@ export function SSHToolsSidebar({
                                   size="sm"
                                   className={`rounded-full px-3 py-1 text-xs flex items-center gap-1 ${
                                     selectedTabIds.includes(tab.id)
-                                      ? "text-white bg-gray-700"
+                                      ? "text-foreground bg-gray-700"
                                       : "text-gray-500"
                                   }`}
                                   onClick={() => handleTabToggle(tab.id)}
@@ -1193,7 +1193,7 @@ export function SSHToolsSidebar({
                           </div>
 
                           <div className="space-y-2">
-                            <label className="text-sm font-medium text-white">
+                            <label className="text-sm font-medium text-foreground">
                               {t("sshTools.typeCommands")}
                             </label>
                             <Input
@@ -1217,7 +1217,7 @@ export function SSHToolsSidebar({
 
                     <Separator />
 
-                    <h3 className="font-semibold text-white">
+                    <h3 className="font-semibold text-foreground">
                       {t("sshTools.settings")}
                     </h3>
 
@@ -1229,7 +1229,7 @@ export function SSHToolsSidebar({
                       />
                       <label
                         htmlFor="enable-copy-paste"
-                        className="text-sm font-medium leading-none text-white cursor-pointer"
+                        className="text-sm font-medium leading-none text-foreground cursor-pointer"
                       >
                         {t("sshTools.enableRightClickCopyPaste")}
                       </label>
@@ -1244,7 +1244,7 @@ export function SSHToolsSidebar({
                       {terminalTabs.length > 0 && (
                         <>
                           <div className="space-y-2">
-                            <label className="text-sm font-medium text-white">
+                            <label className="text-sm font-medium text-foreground">
                               {t("snippets.selectTerminals", {
                                 defaultValue: "Select Terminals (optional)",
                               })}
@@ -1269,7 +1269,7 @@ export function SSHToolsSidebar({
                                   size="sm"
                                   className={`rounded-full px-3 py-1 text-xs flex items-center gap-1 ${
                                     selectedSnippetTabIds.includes(tab.id)
-                                      ? "text-white bg-gray-700"
+                                      ? "text-foreground bg-gray-700"
                                       : "text-gray-500"
                                   }`}
                                   onClick={() => handleSnippetTabToggle(tab.id)}
@@ -1329,7 +1329,7 @@ export function SSHToolsSidebar({
 
                               return (
                                 <div key={folderName || "uncategorized"}>
-                                  <div className="flex items-center gap-2 mb-2 hover:bg-dark-hover-alt p-2 rounded-lg transition-colors group/folder">
+                                  <div className="flex items-center gap-2 mb-2 hover:bg-accent p-2 rounded-lg transition-colors group/folder">
                                     <div
                                       className="flex items-center gap-2 flex-1 cursor-pointer"
                                       onClick={() => toggleFolder(folderName)}
@@ -1420,7 +1420,7 @@ export function SSHToolsSidebar({
                                           }
                                           onDrop={(e) => handleDrop(e, snippet)}
                                           onDragEnd={handleDragEnd}
-                                          className={`bg-dark-bg-input border border-input rounded-lg cursor-move hover:shadow-lg hover:border-gray-400/50 hover:bg-dark-hover-alt transition-all duration-200 p-3 group ${
+                                          className={`bg-input border border-input rounded-lg cursor-move hover:shadow-lg hover:border-gray-400/50 hover:bg-accent transition-all duration-200 p-3 group ${
                                             draggedSnippet?.id === snippet.id
                                               ? "opacity-50"
                                               : ""
@@ -1429,7 +1429,7 @@ export function SSHToolsSidebar({
                                           <div className="mb-2 flex items-center gap-2">
                                             <GripVertical className="h-4 w-4 text-muted-foreground flex-shrink-0 opacity-50 group-hover:opacity-100 transition-opacity" />
                                             <div className="flex-1 min-w-0">
-                                              <h3 className="text-sm font-medium text-white mb-1">
+                                              <h3 className="text-sm font-medium text-foreground mb-1">
                                                 {snippet.name}
                                               </h3>
                                               {snippet.description && (
@@ -1665,11 +1665,11 @@ export function SSHToolsSidebar({
                           {filteredCommands.map((command, index) => (
                             <div
                               key={index}
-                              className="bg-dark-bg border-2 border-dark-border rounded-md px-3 py-2.5 hover:bg-dark-hover-alt hover:border-gray-600 transition-all duration-200 group h-12 flex items-center"
+                              className="bg-muted border-2 border-border rounded-md px-3 py-2.5 hover:bg-accent hover:border-gray-600 transition-all duration-200 group h-12 flex items-center"
                             >
                               <div className="flex items-center justify-between gap-2 w-full min-w-0">
                                 <span
-                                  className="flex-1 font-mono text-sm cursor-pointer text-white truncate"
+                                  className="flex-1 font-mono text-sm cursor-pointer text-foreground truncate"
                                   onClick={() => handleCommandSelect(command)}
                                   title={command}
                                 >
@@ -1738,7 +1738,7 @@ export function SSHToolsSidebar({
                           <Separator />
 
                           <div className="space-y-2">
-                            <label className="text-sm font-medium text-white">
+                            <label className="text-sm font-medium text-foreground">
                               {t("splitScreen.availableTabs", {
                                 defaultValue: "Available Tabs",
                               })}
@@ -1768,8 +1768,8 @@ export function SSHToolsSidebar({
                                       px-3 py-2 rounded-md text-sm cursor-move transition-all
                                       ${
                                         isAssigned
-                                          ? "bg-dark-bg/50 text-muted-foreground cursor-not-allowed opacity-50"
-                                          : "bg-dark-bg border border-dark-border hover:border-gray-400 hover:bg-dark-bg-input"
+                                          ? "bg-muted/50 text-muted-foreground cursor-not-allowed opacity-50"
+                                          : "bg-muted border border-border hover:border-gray-400 hover:bg-muted-input"
                                       }
                                       ${isDragging ? "opacity-50" : ""}
                                     `}
@@ -1786,7 +1786,7 @@ export function SSHToolsSidebar({
                           <Separator />
 
                           <div className="space-y-2">
-                            <label className="text-sm font-medium text-white">
+                            <label className="text-sm font-medium text-foreground">
                               {t("splitScreen.layout", {
                                 defaultValue: "Layout",
                               })}
@@ -1820,12 +1820,12 @@ export function SSHToolsSidebar({
                                       onDragLeave={handleTabDragLeave}
                                       onDrop={() => handleTabDrop(idx)}
                                       className={`
-                                        relative bg-dark-bg border-2 rounded-md p-3 min-h-[100px]
+                                        relative bg-muted border-2 rounded-md p-3 min-h-[100px]
                                         flex flex-col items-center justify-center transition-all
                                         ${splitMode === "3" && idx === 2 ? "col-span-2" : ""}
                                         ${
                                           isEmpty
-                                            ? "border-dashed border-dark-border"
+                                            ? "border-dashed border-border"
                                             : "border-solid border-gray-400 bg-gray-500/10"
                                         }
                                         ${
@@ -1837,7 +1837,7 @@ export function SSHToolsSidebar({
                                     >
                                       {assignedTab ? (
                                         <>
-                                          <span className="text-sm text-white truncate w-full text-center mb-2">
+                                          <span className="text-sm text-foreground truncate w-full text-center mb-2">
                                             {assignedTab.title}
                                           </span>
                                           <Button
@@ -1917,13 +1917,13 @@ export function SSHToolsSidebar({
                     left: "-8px",
                     width: "18px",
                     backgroundColor: isResizing
-                      ? "var(--dark-active)"
+                      ? "hsl(var(--accent))"
                       : "transparent",
                   }}
                   onMouseEnter={(e) => {
                     if (!isResizing) {
                       e.currentTarget.style.backgroundColor =
-                        "var(--dark-border-hover)";
+                        "hsl(var(--border))";
                     }
                   }}
                   onMouseLeave={(e) => {
@@ -1945,11 +1945,11 @@ export function SSHToolsSidebar({
           onClick={() => setShowDialog(false)}
         >
           <div
-            className="bg-dark-bg border-2 border-dark-border rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto"
+            className="bg-muted border-2 border-border rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white">
+              <h2 className="text-xl font-semibold text-foreground">
                 {editingSnippet ? t("snippets.edit") : t("snippets.create")}
               </h2>
               <p className="text-sm text-muted-foreground mt-1">
@@ -1961,7 +1961,7 @@ export function SSHToolsSidebar({
 
             <div className="space-y-5">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white flex items-center gap-1">
+                <label className="text-sm font-medium text-foreground flex items-center gap-1">
                   {t("snippets.name")}
                   <span className="text-destructive">*</span>
                 </label>
@@ -1982,7 +1982,7 @@ export function SSHToolsSidebar({
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white">
+                <label className="text-sm font-medium text-foreground">
                   {t("snippets.description")}
                   <span className="text-muted-foreground ml-1">
                     ({t("common.optional")})
@@ -1998,7 +1998,7 @@ export function SSHToolsSidebar({
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white flex items-center gap-2">
+                <label className="text-sm font-medium text-foreground flex items-center gap-2">
                   <Folder className="h-4 w-4" />
                   {t("snippets.folder", { defaultValue: "Folder" })}
                   <span className="text-muted-foreground">
@@ -2048,7 +2048,7 @@ export function SSHToolsSidebar({
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white flex items-center gap-1">
+                <label className="text-sm font-medium text-foreground flex items-center gap-1">
                   {t("snippets.content")}
                   <span className="text-destructive">*</span>
                 </label>
@@ -2093,11 +2093,11 @@ export function SSHToolsSidebar({
           onClick={() => setShowFolderDialog(false)}
         >
           <div
-            className="bg-dark-bg border-2 border-dark-border rounded-lg p-6 max-w-lg w-full mx-4"
+            className="bg-muted border-2 border-border rounded-lg p-6 max-w-lg w-full mx-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="mb-6">
-              <h2 className="text-xl font-semibold text-white">
+              <h2 className="text-xl font-semibold text-foreground">
                 {editingFolder
                   ? t("snippets.editFolder", { defaultValue: "Edit Folder" })
                   : t("snippets.createFolder", {
@@ -2117,7 +2117,7 @@ export function SSHToolsSidebar({
 
             <div className="space-y-5">
               <div className="space-y-2">
-                <label className="text-sm font-medium text-white flex items-center gap-1">
+                <label className="text-sm font-medium text-foreground flex items-center gap-1">
                   {t("snippets.folderName", { defaultValue: "Folder Name" })}
                   <span className="text-destructive">*</span>
                 </label>
@@ -2145,7 +2145,7 @@ export function SSHToolsSidebar({
               </div>
 
               <div className="space-y-3">
-                <Label className="text-base font-semibold text-white">
+                <Label className="text-base font-semibold text-foreground">
                   {t("snippets.folderColor", { defaultValue: "Folder Color" })}
                 </Label>
                 <div className="grid grid-cols-4 gap-3">
@@ -2156,7 +2156,7 @@ export function SSHToolsSidebar({
                       className={`h-12 rounded-md border-2 transition-all hover:scale-105 ${
                         folderFormData.color === color.value
                           ? "border-white shadow-lg scale-105"
-                          : "border-dark-border"
+                          : "border-border"
                       }`}
                       style={{ backgroundColor: color.value }}
                       onClick={() =>
@@ -2172,7 +2172,7 @@ export function SSHToolsSidebar({
               </div>
 
               <div className="space-y-3">
-                <Label className="text-base font-semibold text-white">
+                <Label className="text-base font-semibold text-foreground">
                   {t("snippets.folderIcon", { defaultValue: "Folder Icon" })}
                 </Label>
                 <div className="grid grid-cols-5 gap-3">
@@ -2183,7 +2183,7 @@ export function SSHToolsSidebar({
                       className={`h-14 rounded-md border-2 transition-all hover:scale-105 flex items-center justify-center ${
                         folderFormData.icon === value
                           ? "border-primary bg-primary/10"
-                          : "border-dark-border bg-dark-bg-darker"
+                          : "border-border bg-card"
                       }`}
                       onClick={() =>
                         setFolderFormData({ ...folderFormData, icon: value })
@@ -2197,10 +2197,10 @@ export function SSHToolsSidebar({
               </div>
 
               <div className="space-y-3">
-                <Label className="text-base font-semibold text-white">
+                <Label className="text-base font-semibold text-foreground">
                   {t("snippets.preview", { defaultValue: "Preview" })}
                 </Label>
-                <div className="flex items-center gap-3 p-4 rounded-md bg-dark-bg-darker border border-dark-border">
+                <div className="flex items-center gap-3 p-4 rounded-md bg-card border border-border">
                   {(() => {
                     const IconComponent =
                       AVAILABLE_ICONS.find(

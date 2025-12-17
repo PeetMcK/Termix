@@ -124,7 +124,7 @@ const AppContent: FC = () => {
 
   if (authLoading) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-dark-bg">
+      <div className="h-screen w-screen flex items-center justify-center bg-muted">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-muted-foreground">{t("common.loading")}</p>
@@ -135,7 +135,7 @@ const AppContent: FC = () => {
 
   if (!isAuthenticated || isReactNativeWebView()) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-dark-bg p-4">
+      <div className="h-screen w-screen flex items-center justify-center bg-muted p-4">
         <Auth
           setLoggedIn={setIsAuthenticated}
           setIsAdmin={setIsAdmin}
@@ -152,7 +152,7 @@ const AppContent: FC = () => {
   }
 
   return (
-    <div className="h-screen w-screen flex flex-col bg-dark-bg-darkest overflow-y-hidden overflow-x-hidden relative">
+    <div className="h-screen w-screen flex flex-col bg-muted-darkest overflow-y-hidden overflow-x-hidden relative">
       <div className="flex-1 min-h-0 relative">
         {tabs.map((tab) => (
           <div
@@ -167,7 +167,7 @@ const AppContent: FC = () => {
           </div>
         ))}
         {tabs.length === 0 && (
-          <div className="flex flex-col items-center justify-center h-full text-white gap-3 px-4 text-center">
+          <div className="flex flex-col items-center justify-center h-full text-foreground gap-3 px-4 text-center">
             <h1 className="text-lg font-semibold">
               {t("mobile.selectHostToStart")}
             </h1>

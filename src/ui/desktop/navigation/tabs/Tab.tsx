@@ -177,7 +177,7 @@ export function Tab({
             <SeparatorVertical
               className={cn(
                 "h-4 w-4",
-                isSplit ? "text-white" : "text-muted-foreground",
+                isSplit ? "text-foreground" : "text-muted-foreground",
               )}
             />
           </Button>

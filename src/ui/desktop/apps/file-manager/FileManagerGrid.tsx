@@ -100,18 +100,19 @@ interface FileManagerGridProps {
 const getFileTypeColor = (file: FileItem): string => {
   const colorEnabled = localStorage.getItem("fileColorCoding") !== "false";
   if (!colorEnabled) {
-    return "text-muted-foreground";
+    return "text-gray-400";
   }
 
+  // Show neutral color by default, accent color on hover
   if (file.type === "directory") {
-    return "text-red-400";
+    return "text-gray-400 group-hover:text-red-400 transition-colors";
   }
 
   if (file.type === "link") {
-    return "text-green-400";
+    return "text-gray-400 group-hover:text-green-400 transition-colors";
   }
 
-  return "text-blue-400";
+  return "text-gray-400 group-hover:text-blue-400 transition-colors";
 };
 
 const getFileIcon = (file: FileItem, viewMode: "grid" | "list" = "grid") => {
@@ -873,14 +874,14 @@ export function FileManagerGrid({
   ]);
 
   return (
-    <div className="h-full flex flex-col bg-dark-bg overflow-hidden relative">
-      <div className="flex-shrink-0 border-b border-dark-border">
-        <div className="flex items-center gap-1 p-2 border-b border-dark-border">
+    <div className="h-full flex flex-col bg-muted overflow-hidden relative">
+      <div className="flex-shrink-0 border-b border-border">
+        <div className="flex items-center gap-1 p-2 border-b border-border">
           <button
             onClick={goBack}
             disabled={historyIndex <= 0}
             className={cn(
-              "p-1 rounded hover:bg-dark-hover",
+              "p-1 rounded hover:bg-accent",
               historyIndex <= 0 && "opacity-50 cursor-not-allowed",
             )}
             title={t("common.back")}
@@ -891,7 +892,7 @@ export function FileManagerGrid({
             onClick={goForward}
             disabled={historyIndex >= navigationHistory.length - 1}
             className={cn(
-              "p-1 rounded hover:bg-dark-hover",
+              "p-1 rounded hover:bg-accent",
               historyIndex >= navigationHistory.length - 1 &&
                 "opacity-50 cursor-not-allowed",
             )}
@@ -903,7 +904,7 @@ export function FileManagerGrid({
             onClick={goUp}
             disabled={currentPath === "/"}
             className={cn(
-              "p-1 rounded hover:bg-dark-hover",
+              "p-1 rounded hover:bg-accent",
               currentPath === "/" && "opacity-50 cursor-not-allowed",
             )}
             title={t("fileManager.parentDirectory")}
@@ -912,7 +913,7 @@ export function FileManagerGrid({
           </button>
           <button
             onClick={onRefresh}
-            className="p-1 rounded hover:bg-dark-hover"
+            className="p-1 rounded hover:bg-accent"
             title={t("common.refresh")}
           >
             <RefreshCw className="w-4 h-4" />
@@ -933,7 +934,7 @@ export function FileManagerGrid({
                     cancelEditingPath();
                   }
                 }}
-                className="flex-1 px-2 py-1 bg-dark-hover border border-dark-border rounded text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                className="flex-1 px-2 py-1 bg-muted border border-border rounded text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                 placeholder={t("fileManager.enterPath")}
                 autoFocus
               />
@@ -973,7 +974,7 @@ export function FileManagerGrid({
               ))}
               <button
                 onClick={startEditingPath}
-                className="ml-2 p-1 rounded hover:bg-dark-hover opacity-60 hover:opacity-100 flex items-center justify-center"
+                className="ml-2 p-1 rounded hover:bg-accent opacity-60 hover:opacity-100 flex items-center justify-center"
                 title={t("fileManager.editPath")}
               >
                 <Edit className="w-3 h-3" />
@@ -1146,7 +1147,7 @@ export function FileManagerGrid({
                     data-file-path={file.path}
                     draggable={true}
                     className={cn(
-                      "flex items-center gap-3 p-2 rounded cursor-pointer",
+                      "group flex items-center gap-3 p-2 rounded cursor-pointer",
                       "hover:bg-accent hover:text-accent-foreground",
                       isSelected && "bg-primary/20 ring-2 ring-primary/20",
                       dragState.target?.path === file.path &&
@@ -1246,7 +1247,7 @@ export function FileManagerGrid({
         </div>
       </div>
 
-      <div className="flex-shrink-0 border-t border-dark-border px-4 py-2 text-xs text-muted-foreground">
+      <div className="flex-shrink-0 border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
           <span>{t("fileManager.itemCount", { count: files.length })}</span>
           {selectedFiles.length > 0 && (

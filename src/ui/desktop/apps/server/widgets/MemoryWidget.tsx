@@ -30,10 +30,10 @@ export function MemoryWidget({ metrics, metricsHistory }: MemoryWidgetProps) {
   }, [metricsHistory]);
 
   return (
-    <div className="h-full w-full p-4 rounded-lg bg-dark-bg/50 border border-dark-border/50 hover:bg-dark-bg/70 transition-colors duration-200 flex flex-col overflow-hidden">
+    <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
         <MemoryStick className="h-5 w-5 text-green-400" />
-        <h3 className="font-semibold text-lg text-white">
+        <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.memoryUsage")}
         </h3>
       </div>
@@ -45,7 +45,7 @@ export function MemoryWidget({ metrics, metricsHistory }: MemoryWidgetProps) {
               ? `${metrics.memory.percent}%`
               : "N/A"}
           </div>
-          <div className="text-xs text-gray-400">
+          <div className="text-xs text-muted-foreground">
             {(() => {
               const used = metrics?.memory?.usedGiB;
               const total = metrics?.memory?.totalGiB;
@@ -56,7 +56,7 @@ export function MemoryWidget({ metrics, metricsHistory }: MemoryWidgetProps) {
             })()}
           </div>
         </div>
-        <div className="text-xs text-gray-500 flex-shrink-0">
+        <div className="text-xs text-muted-foreground flex-shrink-0">
           {(() => {
             const used = metrics?.memory?.usedGiB;
             const total = metrics?.memory?.totalGiB;

@@ -32,6 +32,7 @@ import { useTranslation } from "react-i18next";
 import CodeMirror from "@uiw/react-codemirror";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { EditorView } from "@codemirror/view";
+import { useTheme } from "@/components/theme-provider";
 import type {
   Credential,
   CredentialEditorProps,
@@ -43,6 +44,8 @@ export function CredentialEditor({
   onFormSubmit,
 }: CredentialEditorProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
   const [, setCredentials] = useState<Credential[]>([]);
   const [folders, setFolders] = useState<string[]>([]);
   const [, setLoading] = useState(true);
@@ -560,7 +563,7 @@ export function CredentialEditor({
                         {folderDropdownOpen && filteredFolders.length > 0 && (
                           <div
                             ref={folderDropdownRef}
-                            className="absolute top-full left-0 z-50 mt-1 w-full bg-dark-bg border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
+                            className="absolute top-full left-0 z-50 mt-1 w-full bg-muted border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
                           >
                             <div className="grid grid-cols-1 gap-1 p-0">
                               {filteredFolders.map((folder) => (
@@ -589,7 +592,7 @@ export function CredentialEditor({
                       <FormItem className="col-span-10 overflow-visible">
                         <FormLabel>{t("credentials.tags")}</FormLabel>
                         <FormControl>
-                          <div className="flex flex-wrap items-center gap-1 border border-input rounded-md px-3 py-2 bg-dark-bg-input focus-within:ring-2 ring-ring min-h-[40px]">
+                          <div className="flex flex-wrap items-center gap-1 border border-input rounded-md px-3 py-2 bg-input focus-within:ring-2 ring-ring min-h-[40px]">
                             {(field.value || []).map(
                               (tag: string, idx: number) => (
                                 <span
@@ -926,7 +929,7 @@ export function CredentialEditor({
                                   placeholder={t(
                                     "placeholders.pastePrivateKey",
                                   )}
-                                  theme={oneDark}
+                                  theme={isDark ? oneDark : undefined}
                                   className="border border-input rounded-md"
                                   minHeight="120px"
                                   basicSetup={{
@@ -1086,7 +1089,7 @@ export function CredentialEditor({
                                     debouncedPublicKeyDetection(value);
                                   }}
                                   placeholder={t("placeholders.pastePublicKey")}
-                                  theme={oneDark}
+                                  theme={isDark ? oneDark : undefined}
                                   className="border border-input rounded-md"
                                   minHeight="120px"
                                   basicSetup={{

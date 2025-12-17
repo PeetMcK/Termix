@@ -48,6 +48,7 @@ import {
 import { Button } from "@/components/ui/button";
 import CodeMirror from "@uiw/react-codemirror";
 import { oneDark } from "@codemirror/theme-one-dark";
+import { useTheme } from "@/components/theme-provider";
 import { loadLanguage } from "@uiw/codemirror-extensions-langs";
 import { EditorView, keymap } from "@codemirror/view";
 import { searchKeymap, search, openSearchPanel } from "@codemirror/search";
@@ -309,6 +310,8 @@ export function FileViewer({
   onMediaDimensionsChange,
 }: FileViewerProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
   const [editedContent, setEditedContent] = useState(content);
   const [, setOriginalContent] = useState(savedContent || content);
   const [hasChanges, setHasChanges] = useState(false);
@@ -818,7 +821,7 @@ export function FileViewer({
                     },
                   }),
                 ]}
-                theme={oneDark}
+                theme={isDark ? oneDark : undefined}
                 placeholder={t("fileManager.startTyping")}
                 className="h-full"
                 basicSetup={{

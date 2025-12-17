@@ -422,7 +422,7 @@ export function LeftSidebar({
         <div className="flex h-screen w-screen overflow-hidden">
           <Sidebar variant="floating">
             <SidebarHeader>
-              <SidebarGroupLabel className="text-lg font-bold text-white">
+              <SidebarGroupLabel className="text-lg font-bold text-foreground">
                 Termix
                 <div className="absolute right-5 flex gap-1">
                   <Button
@@ -448,7 +448,7 @@ export function LeftSidebar({
             <SidebarContent>
               <SidebarGroup className="!m-0 !p-0 !-mb-2">
                 <Button
-                  className="m-2 flex flex-row font-semibold border-2 !border-dark-border"
+                  className="m-2 flex flex-row font-semibold border-2 border-border"
                   variant="outline"
                   onClick={openSshManagerTab}
                   disabled={isSplitScreenActive}
@@ -464,19 +464,19 @@ export function LeftSidebar({
               </SidebarGroup>
               <Separator className="p-0.25" />
               <SidebarGroup className="flex flex-col gap-y-2 !-mt-2">
-                <div className="!bg-dark-bg-input rounded-lg">
+                <div className="bg-input rounded-lg">
                   <Input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder={t("placeholders.searchHostsAny")}
-                    className="w-full h-8 text-sm border-2 !bg-dark-bg-input border-dark-border rounded-md"
+                    className="w-full h-8 text-sm border-2 bg-input border-border rounded-md"
                     autoComplete="off"
                   />
                 </div>
 
                 {hostsError && (
-                  <div className="!bg-dark-bg-input rounded-lg">
-                    <div className="w-full h-8 text-sm border-2 !bg-dark-bg-input border-dark-border rounded-md px-3 py-1.5 flex items-center text-red-500">
+                  <div className="bg-input rounded-lg">
+                    <div className="w-full h-8 text-sm border-2 bg-input border-border rounded-md px-3 py-1.5 flex items-center text-red-500">
                       {t("leftSidebar.failedToLoadHosts")}
                     </div>
                   </div>
@@ -527,7 +527,7 @@ export function LeftSidebar({
                       className="min-w-[var(--radix-popper-anchor-width)] bg-sidebar-accent text-sidebar-accent-foreground border border-border rounded-md shadow-2xl p-1"
                     >
                       <DropdownMenuItem
-                        className="rounded px-2 py-1.5 hover:bg-white/15 hover:text-accent-foreground focus:bg-white/20 focus:text-accent-foreground cursor-pointer focus:outline-none"
+                        className="rounded px-2 py-1.5 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer focus:outline-none"
                         onClick={() => {
                           openUserProfileTab();
                         }}
@@ -536,7 +536,7 @@ export function LeftSidebar({
                       </DropdownMenuItem>
                       {isAdmin && (
                         <DropdownMenuItem
-                          className="rounded px-2 py-1.5 hover:bg-white/15 hover:text-accent-foreground focus:bg-white/20 focus:text-accent-foreground cursor-pointer focus:outline-none"
+                          className="rounded px-2 py-1.5 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer focus:outline-none"
                           onClick={() => {
                             if (isAdmin) openAdminTab();
                           }}
@@ -545,7 +545,7 @@ export function LeftSidebar({
                         </DropdownMenuItem>
                       )}
                       <DropdownMenuItem
-                        className="rounded px-2 py-1.5 hover:bg-white/15 hover:text-accent-foreground focus:bg-white/20 focus:text-accent-foreground cursor-pointer focus:outline-none"
+                        className="rounded px-2 py-1.5 hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground cursor-pointer focus:outline-none"
                         onClick={onLogout || handleLogout}
                       >
                         <span>{t("common.logout")}</span>
@@ -557,19 +557,19 @@ export function LeftSidebar({
             </SidebarFooter>
             {isSidebarOpen && (
               <div
-                className="absolute top-0 h-full cursor-col-resize z-[60]"
+                className="absolute top-0 h-full cursor-col-resize z-[60] hover:bg-border"
                 onMouseDown={handleMouseDown}
                 style={{
                   right: "-8px",
                   width: "18px",
                   backgroundColor: isResizing
-                    ? "var(--dark-active)"
+                    ? "hsl(var(--accent))"
                     : "transparent",
                 }}
                 onMouseEnter={(e) => {
                   if (!isResizing) {
                     e.currentTarget.style.backgroundColor =
-                      "var(--dark-border-hover)";
+                      "hsl(var(--border))";
                   }
                 }}
                 onMouseLeave={(e) => {
@@ -589,12 +589,9 @@ export function LeftSidebar({
       {!isSidebarOpen && (
         <div
           onClick={() => setIsSidebarOpen(true)}
-          className="fixed top-0 left-0 w-[10px] h-full cursor-pointer flex items-center justify-center rounded-tr-md rounded-br-md"
+          className="fixed top-0 left-0 w-[10px] h-full cursor-pointer flex items-center justify-center rounded-tr-md rounded-br-md bg-sidebar border-2 border-border border-l-0"
           style={{
             zIndex: 9999,
-            backgroundColor: "#18181b",
-            border: "2px solid #27272a",
-            borderLeft: "none",
           }}
         >
           <ChevronRight size={10} />

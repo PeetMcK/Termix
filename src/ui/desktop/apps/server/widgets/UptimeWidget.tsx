@@ -20,10 +20,10 @@ export function UptimeWidget({ metrics }: UptimeWidgetProps) {
   const uptime = metricsWithUptime?.uptime;
 
   return (
-    <div className="h-full w-full p-4 rounded-lg bg-dark-bg/50 border border-dark-border/50 hover:bg-dark-bg/70 transition-colors duration-200 flex flex-col overflow-hidden">
+    <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
         <Clock className="h-5 w-5 text-cyan-400" />
-        <h3 className="font-semibold text-lg text-white">
+        <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.uptime")}
         </h3>
       </div>
@@ -39,11 +39,11 @@ export function UptimeWidget({ metrics }: UptimeWidgetProps) {
           <div className="text-3xl font-bold text-cyan-400 mb-2">
             {uptime?.formatted || "N/A"}
           </div>
-          <div className="text-sm text-gray-400">
+          <div className="text-sm text-muted-foreground">
             {t("serverStats.totalUptime")}
           </div>
           {uptime?.seconds && (
-            <div className="text-xs text-gray-500 mt-2">
+            <div className="text-xs text-muted-foreground mt-2">
               {Math.floor(uptime.seconds).toLocaleString()}{" "}
               {t("serverStats.seconds")}
             </div>

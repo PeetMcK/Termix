@@ -164,7 +164,7 @@ function AppContent() {
   if (authLoading) {
     return (
       <div
-        className="h-screen w-screen flex items-center justify-center bg-dark-bg-darkest"
+        className="h-screen w-screen flex items-center justify-center bg-muted-darkest"
         style={{
           backgroundImage: `repeating-linear-gradient(
             225deg,

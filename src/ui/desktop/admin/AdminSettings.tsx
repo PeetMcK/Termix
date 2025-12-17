@@ -737,7 +737,7 @@ export function AdminSettings({
   return (
     <div
       style={wrapperStyle}
-      className="bg-dark-bg text-white rounded-lg border-2 border-dark-border overflow-hidden"
+      className="bg-muted text-foreground rounded-lg border-2 border-border overflow-hidden"
     >
       <div className="h-full w-full flex flex-col">
         <div className="flex items-center justify-between px-3 pt-2 pb-2">
@@ -747,7 +747,7 @@ export function AdminSettings({
 
         <div className="px-6 py-4 overflow-auto">
           <Tabs defaultValue="registration" className="w-full">
-            <TabsList className="mb-4 bg-dark-bg border-2 border-dark-border">
+            <TabsList className="mb-4 bg-muted border-2 border-border">
               <TabsTrigger
                 value="registration"
                 className="flex items-center gap-2"
@@ -778,7 +778,7 @@ export function AdminSettings({
             </TabsList>
 
             <TabsContent value="registration" className="space-y-6">
-              <div className="space-y-4">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-4">
                 <h3 className="text-lg font-semibold">
                   {t("admin.userRegistration")}
                 </h3>
@@ -807,7 +807,7 @@ export function AdminSettings({
             </TabsContent>
 
             <TabsContent value="oidc" className="space-y-6">
-              <div className="space-y-3">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-3">
                 <h3 className="text-lg font-semibold">
                   {t("admin.externalAuthentication")}
                 </h3>
@@ -1062,7 +1062,7 @@ export function AdminSettings({
             </TabsContent>
 
             <TabsContent value="users" className="space-y-6">
-              <div className="space-y-4">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold">
                     {t("admin.userManagement")}
@@ -1168,7 +1168,7 @@ export function AdminSettings({
             </TabsContent>
 
             <TabsContent value="sessions" className="space-y-6">
-              <div className="space-y-4">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold">Session Management</h3>
                   <Button
@@ -1303,11 +1303,11 @@ export function AdminSettings({
             </TabsContent>
 
             <TabsContent value="admins" className="space-y-6">
-              <div className="space-y-6">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-6">
                 <h3 className="text-lg font-semibold">
                   {t("admin.adminManagement")}
                 </h3>
-                <div className="space-y-4 p-4 border rounded-md bg-dark-bg-panel">
+                <div className="space-y-4 p-4 border rounded-md bg-muted-panel">
                   <h4 className="font-semibold">{t("admin.makeUserAdmin")}</h4>
                   <form onSubmit={handleMakeUserAdmin} className="space-y-4">
                     <div className="space-y-2">
@@ -1399,7 +1399,7 @@ export function AdminSettings({
             </TabsContent>
 
             <TabsContent value="security" className="space-y-6">
-              <div className="space-y-4">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-4">
                 <div className="flex items-center gap-3">
                   <h3 className="text-lg font-semibold">
                     {t("admin.databaseSecurity")}
@@ -1407,7 +1407,7 @@ export function AdminSettings({
                 </div>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                  <div className="p-4 border rounded-lg bg-dark-bg-panel">
+                  <div className="p-4 border rounded-lg bg-muted-panel">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <Download className="h-4 w-4 text-blue-500" />
@@ -1458,7 +1458,7 @@ export function AdminSettings({
                     </div>
                   </div>
 
-                  <div className="p-4 border rounded-lg bg-dark-bg-panel">
+                  <div className="p-4 border rounded-lg bg-muted-panel">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <Upload className="h-4 w-4 text-green-500" />
@@ -1538,7 +1538,7 @@ export function AdminSettings({
           open={linkAccountAlertOpen}
           onOpenChange={setLinkAccountAlertOpen}
         >
-          <DialogContent className="sm:max-w-[500px] bg-dark-bg border-2 border-dark-border">
+          <DialogContent className="sm:max-w-[500px] bg-muted border-2 border-border">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Link2 className="w-5 h-5" />

@@ -17,6 +17,7 @@ import { useTranslation } from "react-i18next";
 import CodeMirror from "@uiw/react-codemirror";
 import { oneDark } from "@codemirror/theme-one-dark";
 import { EditorView } from "@codemirror/view";
+import { useTheme } from "@/components/theme-provider";
 
 interface SSHAuthDialogProps {
   isOpen: boolean;
@@ -45,6 +46,8 @@ export function SSHAuthDialog({
   backgroundColor = "#18181b",
 }: SSHAuthDialogProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
+  const isDark = theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
   const [authTab, setAuthTab] = useState<"password" | "key">("password");
   const [password, setPassword] = useState("");
   const [sshKey, setSshKey] = useState("");
@@ -137,7 +140,7 @@ export function SSHAuthDialog({
 
   return (
     <div
-      className="absolute inset-0 z-9999 flex items-center justify-center bg-dark-bg animate-in fade-in duration-200"
+      className="absolute inset-0 z-9999 flex items-center justify-center bg-muted animate-in fade-in duration-200"
       style={{ backgroundColor }}
     >
       <Card className="w-full max-w-2xl mx-4 border-2 animate-in fade-in zoom-in-95 duration-200">
@@ -215,7 +218,7 @@ export function SSHAuthDialog({
                     value={sshKey}
                     onChange={(value) => setSshKey(value)}
                     placeholder={t("placeholders.pastePrivateKey")}
-                    theme={oneDark}
+                    theme={isDark ? oneDark : undefined}
                     className="border border-input rounded-md"
                     minHeight="200px"
                     maxHeight="300px"

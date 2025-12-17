@@ -1912,11 +1912,11 @@ function FileManagerContent({ initialHost, onClose }: FileManagerProps) {
   }
 
   return (
-    <div className="h-full flex flex-col bg-dark-bg">
-      <div className="flex-shrink-0 border-b border-dark-border">
+    <div className="h-full flex flex-col bg-muted">
+      <div className="flex-shrink-0 border-b border-border">
         <div className="flex items-center justify-between p-3">
           <div className="flex items-center gap-2">
-            <h2 className="font-semibold text-white">{currentHost.name}</h2>
+            <h2 className="font-semibold text-foreground">{currentHost.name}</h2>
             <span className="text-sm text-muted-foreground">
               {currentHost.ip}:{currentHost.port}
             </span>
@@ -1929,11 +1929,11 @@ function FileManagerContent({ initialHost, onClose }: FileManagerProps) {
                 placeholder={t("fileManager.searchFiles")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-8 w-48 h-9 bg-dark-bg-button border-dark-border"
+                className="pl-8 w-48 h-9 bg-muted-button border-border"
               />
             </div>
 
-            <div className="flex border border-dark-border rounded-md">
+            <div className="flex border border-border rounded-md">
               <Button
                 variant={viewMode === "grid" ? "default" : "ghost"}
                 size="sm"

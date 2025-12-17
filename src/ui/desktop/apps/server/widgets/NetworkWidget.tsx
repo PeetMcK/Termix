@@ -24,17 +24,17 @@ export function NetworkWidget({ metrics }: NetworkWidgetProps) {
   const interfaces = network?.interfaces || [];
 
   return (
-    <div className="h-full w-full p-4 rounded-lg bg-dark-bg/50 border border-dark-border/50 hover:bg-dark-bg/70 transition-colors duration-200 flex flex-col overflow-hidden">
+    <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
         <Network className="h-5 w-5 text-indigo-400" />
-        <h3 className="font-semibold text-lg text-white">
+        <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.networkInterfaces")}
         </h3>
       </div>
 
       <div className="space-y-2.5 overflow-auto flex-1">
         {interfaces.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-12 text-gray-400">
+          <div className="flex flex-col items-center justify-center py-12 text-muted-foreground">
             <WifiOff className="h-10 w-10 mb-3 opacity-50" />
             <p className="text-sm">{t("serverStats.noInterfacesFound")}</p>
           </div>
@@ -42,14 +42,14 @@ export function NetworkWidget({ metrics }: NetworkWidgetProps) {
           interfaces.map((iface, index: number) => (
             <div
               key={index}
-              className="p-3 rounded-lg bg-dark-bg/50 border border-dark-border/30 hover:bg-dark-bg/60 transition-colors"
+              className="p-3 rounded-lg bg-muted/50 border border-border/30 hover:bg-muted/60 transition-colors"
             >
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <Wifi
-                    className={`h-4 w-4 ${iface.state === "UP" ? "text-green-400" : "text-gray-500"}`}
+                    className={`h-4 w-4 ${iface.state === "UP" ? "text-green-400" : "text-muted-foreground"}`}
                   />
-                  <span className="text-sm font-semibold text-white font-mono">
+                  <span className="text-sm font-semibold text-foreground font-mono">
                     {iface.name}
                   </span>
                 </div>
@@ -57,13 +57,13 @@ export function NetworkWidget({ metrics }: NetworkWidgetProps) {
                   className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${
                     iface.state === "UP"
                       ? "bg-green-500/20 text-green-400"
-                      : "bg-gray-500/20 text-gray-500"
+                      : "bg-muted text-muted-foreground"
                   }`}
                 >
                   {iface.state}
                 </span>
               </div>
-              <div className="text-xs text-gray-400 font-mono font-medium">
+              <div className="text-xs text-muted-foreground font-mono font-medium">
                 {iface.ip}
               </div>
             </div>

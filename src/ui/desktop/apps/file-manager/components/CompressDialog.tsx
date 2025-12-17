@@ -71,7 +71,7 @@ export function CompressDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-dark-bg border-2 border-dark-border">
+      <DialogContent className="sm:max-w-[500px] bg-muted border-2 border-border">
         <DialogHeader>
           <DialogTitle>{t("fileManager.compressFiles")}</DialogTitle>
           <DialogDescription className="text-muted-foreground">
@@ -123,7 +123,7 @@ export function CompressDialog({
             </Select>
           </div>
 
-          <div className="rounded-md bg-dark-hover/50 border border-dark-border p-3">
+          <div className="rounded-md bg-muted/50 border border-border p-3">
             <p className="text-sm text-gray-400 mb-2">
               {t("fileManager.selectedFiles")}:
             </p>

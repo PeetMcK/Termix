@@ -97,7 +97,7 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
       <Button
         variant="outline"
         size="sm"
-        className="ml-2 text-sm border-1 border-dark-border text-muted-foreground"
+        className="ml-2 text-sm border-1 border-border text-muted-foreground"
         onClick={() => setIsOpen(true)}
       >
         {t("common.updatesAndReleases")}
@@ -106,17 +106,17 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetContent
           side="right"
-          className="w-[500px] bg-dark-bg border-l-2 border-dark-border text-white sm:max-w-[500px] p-0 flex flex-col [&>button]:hidden"
+          className="w-[500px] bg-muted border-l-2 border-border text-foreground sm:max-w-[500px] p-0 flex flex-col [&>button]:hidden"
         >
-          <div className="flex items-center justify-between p-4 border-b border-dark-border">
-            <h2 className="text-lg font-semibold text-white">
+          <div className="flex items-center justify-between p-4 border-b border-border">
+            <h2 className="text-lg font-semibold text-foreground">
               {t("common.updatesAndReleases")}
             </h2>
             <Button
               variant="outline"
               size="sm"
               onClick={() => setIsOpen(false)}
-              className="h-8 w-8 p-0 hover:bg-red-500 hover:text-white transition-colors flex items-center justify-center"
+              className="h-8 w-8 p-0 hover:bg-red-500 hover:text-foreground transition-colors flex items-center justify-center"
               title={t("common.close")}
             >
               <X />
@@ -125,8 +125,8 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
 
           <div className="flex-1 overflow-y-auto p-4">
             {versionInfo && versionInfo.status === "requires_update" && (
-              <Alert className="bg-dark-bg-darker border-dark-border text-white mb-3">
-                <AlertTitle className="text-white">
+              <Alert className="bg-card border-border text-foreground mb-3">
+                <AlertTitle className="text-foreground">
                   {t("common.updateAvailable")}
                 </AlertTitle>
                 <AlertDescription className="text-gray-300">
@@ -161,11 +161,11 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
               {releases?.items.map((release) => (
                 <div
                   key={release.id}
-                  className="border border-dark-border rounded-lg p-3 hover:bg-dark-bg-darker transition-colors cursor-pointer bg-dark-bg-darker/50"
+                  className="border border-border rounded-lg p-3 hover:bg-card transition-colors cursor-pointer bg-card/50"
                   onClick={() => window.open(release.link, "_blank")}
                 >
                   <div className="flex items-start justify-between mb-2">
-                    <h4 className="font-semibold text-sm leading-tight flex-1 text-white">
+                    <h4 className="font-semibold text-sm leading-tight flex-1 text-foreground">
                       {release.title}
                     </h4>
                     {release.isPrerelease && (
@@ -198,7 +198,7 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
             </div>
 
             {releases && releases.items.length === 0 && !loading && (
-              <Alert className="bg-dark-bg-darker border-dark-border text-gray-300">
+              <Alert className="bg-card border-border text-gray-300">
                 <AlertTitle className="text-gray-300">
                   {t("common.noReleases")}
                 </AlertTitle>
