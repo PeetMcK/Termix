@@ -100,19 +100,19 @@ interface FileManagerGridProps {
 const getFileTypeColor = (file: FileItem): string => {
   const colorEnabled = localStorage.getItem("fileColorCoding") !== "false";
   if (!colorEnabled) {
-    return "text-gray-400";
+    return "text-gray-500 dark:text-gray-400";
   }
 
   // Show neutral color by default, accent color on hover
   if (file.type === "directory") {
-    return "text-gray-400 group-hover:text-red-400 transition-colors";
+    return "text-gray-500 dark:text-gray-400 group-hover:text-red-500 dark:group-hover:text-red-400 transition-colors";
   }
 
   if (file.type === "link") {
-    return "text-gray-400 group-hover:text-green-400 transition-colors";
+    return "text-gray-500 dark:text-gray-400 group-hover:text-green-500 dark:group-hover:text-green-400 transition-colors";
   }
 
-  return "text-gray-400 group-hover:text-blue-400 transition-colors";
+  return "text-gray-500 dark:text-gray-400 group-hover:text-blue-500 dark:group-hover:text-blue-400 transition-colors";
 };
 
 const getFileIcon = (file: FileItem, viewMode: "grid" | "list" = "grid") => {
@@ -1092,7 +1092,7 @@ export function FileManagerGrid({
                             onKeyDown={handleEditKeyDown}
                             onBlur={handleEditConfirm}
                             className={cn(
-                              "max-w-[120px] min-w-[60px] w-fit rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-xs shadow-xs transition-[color,box-shadow] outline-none",
+                              "max-w-[120px] min-w-[60px] w-fit rounded-md border border-border bg-background px-2 py-1 text-xs shadow-xs transition-[color,box-shadow] outline-none",
                               "text-center text-foreground placeholder:text-muted-foreground",
                               "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px]",
                             )}
@@ -1181,7 +1181,7 @@ export function FileManagerGrid({
                           onKeyDown={handleEditKeyDown}
                           onBlur={handleEditConfirm}
                           className={cn(
-                            "flex-1 min-w-0 max-w-[200px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none",
+                            "flex-1 min-w-0 max-w-[200px] rounded-md border border-border bg-background px-2 py-1 text-sm shadow-xs transition-[color,box-shadow] outline-none",
                             "text-foreground placeholder:text-muted-foreground",
                             "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px]",
                           )}
@@ -1288,7 +1288,7 @@ export function FileManagerGrid({
                 return dragState.target ? (
                   dragState.target.type === "directory" ? (
                     <>
-                      <Move className="w-4 h-4 text-blue-500" />
+                      <Move className="w-4 h-4 text-blue-600 dark:text-blue-500" />
                       <span className="text-sm font-medium text-foreground">
                         {t("fileManager.moveTo", {
                           name: dragState.target.name,
@@ -1297,7 +1297,7 @@ export function FileManagerGrid({
                     </>
                   ) : (
                     <>
-                      <GitCompare className="w-4 h-4 text-purple-500" />
+                      <GitCompare className="w-4 h-4 text-purple-600 dark:text-purple-500" />
                       <span className="text-sm font-medium text-foreground">
                         {t("fileManager.diffCompareWith", {
                           name: dragState.target.name,
@@ -1307,7 +1307,7 @@ export function FileManagerGrid({
                   )
                 ) : (
                   <>
-                    <Download className="w-4 h-4 text-green-500" />
+                    <Download className="w-4 h-4 text-green-600 dark:text-green-500" />
                     <span className="text-sm font-medium text-foreground">
                       {t("fileManager.dragOutsideToDownload", {
                         count: files.length,
@@ -1371,7 +1371,7 @@ function CreateIntentGridItem({
           onChange={(e) => setInputName(e.target.value)}
           onKeyDown={handleKeyDown}
           onBlur={() => onConfirm?.(inputName.trim())}
-          className="w-full max-w-[120px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-xs text-center text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px] outline-none"
+          className="w-full max-w-[120px] rounded-md border border-border bg-background px-2 py-1 text-xs text-center text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px] outline-none"
           placeholder={
             intent.type === "directory"
               ? t("fileManager.folderName")
@@ -1427,7 +1427,7 @@ function CreateIntentListItem({
         onChange={(e) => setInputName(e.target.value)}
         onKeyDown={handleKeyDown}
         onBlur={() => onConfirm?.(inputName.trim())}
-        className="flex-1 min-w-0 max-w-[200px] rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px] outline-none"
+        className="flex-1 min-w-0 max-w-[200px] rounded-md border border-border bg-background px-2 py-1 text-sm text-foreground placeholder:text-muted-foreground focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[2px] outline-none"
         placeholder={
           intent.type === "directory"
             ? t("fileManager.folderName")

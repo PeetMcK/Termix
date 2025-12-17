@@ -476,7 +476,7 @@ export function LeftSidebar({
 
                 {hostsError && (
                   <div className="bg-input rounded-lg">
-                    <div className="w-full h-8 text-sm border-2 bg-input border-border rounded-md px-3 py-1.5 flex items-center text-red-500">
+                    <div className="w-full h-8 text-sm border-2 bg-input border-border rounded-md px-3 py-1.5 flex items-center text-red-600 dark:text-red-500">
                       {t("leftSidebar.failedToLoadHosts")}
                     </div>
                   </div>

@@ -420,7 +420,7 @@ export function Server({
             >
               {isRefreshing ? (
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-4 border-2 border-gray-300 border-t-transparent rounded-full animate-spin"></div>
+                  <div className="w-4 h-4 border-2 border-border border-t-transparent rounded-full animate-spin"></div>
                   {t("serverStats.refreshing")}
                 </div>
               ) : (
@@ -554,7 +554,7 @@ export function Server({
                           >
                             {isExecuting ? (
                               <div className="flex items-center gap-2">
-                                <div className="w-3 h-3 border-2 border-gray-300 border-t-transparent rounded-full animate-spin"></div>
+                                <div className="w-3 h-3 border-2 border-border border-t-transparent rounded-full animate-spin"></div>
                                 {action.name}
                               </div>
                             ) : (
@@ -572,7 +572,7 @@ export function Server({
                   <div className="flex items-center justify-center py-8">
                     <div className="text-center">
                       <div className="w-12 h-12 mx-auto mb-3 rounded-full bg-red-500/20 flex items-center justify-center">
-                        <div className="w-6 h-6 border-2 border-red-400 rounded-full"></div>
+                        <div className="w-6 h-6 border-2 border-red-500 dark:border-red-400 rounded-full"></div>
                       </div>
                       <p className="text-foreground mb-1">
                         {t("serverStats.serverOffline")}

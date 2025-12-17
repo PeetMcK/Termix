@@ -3,6 +3,7 @@ import { MemoryStick } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import type { ServerMetrics } from "@/ui/main-axios.ts";
 import { RechartsPrimitive } from "@/components/ui/chart.tsx";
+import { useTheme } from "@/components/theme-provider";
 
 const {
   AreaChart,
@@ -21,6 +22,18 @@ interface MemoryWidgetProps {
 
 export function MemoryWidget({ metrics, metricsHistory }: MemoryWidgetProps) {
   const { t } = useTranslation();
+  const { theme } = useTheme();
+
+  const isDark = theme === "dark" ||
+    (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  const colors = {
+    grid: isDark ? "#374151" : "#e5e7eb",
+    axis: isDark ? "#9ca3af" : "#6b7280",
+    tooltipBg: isDark ? "#1f2937" : "#ffffff",
+    tooltipBorder: isDark ? "#374151" : "#e5e7eb",
+    tooltipText: isDark ? "#ffffff" : "#000000",
+  };
 
   const chartData = React.useMemo(() => {
     return metricsHistory.map((m, index) => ({
@@ -32,7 +45,7 @@ export function MemoryWidget({ metrics, metricsHistory }: MemoryWidgetProps) {
   return (
     <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
-        <MemoryStick className="h-5 w-5 text-green-400" />
+        <MemoryStick className="h-5 w-5 text-green-500 dark:text-green-400" />
         <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.memoryUsage")}
         </h3>
@@ -40,7 +53,7 @@ export function MemoryWidget({ metrics, metricsHistory }: MemoryWidgetProps) {
 
       <div className="flex flex-col flex-1 min-h-0 gap-2">
         <div className="flex items-baseline gap-3 flex-shrink-0">
-          <div className="text-2xl font-bold text-green-400">
+          <div className="text-2xl font-bold text-green-500 dark:text-green-400">
             {typeof metrics?.memory?.percent === "number"
               ? `${metrics.memory.percent}%`
               : "N/A"}
@@ -76,24 +89,24 @@ export function MemoryWidget({ metrics, metricsHistory }: MemoryWidgetProps) {
                   <stop offset="95%" stopColor="#34d399" stopOpacity={0.1} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+              <CartesianGrid strokeDasharray="3 3" stroke={colors.grid} />
               <XAxis
                 dataKey="index"
-                stroke="#9ca3af"
-                tick={{ fill: "#9ca3af" }}
+                stroke={colors.axis}
+                tick={{ fill: colors.axis }}
                 hide
               />
               <YAxis
                 domain={[0, 100]}
-                stroke="#9ca3af"
-                tick={{ fill: "#9ca3af" }}
+                stroke={colors.axis}
+                tick={{ fill: colors.axis }}
               />
               <Tooltip
                 contentStyle={{
-                  backgroundColor: "#1f2937",
-                  border: "1px solid #374151",
+                  backgroundColor: colors.tooltipBg,
+                  border: `1px solid ${colors.tooltipBorder}`,
                   borderRadius: "6px",
-                  color: "#fff",
+                  color: colors.tooltipText,
                 }}
                 formatter={(value: number) => [
                   `${value.toFixed(1)}%`,

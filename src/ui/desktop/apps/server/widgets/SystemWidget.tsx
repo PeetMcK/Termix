@@ -23,7 +23,7 @@ export function SystemWidget({ metrics }: SystemWidgetProps) {
   return (
     <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
-        <Server className="h-5 w-5 text-purple-400" />
+        <Server className="h-5 w-5 text-purple-500 dark:text-purple-400" />
         <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.systemInfo")}
         </h3>
@@ -31,7 +31,7 @@ export function SystemWidget({ metrics }: SystemWidgetProps) {
 
       <div className="space-y-4">
         <div className="flex items-start gap-3">
-          <Info className="h-4 w-4 text-purple-400 mt-0.5 flex-shrink-0" />
+          <Info className="h-4 w-4 text-purple-500 dark:text-purple-400 mt-0.5 flex-shrink-0" />
           <div className="min-w-0 flex-1">
             <p className="text-xs text-muted-foreground mb-1.5">
               {t("serverStats.hostname")}
@@ -43,7 +43,7 @@ export function SystemWidget({ metrics }: SystemWidgetProps) {
         </div>
 
         <div className="flex items-start gap-3">
-          <Info className="h-4 w-4 text-purple-400 mt-0.5 flex-shrink-0" />
+          <Info className="h-4 w-4 text-purple-500 dark:text-purple-400 mt-0.5 flex-shrink-0" />
           <div className="min-w-0 flex-1">
             <p className="text-xs text-muted-foreground mb-1.5">
               {t("serverStats.operatingSystem")}
@@ -55,7 +55,7 @@ export function SystemWidget({ metrics }: SystemWidgetProps) {
         </div>
 
         <div className="flex items-start gap-3">
-          <Info className="h-4 w-4 text-purple-400 mt-0.5 flex-shrink-0" />
+          <Info className="h-4 w-4 text-purple-500 dark:text-purple-400 mt-0.5 flex-shrink-0" />
           <div className="min-w-0 flex-1">
             <p className="text-xs text-muted-foreground mb-1.5">
               {t("serverStats.kernel")}

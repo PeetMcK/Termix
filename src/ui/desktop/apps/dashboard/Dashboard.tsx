@@ -471,7 +471,7 @@ export function Dashboard({
                           <Button
                             variant="outline"
                             size="sm"
-                            className={`ml-2 text-sm border-1 border-border ${versionStatus === "up_to_date" ? "text-green-400" : "text-yellow-400"}`}
+                            className={`ml-2 text-sm border-1 border-border ${versionStatus === "up_to_date" ? "text-green-600 dark:text-green-400" : "text-yellow-600 dark:text-yellow-400"}`}
                           >
                             {versionStatus === "up_to_date"
                               ? t("dashboard.upToDate")
@@ -514,7 +514,7 @@ export function Dashboard({
 
                         <div className="flex flex-row items-center">
                           <p
-                            className={`leading-none ${dbHealth === "healthy" ? "text-green-400" : "text-red-400"}`}
+                            className={`leading-none ${dbHealth === "healthy" ? "text-green-600 dark:text-green-400" : "text-red-600 dark:text-red-400"}`}
                           >
                             {dbHealth === "healthy"
                               ? t("dashboard.healthy")

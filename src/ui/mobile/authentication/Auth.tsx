@@ -590,9 +590,9 @@ export function Auth({
         {...props}
       >
         <div className="flex flex-col items-center justify-center min-h-[400px] gap-4 px-4">
-          <div className="w-16 h-16 rounded-full bg-green-500/20 flex items-center justify-center">
+          <div className="w-16 h-16 rounded-full bg-primary/20 flex items-center justify-center">
             <svg
-              className="w-10 h-10 text-green-500"
+              className="w-10 h-10 text-primary"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -625,7 +625,7 @@ export function Auth({
       {...props}
     >
       {isReactNativeWebView() && !mobileAuthSuccess && (
-        <Alert className="mb-4 border-blue-500 bg-blue-500/10">
+        <Alert className="mb-4 border-primary bg-primary/10">
           <Smartphone className="h-4 w-4" />
           <AlertTitle>{t("auth.mobileApp")}</AlertTitle>
           <AlertDescription>{t("auth.loggingInToMobileApp")}</AlertDescription>

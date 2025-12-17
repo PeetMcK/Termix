@@ -56,7 +56,7 @@ export function CommandAutocomplete({
             className={cn(
               "px-3 py-1.5 text-sm font-mono cursor-pointer transition-colors",
               "hover:bg-accent",
-              index === selectedIndex && "bg-gray-500/20 text-gray-400",
+              index === selectedIndex && "bg-accent/50 text-muted-foreground",
             )}
             onClick={() => onSelect(suggestion)}
             onMouseEnter={() => {}}

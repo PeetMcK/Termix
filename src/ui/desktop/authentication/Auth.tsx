@@ -866,21 +866,20 @@ export function Auth({
     >
       <div className="w-full h-full flex flex-col md:flex-row">
         <div
-          className="hidden md:flex md:w-2/5 items-center justify-center relative border-r-2 border-bg-border-dark"
+          className="hidden md:flex md:w-2/5 items-center justify-center relative border-r-2 border-border bg-muted"
           style={{
-            background: "#0e0e10",
             backgroundImage: `repeating-linear-gradient(
               45deg,
               transparent,
               transparent 35px,
-              rgba(255, 255, 255, 0.03) 35px,
-              rgba(255, 255, 255, 0.03) 37px
+              ${theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.03)"} 35px,
+              ${theme === "dark" || (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches) ? "rgba(255, 255, 255, 0.03)" : "rgba(0, 0, 0, 0.03)"} 37px
             )`,
           }}
         >
           <div className="relative text-center px-8">
             <div
-              className="text-7xl font-bold tracking-wider mb-4 text-white"
+              className="text-7xl font-bold tracking-wider mb-4 text-foreground"
               style={{
                 fontFamily:
                   "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace",
@@ -888,7 +887,7 @@ export function Auth({
             >
               TERMIX
             </div>
-            <div className="text-lg text-gray-400 tracking-widest font-light">
+            <div className="text-lg text-muted-foreground tracking-widest font-light">
               {t("auth.tagline")}
             </div>
           </div>
@@ -897,7 +896,7 @@ export function Auth({
         <div className="flex-1 flex p-6 md:p-12 bg-background overflow-y-auto">
           <div className="m-auto w-full max-w-md backdrop-blur-sm bg-card/50 rounded-2xl p-8 shadow-xl border-2 border-border animate-in fade-in slide-in-from-bottom-4 duration-500 flex flex-col">
             {isInElectronWebView() && !webviewAuthSuccess && (
-              <Alert className="mb-4 border-blue-500 bg-blue-500/10">
+              <Alert className="mb-4 border-primary bg-primary/10">
                 <Monitor className="h-4 w-4" />
                 <AlertTitle>{t("auth.desktopApp")}</AlertTitle>
                 <AlertDescription>

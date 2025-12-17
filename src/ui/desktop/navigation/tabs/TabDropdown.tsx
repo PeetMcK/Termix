@@ -98,7 +98,7 @@ export function TabDropdown(): React.ReactElement {
               {getTabIcon(tab.type)}
               <span className="flex-1 truncate">{getTabDisplayTitle(tab)}</span>
               {isActive && (
-                <div className="w-2 h-2 rounded-full bg-blue-500 flex-shrink-0" />
+                <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0" />
               )}
             </DropdownMenuItem>
           );

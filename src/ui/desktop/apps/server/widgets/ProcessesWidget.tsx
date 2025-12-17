@@ -30,7 +30,7 @@ export function ProcessesWidget({ metrics }: ProcessesWidgetProps) {
   return (
     <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
-        <List className="h-5 w-5 text-yellow-400" />
+        <List className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />
         <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.processes")}
         </h3>
@@ -45,7 +45,7 @@ export function ProcessesWidget({ metrics }: ProcessesWidgetProps) {
         </div>
         <div className="text-sm text-muted-foreground">
           {t("serverStats.running")}:{" "}
-          <span className="text-green-400 font-semibold">
+          <span className="text-green-500 dark:text-green-400 font-semibold">
             {processes?.running ?? "N/A"}
           </span>
         </div>
@@ -69,8 +69,8 @@ export function ProcessesWidget({ metrics }: ProcessesWidgetProps) {
                     PID: {proc.pid}
                   </span>
                   <div className="flex gap-3 text-xs font-medium">
-                    <span className="text-blue-400">CPU: {proc.cpu}%</span>
-                    <span className="text-green-400">MEM: {proc.mem}%</span>
+                    <span className="text-blue-500 dark:text-blue-400">CPU: {proc.cpu}%</span>
+                    <span className="text-green-500 dark:text-green-400">MEM: {proc.mem}%</span>
                   </div>
                 </div>
                 <div className="text-xs text-foreground font-mono truncate mb-1">

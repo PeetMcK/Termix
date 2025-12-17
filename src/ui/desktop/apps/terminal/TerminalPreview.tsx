@@ -1,5 +1,5 @@
-import type { TerminalTheme } from "@/constants/terminal-themes";
 import { TERMINAL_THEMES, TERMINAL_FONTS } from "@/constants/terminal-themes";
+import { useTheme } from "@/components/theme-provider";
 
 interface TerminalPreviewProps {
   theme: string;
@@ -20,6 +20,21 @@ export function TerminalPreview({
   letterSpacing = 0,
   lineHeight = 1.2,
 }: TerminalPreviewProps) {
+  const { theme: appTheme } = useTheme();
+
+  // Auto-switch terminal theme based on app theme when using "termix" (default)
+  const isDarkMode = appTheme === "dark" ||
+    (appTheme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+
+  let themeColors;
+  if (theme === "termix") {
+    themeColors = isDarkMode
+      ? TERMINAL_THEMES.termixDark.colors
+      : TERMINAL_THEMES.termixLight.colors;
+  } else {
+    themeColors = TERMINAL_THEMES[theme]?.colors || TERMINAL_THEMES.termixDark.colors;
+  }
+
   return (
     <div className="border border-input rounded-md overflow-hidden">
       <div
@@ -31,33 +46,33 @@ export function TerminalPreview({
             TERMINAL_FONTS[0].fallback,
           letterSpacing: `${letterSpacing}px`,
           lineHeight,
-          background: TERMINAL_THEMES[theme]?.colors.background || "#18181b",
-          color: TERMINAL_THEMES[theme]?.colors.foreground || "#f7f7f7",
+          background: themeColors.background,
+          color: themeColors.foreground,
         }}
       >
         <div>
-          <span style={{ color: TERMINAL_THEMES[theme]?.colors.green }}>
+          <span style={{ color: themeColors.green }}>
             user@termix
           </span>
           <span>:</span>
-          <span style={{ color: TERMINAL_THEMES[theme]?.colors.blue }}>~</span>
+          <span style={{ color: themeColors.blue }}>~</span>
           <span>$ ls -la</span>
         </div>
         <div>
-          <span style={{ color: TERMINAL_THEMES[theme]?.colors.blue }}>
+          <span style={{ color: themeColors.blue }}>
             drwxr-xr-x
           </span>
           <span> 5 user </span>
-          <span style={{ color: TERMINAL_THEMES[theme]?.colors.cyan }}>
+          <span style={{ color: themeColors.cyan }}>
             docs
           </span>
         </div>
         <div>
-          <span style={{ color: TERMINAL_THEMES[theme]?.colors.green }}>
+          <span style={{ color: themeColors.green }}>
             -rwxr-xr-x
           </span>
           <span> 1 user </span>
-          <span style={{ color: TERMINAL_THEMES[theme]?.colors.green }}>
+          <span style={{ color: themeColors.green }}>
             script.sh
           </span>
         </div>
@@ -67,11 +82,11 @@ export function TerminalPreview({
           <span>README.md</span>
         </div>
         <div>
-          <span style={{ color: TERMINAL_THEMES[theme]?.colors.green }}>
+          <span style={{ color: themeColors.green }}>
             user@termix
           </span>
           <span>:</span>
-          <span style={{ color: TERMINAL_THEMES[theme]?.colors.blue }}>~</span>
+          <span style={{ color: themeColors.blue }}>~</span>
           <span>$ </span>
           <span
             className="inline-block"
@@ -83,7 +98,7 @@ export function TerminalPreview({
                   : cursorStyle === "bar"
                     ? `${fontSize}px`
                     : `${fontSize}px`,
-              background: TERMINAL_THEMES[theme]?.colors.cursor || "#f7f7f7",
+              background: themeColors.cursor || themeColors.foreground,
               animation: cursorBlink ? "blink 1s step-end infinite" : "none",
               verticalAlign:
                 cursorStyle === "underline" ? "bottom" : "text-bottom",

@@ -1126,7 +1126,7 @@ export function AdminSettings({
                                         username: user.username,
                                       })
                                     }
-                                    className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                                    className="text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 hover:bg-blue-50 dark:hover:bg-blue-900/30"
                                     title="Link to password account"
                                   >
                                     <Link2 className="h-4 w-4" />
@@ -1139,7 +1139,7 @@ export function AdminSettings({
                                     onClick={() =>
                                       handleUnlinkOIDC(user.id, user.username)
                                     }
-                                    className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+                                    className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/30"
                                     title="Unlink OIDC (keep password only)"
                                   >
                                     <Unlink className="h-4 w-4" />
@@ -1151,7 +1151,7 @@ export function AdminSettings({
                                   onClick={() =>
                                     handleDeleteUser(user.username)
                                   }
-                                  className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                  className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
                                   disabled={user.is_admin}
                                 >
                                   <Trash2 className="h-4 w-4" />
@@ -1242,7 +1242,7 @@ export function AdminSettings({
                                         {session.deviceInfo}
                                       </span>
                                       {session.isRevoked && (
-                                        <span className="text-xs text-red-600">
+                                        <span className="text-xs text-red-600 dark:text-red-400">
                                           Revoked
                                         </span>
                                       )}
@@ -1269,7 +1269,7 @@ export function AdminSettings({
                                       onClick={() =>
                                         handleRevokeSession(session.id)
                                       }
-                                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                      className="text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/30"
                                       disabled={session.isRevoked}
                                     >
                                       <Trash2 className="h-4 w-4" />
@@ -1283,7 +1283,7 @@ export function AdminSettings({
                                             session.userId,
                                           )
                                         }
-                                        className="text-orange-600 hover:text-orange-700 hover:bg-orange-50 text-xs"
+                                        className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/30 text-xs"
                                         title="Revoke all sessions for this user"
                                       >
                                         Revoke All
@@ -1383,7 +1383,7 @@ export function AdminSettings({
                                   onClick={() =>
                                     handleRemoveAdminStatus(admin.username)
                                   }
-                                  className="text-orange-600 hover:text-orange-700 hover:bg-orange-50"
+                                  className="text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 hover:bg-orange-50 dark:hover:bg-orange-900/30"
                                 >
                                   <Shield className="h-4 w-4" />
                                   {t("admin.removeAdminButton")}
@@ -1410,7 +1410,7 @@ export function AdminSettings({
                   <div className="p-4 border rounded-lg bg-muted-panel">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <Download className="h-4 w-4 text-blue-500" />
+                        <Download className="h-4 w-4 text-blue-600 dark:text-blue-500" />
                         <h4 className="font-semibold">{t("admin.export")}</h4>
                       </div>
                       <p className="text-xs text-muted-foreground">
@@ -1461,7 +1461,7 @@ export function AdminSettings({
                   <div className="p-4 border rounded-lg bg-muted-panel">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <Upload className="h-4 w-4 text-green-500" />
+                        <Upload className="h-4 w-4 text-green-600 dark:text-green-500" />
                         <h4 className="font-semibold">{t("admin.import")}</h4>
                       </div>
                       <p className="text-xs text-muted-foreground">

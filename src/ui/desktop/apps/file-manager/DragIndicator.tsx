@@ -37,22 +37,22 @@ export function DragIndicator({
 
   const getIcon = () => {
     if (error) {
-      return <AlertCircle className="w-6 h-6 text-red-500" />;
+      return <AlertCircle className="w-6 h-6 text-red-600 dark:text-red-500" />;
     }
 
     if (isDragging) {
-      return <CheckCircle className="w-6 h-6 text-green-500" />;
+      return <CheckCircle className="w-6 h-6 text-green-600 dark:text-green-500" />;
     }
 
     if (isDownloading) {
-      return <Loader2 className="w-6 h-6 text-blue-500 animate-spin" />;
+      return <Loader2 className="w-6 h-6 text-blue-600 dark:text-blue-500 animate-spin" />;
     }
 
     if (fileCount > 1) {
-      return <FolderDown className="w-6 h-6 text-blue-500" />;
+      return <FolderDown className="w-6 h-6 text-blue-600 dark:text-blue-500" />;
     }
 
-    return <FileDown className="w-6 h-6 text-blue-500" />;
+    return <FileDown className="w-6 h-6 text-blue-600 dark:text-blue-500" />;
   };
 
   const getStatusText = () => {
@@ -99,9 +99,9 @@ export function DragIndicator({
             className={cn(
               "text-xs mb-3",
               error
-                ? "text-red-500"
+                ? "text-red-600 dark:text-red-500"
                 : isDragging
-                  ? "text-green-500"
+                  ? "text-green-600 dark:text-green-500"
                   : "text-muted-foreground",
             )}
           >
@@ -113,7 +113,7 @@ export function DragIndicator({
               <div
                 className={cn(
                   "h-2 rounded-full transition-all duration-300",
-                  isDragging ? "bg-green-500" : "bg-blue-500",
+                  isDragging ? "bg-green-600 dark:bg-green-500" : "bg-blue-600 dark:bg-blue-500",
                 )}
                 style={{ width: `${Math.max(5, progress)}%` }}
               />
@@ -127,7 +127,7 @@ export function DragIndicator({
           )}
 
           {isDragging && !error && (
-            <div className="text-xs text-green-500 mt-2 flex items-center gap-1">
+            <div className="text-xs text-green-600 dark:text-green-500 mt-2 flex items-center gap-1">
               <Download className="w-3 h-3" />
               {t("dragIndicator.canDragAnywhere")}
             </div>
@@ -136,7 +136,7 @@ export function DragIndicator({
       </div>
 
       {isDragging && !error && (
-        <div className="absolute inset-0 rounded-lg bg-green-500/5 animate-pulse" />
+        <div className="absolute inset-0 rounded-lg bg-green-600/5 dark:bg-green-500/5 animate-pulse" />
       )}
     </div>
   );

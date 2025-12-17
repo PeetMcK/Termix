@@ -26,7 +26,7 @@ export function NetworkWidget({ metrics }: NetworkWidgetProps) {
   return (
     <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
-        <Network className="h-5 w-5 text-indigo-400" />
+        <Network className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
         <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.networkInterfaces")}
         </h3>
@@ -47,7 +47,7 @@ export function NetworkWidget({ metrics }: NetworkWidgetProps) {
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-2">
                   <Wifi
-                    className={`h-4 w-4 ${iface.state === "UP" ? "text-green-400" : "text-muted-foreground"}`}
+                    className={`h-4 w-4 ${iface.state === "UP" ? "text-green-500 dark:text-green-400" : "text-muted-foreground"}`}
                   />
                   <span className="text-sm font-semibold text-foreground font-mono">
                     {iface.name}
@@ -56,7 +56,7 @@ export function NetworkWidget({ metrics }: NetworkWidgetProps) {
                 <span
                   className={`text-xs px-2.5 py-0.5 rounded-full font-medium ${
                     iface.state === "UP"
-                      ? "bg-green-500/20 text-green-400"
+                      ? "bg-green-500/20 text-green-600 dark:text-green-400"
                       : "bg-muted text-muted-foreground"
                   }`}
                 >

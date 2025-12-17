@@ -1,3 +1,34 @@
+/* Light Theme */
+.simple-keyboard.light-theme {
+  background-color: rgb(245, 245, 247);
+  border-radius: 0;
+}
+
+.simple-keyboard.light-theme .hg-button {
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  color: #1e1e1e;
+  border-bottom-color: rgb(200, 200, 200);
+}
+
+.simple-keyboard.light-theme .hg-button:active {
+  background: rgba(230, 230, 230, 0.9);
+  color: #1e1e1e;
+}
+
+#root .simple-keyboard.light-theme + .simple-keyboard-preview {
+  background: rgba(230, 230, 230, 0.9);
+}
+
+.light-theme .hg-button.key-active {
+  background: rgba(100, 100, 255, 0.3);
+  color: #1e1e1e;
+}
+
+/* Dark Theme */
 .simple-keyboard.dark-theme {
   background-color: rgb(24, 24, 27);
   border-radius: 0;
@@ -27,6 +58,7 @@
   color: white;
 }
 
+/* Common spacing styles for both themes */
 .hg-space-big {
   width: 100px;
 }

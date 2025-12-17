@@ -8,8 +8,6 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #09090b;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -28,6 +26,7 @@
   --secondary-foreground: oklch(0.21 0.006 285.885);
   --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938);
+  --muted-darkest: oklch(0.95 0.001 286.375);
   --accent: oklch(0.967 0.001 286.375);
   --accent-foreground: oklch(0.21 0.006 285.885);
   --destructive: oklch(0.577 0.245 27.325);
@@ -66,6 +65,7 @@
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
+  --color-muted-darkest: var(--muted-darkest);
   --color-accent: var(--accent);
   --color-accent-foreground: var(--accent-foreground);
   --color-destructive: var(--destructive);
@@ -122,6 +122,7 @@
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.274 0.006 286.033);
   --muted-foreground: oklch(0.705 0.015 286.067);
+  --muted-darkest: oklch(0.09 0.005 285.823);
   --accent: oklch(0.274 0.006 286.033);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
@@ -158,9 +159,10 @@
   }
 }
 
+/* Light theme scrollbars */
 .thin-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #303032 transparent;
+  scrollbar-color: oklch(0.705 0.015 286.067) transparent;
 }
 
 .thin-scrollbar::-webkit-scrollbar {
@@ -173,31 +175,80 @@
 }
 
 .thin-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #303032;
+  background-color: oklch(0.705 0.015 286.067);
   border-radius: 9999px;
   border: 2px solid transparent;
   background-clip: content-box;
 }
 
-.thin-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-}
-
-.thin-scrollbar::-webkit-scrollbar-track {
-  background: #18181b;
-}
-
-.thin-scrollbar::-webkit-scrollbar-thumb {
-  background: #434345;
-  border-radius: 3px;
-}
-
 .thin-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #5a5a5d;
+  background-color: oklch(0.552 0.016 285.938);
 }
 
-.thin-scrollbar {
+/* Dark theme scrollbars */
+.dark .thin-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: #434345 #18181b;
+  scrollbar-color: oklch(0.274 0.006 286.033 / 80%) oklch(0.141 0.005 285.823);
+}
+
+.dark .thin-scrollbar::-webkit-scrollbar-track {
+  background: oklch(0.141 0.005 285.823);
+}
+
+.dark .thin-scrollbar::-webkit-scrollbar-thumb {
+  background-color: oklch(0.274 0.006 286.033 / 80%);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.dark .thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: oklch(0.36 0.008 286.05);
+}
+
+/* Light theme skinny scrollbars (thinner variant) */
+.skinny-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.705 0.015 286.067) transparent;
+}
+
+.skinny-scrollbar::-webkit-scrollbar {
+  height: 4px;
+  width: 4px;
+}
+
+.skinny-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.skinny-scrollbar::-webkit-scrollbar-thumb {
+  background-color: oklch(0.705 0.015 286.067);
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.skinny-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: oklch(0.552 0.016 285.938);
+}
+
+/* Dark theme skinny scrollbars (thinner variant) */
+.dark .skinny-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: oklch(0.274 0.006 286.033 / 80%) oklch(0.141 0.005 285.823);
+}
+
+.dark .skinny-scrollbar::-webkit-scrollbar-track {
+  background: oklch(0.141 0.005 285.823);
+}
+
+.dark .skinny-scrollbar::-webkit-scrollbar-thumb {
+  background-color: oklch(0.274 0.006 286.033 / 80%);
+  border-radius: 9999px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+}
+
+.dark .skinny-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: oklch(0.36 0.008 286.05);
 }

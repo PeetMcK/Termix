@@ -43,7 +43,7 @@ export function SSHAuthDialog({
   onSubmit,
   onCancel,
   hostInfo,
-  backgroundColor = "#18181b",
+  backgroundColor,
 }: SSHAuthDialogProps) {
   const { t } = useTranslation();
   const { theme } = useTheme();
@@ -140,8 +140,8 @@ export function SSHAuthDialog({
 
   return (
     <div
-      className="absolute inset-0 z-9999 flex items-center justify-center bg-muted animate-in fade-in duration-200"
-      style={{ backgroundColor }}
+      className="absolute inset-0 z-9999 flex items-center justify-center bg-muted/95 backdrop-blur-sm animate-in fade-in duration-200"
+      style={backgroundColor ? { backgroundColor } : undefined}
     >
       <Card className="w-full max-w-2xl mx-4 border-2 animate-in fade-in zoom-in-95 duration-200">
         <CardHeader>

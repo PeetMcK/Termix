@@ -59,10 +59,10 @@ export function Tab({
       "bg-background/40 text-muted-foreground border-border opacity-60",
     isDragging && "opacity-70",
     isHoveredDropTarget &&
-      "bg-blue-500/20 border-blue-500 ring-2 ring-blue-500/50",
+      "bg-primary/20 border-primary ring-2 ring-primary/50",
     !isHoveredDropTarget &&
       isValidDropTarget &&
-      "border-blue-400/50 bg-background/90",
+      "border-primary/50 bg-background/90",
     !isDragOver &&
       !isDragging &&
       !isValidDropTarget &&
@@ -107,7 +107,7 @@ export function Tab({
         onClick={!disableActivate ? onActivate : undefined}
         style={{
           marginBottom: "-2px",
-          borderBottom: isActive ? "2px solid white" : "none",
+          borderBottom: isActive ? "2px solid hsl(var(--foreground))" : "none",
         }}
       >
         <Home className="h-4 w-4" />
@@ -143,7 +143,7 @@ export function Tab({
         onClick={!disableActivate ? onActivate : undefined}
         style={{
           marginBottom: "-2px",
-          borderBottom: isActive || isSplit ? "2px solid white" : "none",
+          borderBottom: isActive || isSplit ? "2px solid hsl(var(--foreground))" : "none",
         }}
       >
         <div className="flex items-center gap-1.5 flex-1 min-w-0">
@@ -211,7 +211,7 @@ export function Tab({
         onClick={!disableActivate ? onActivate : undefined}
         style={{
           marginBottom: "-2px",
-          borderBottom: isActive ? "2px solid white" : "none",
+          borderBottom: isActive ? "2px solid hsl(var(--foreground))" : "none",
         }}
       >
         <div className="flex items-center gap-1.5 flex-1 min-w-0">
@@ -247,7 +247,7 @@ export function Tab({
         onClick={!disableActivate ? onActivate : undefined}
         style={{
           marginBottom: "-2px",
-          borderBottom: isActive ? "2px solid white" : "none",
+          borderBottom: isActive ? "2px solid hsl(var(--foreground))" : "none",
         }}
       >
         <div className="flex items-center gap-1.5 flex-1 min-w-0">

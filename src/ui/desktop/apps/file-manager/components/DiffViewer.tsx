@@ -212,7 +212,7 @@ export function DiffViewer({
     return (
       <div className="h-full flex items-center justify-center bg-muted">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
           <p className="text-sm text-muted-foreground">
             {t("fileManager.loadingFileComparison")}
           </p>
@@ -225,8 +225,8 @@ export function DiffViewer({
     return (
       <div className="h-full flex items-center justify-center bg-muted">
         <div className="text-center max-w-md">
-          <FileText className="w-16 h-16 mx-auto mb-4 text-red-500 opacity-50" />
-          <p className="text-red-500 mb-4">{error}</p>
+          <FileText className="w-16 h-16 mx-auto mb-4 text-red-600 dark:text-red-500 opacity-50" />
+          <p className="text-red-600 dark:text-red-500 mb-4">{error}</p>
           <Button onClick={loadFileContents} variant="outline">
             <RefreshCw className="w-4 h-4 mr-2" />
             {t("fileManager.reload")}
@@ -245,11 +245,11 @@ export function DiffViewer({
               <span className="text-muted-foreground">
                 {t("fileManager.compare")}:
               </span>
-              <span className="font-medium text-green-400 mx-2">
+              <span className="font-medium text-green-600 dark:text-green-400 mx-2">
                 {file1.name}
               </span>
               <ArrowLeftRight className="w-4 h-4 inline mx-1" />
-              <span className="font-medium text-blue-400">{file2.name}</span>
+              <span className="font-medium text-blue-600 dark:text-blue-400">{file2.name}</span>
             </div>
           </div>
 
@@ -333,7 +333,7 @@ export function DiffViewer({
           loading={
             <div className="h-full flex items-center justify-center">
               <div className="text-center">
-                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-2"></div>
                 <p className="text-sm text-muted-foreground">
                   {t("fileManager.initializingEditor")}
                 </p>

@@ -411,7 +411,7 @@ export function CredentialsManager({
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          <p className="text-red-500 mb-4">{error}</p>
+          <p className="text-red-600 dark:text-red-400 mb-4">{error}</p>
           <Button onClick={fetchCredentials} variant="outline">
             {t("credentials.retry")}
           </Button>
@@ -555,7 +555,7 @@ export function CredentialsManager({
                         ) : (
                           <>
                             <span
-                              className="font-medium cursor-pointer hover:text-blue-400 transition-colors"
+                              className="font-medium cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 if (folder !== t("credentials.uncategorized")) {
@@ -603,7 +603,7 @@ export function CredentialsManager({
                                     handleDragStart(e, credential)
                                   }
                                   onDragEnd={handleDragEnd}
-                                  className={`bg-input border border-input rounded-lg cursor-pointer hover:shadow-lg hover:border-blue-400/50 hover:bg-accent transition-all duration-200 p-3 group relative ${
+                                  className={`bg-input border border-input rounded-lg cursor-pointer hover:shadow-lg hover:border-primary/50 hover:bg-accent transition-all duration-200 p-3 group relative ${
                                     draggedCredential?.id === credential.id
                                       ? "opacity-50 scale-95"
                                       : ""
@@ -644,7 +644,7 @@ export function CredentialsManager({
                                                     credential,
                                                   );
                                                 }}
-                                                className="h-5 w-5 p-0 text-orange-500 hover:text-orange-700 hover:bg-orange-500/10"
+                                                className="h-5 w-5 p-0 text-orange-600 dark:text-orange-400 hover:text-orange-700 dark:hover:text-orange-300 hover:bg-orange-500/10"
                                                 disabled={operationLoading}
                                               >
                                                 <FolderMinus className="h-3 w-3" />
@@ -686,7 +686,7 @@ export function CredentialsManager({
                                                 e.stopPropagation();
                                                 handleDeploy(credential);
                                               }}
-                                              className="h-5 w-5 p-0 text-green-600 hover:text-green-700 hover:bg-green-500/10"
+                                              className="h-5 w-5 p-0 text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 hover:bg-green-500/10"
                                             >
                                               <Upload className="h-3 w-3" />
                                             </Button>
@@ -709,7 +709,7 @@ export function CredentialsManager({
                                                   credential.username,
                                               );
                                             }}
-                                            className="h-5 w-5 p-0 text-red-500 hover:text-red-700 hover:bg-red-500/10"
+                                            className="h-5 w-5 p-0 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-500/10"
                                           >
                                             <Trash2 className="h-3 w-3" />
                                           </Button>

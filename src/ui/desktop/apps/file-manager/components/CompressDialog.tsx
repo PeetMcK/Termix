@@ -124,7 +124,7 @@ export function CompressDialog({
           </div>
 
           <div className="rounded-md bg-muted/50 border border-border p-3">
-            <p className="text-sm text-gray-400 mb-2">
+            <p className="text-sm text-muted-foreground mb-2">
               {t("fileManager.selectedFiles")}:
             </p>
             <ul className="text-sm space-y-1">
@@ -134,7 +134,7 @@ export function CompressDialog({
                 </li>
               ))}
               {fileNames.length > 5 && (
-                <li className="text-gray-400 italic">
+                <li className="text-muted-foreground italic">
                   {t("fileManager.andMoreFiles", {
                     count: fileNames.length - 5,
                   })}

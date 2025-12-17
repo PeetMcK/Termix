@@ -340,7 +340,7 @@ export function CommandPalette({
                                 e.stopPropagation();
                                 handleHostServerDetailsClick(host);
                               }}
-                              className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-accent text-gray-300"
+                              className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-accent text-foreground"
                             >
                               <Server className="h-4 w-4" />
                               <span className="flex-1">
@@ -352,7 +352,7 @@ export function CommandPalette({
                                 e.stopPropagation();
                                 handleHostFileManagerClick(host);
                               }}
-                              className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-accent text-gray-300"
+                              className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-accent text-foreground"
                             >
                               <FolderOpen className="h-4 w-4" />
                               <span className="flex-1">
@@ -364,7 +364,7 @@ export function CommandPalette({
                                 e.stopPropagation();
                                 handleHostEditClick(host);
                               }}
-                              className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-accent text-gray-300"
+                              className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-accent text-foreground"
                             >
                               <Pencil className="h-4 w-4" />
                               <span className="flex-1">

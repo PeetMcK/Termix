@@ -116,7 +116,7 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
               variant="outline"
               size="sm"
               onClick={() => setIsOpen(false)}
-              className="h-8 w-8 p-0 hover:bg-red-500 hover:text-foreground transition-colors flex items-center justify-center"
+              className="h-8 w-8 p-0 hover:bg-red-500 dark:hover:bg-red-600 hover:text-white dark:hover:text-white transition-colors flex items-center justify-center"
               title={t("common.close")}
             >
               <X />
@@ -129,7 +129,7 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
                 <AlertTitle className="text-foreground">
                   {t("common.updateAvailable")}
                 </AlertTitle>
-                <AlertDescription className="text-gray-300">
+                <AlertDescription className="text-foreground">
                   {t("common.newVersionAvailable", {
                     version: versionInfo.version,
                   })}
@@ -139,19 +139,19 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
 
             {loading && (
               <div className="flex items-center justify-center h-32">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
               </div>
             )}
 
             {error && (
               <Alert
                 variant="destructive"
-                className="bg-red-900/20 border-red-500 text-red-300 mb-3"
+                className="bg-red-100 dark:bg-red-900/20 border-red-400 dark:border-red-500 text-red-700 dark:text-red-300 mb-3"
               >
-                <AlertTitle className="text-red-300">
+                <AlertTitle className="text-red-700 dark:text-red-300">
                   {t("common.error")}
                 </AlertTitle>
-                <AlertDescription className="text-red-300">
+                <AlertDescription className="text-red-700 dark:text-red-300">
                   {error}
                 </AlertDescription>
               </Alert>
@@ -169,17 +169,17 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
                       {release.title}
                     </h4>
                     {release.isPrerelease && (
-                      <span className="text-xs bg-yellow-600 text-yellow-100 px-2 py-1 rounded ml-2 flex-shrink-0 font-medium">
+                      <span className="text-xs bg-yellow-500 dark:bg-yellow-600 text-yellow-900 dark:text-yellow-100 px-2 py-1 rounded ml-2 flex-shrink-0 font-medium">
                         {t("common.preRelease")}
                       </span>
                     )}
                   </div>
 
-                  <p className="text-xs text-gray-300 mb-2 leading-relaxed">
+                  <p className="text-xs text-foreground mb-2 leading-relaxed">
                     {formatDescription(release.description)}
                   </p>
 
-                  <div className="flex items-center text-xs text-gray-400">
+                  <div className="flex items-center text-xs text-muted-foreground">
                     <span>
                       {new Date(release.pubDate).toLocaleDateString()}
                     </span>
@@ -198,11 +198,11 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
             </div>
 
             {releases && releases.items.length === 0 && !loading && (
-              <Alert className="bg-card border-border text-gray-300">
-                <AlertTitle className="text-gray-300">
+              <Alert className="bg-card border-border text-foreground">
+                <AlertTitle className="text-foreground">
                   {t("common.noReleases")}
                 </AlertTitle>
-                <AlertDescription className="text-gray-400">
+                <AlertDescription className="text-muted-foreground">
                   {t("common.noReleasesFound")}
                 </AlertDescription>
               </Alert>

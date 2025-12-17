@@ -213,7 +213,7 @@ export function UserProfile({
           </div>
           <Separator className="p-0.25 w-full" />
           <div className="flex-1 flex items-center justify-center">
-            <div className="animate-pulse text-gray-300">
+            <div className="animate-pulse text-foreground">
               {t("common.loading")}
             </div>
           </div>
@@ -239,10 +239,10 @@ export function UserProfile({
               className="bg-red-900/20 border-red-500/50"
             >
               <AlertCircle className="h-4 w-4" />
-              <AlertTitle className="text-red-400">
+              <AlertTitle className="text-red-600 dark:text-red-400">
                 {t("common.error")}
               </AlertTitle>
-              <AlertDescription className="text-red-300">
+              <AlertDescription className="text-red-700 dark:text-red-300">
                 {error || t("errors.loadFailed")}
               </AlertDescription>
             </Alert>
@@ -292,7 +292,7 @@ export function UserProfile({
                   </h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label className="text-gray-300">
+                      <Label className="text-foreground">
                         {t("common.username")}
                       </Label>
                       <p className="text-lg font-medium mt-1 text-foreground">
@@ -300,7 +300,7 @@ export function UserProfile({
                       </p>
                     </div>
                     <div>
-                      <Label className="text-gray-300">
+                      <Label className="text-foreground">
                         {t("profile.role")}
                       </Label>
                       <p className="text-lg font-medium mt-1 text-foreground">
@@ -310,7 +310,7 @@ export function UserProfile({
                       </p>
                     </div>
                     <div>
-                      <Label className="text-gray-300">
+                      <Label className="text-foreground">
                         {t("profile.authMethod")}
                       </Label>
                       <p className="text-lg font-medium mt-1 text-foreground">
@@ -322,28 +322,28 @@ export function UserProfile({
                       </p>
                     </div>
                     <div>
-                      <Label className="text-gray-300">
+                      <Label className="text-foreground">
                         {t("profile.twoFactorAuth")}
                       </Label>
                       <p className="text-lg font-medium mt-1">
                         {userInfo.is_oidc && !userInfo.is_dual_auth ? (
-                          <span className="text-gray-400">
+                          <span className="text-muted-foreground">
                             {t("auth.lockedOidcAuth")}
                           </span>
                         ) : userInfo.totp_enabled ? (
-                          <span className="text-green-400 flex items-center gap-1">
+                          <span className="text-green-600 dark:text-green-400 flex items-center gap-1">
                             <Shield className="w-4 h-4" />
                             {t("common.enabled")}
                           </span>
                         ) : (
-                          <span className="text-gray-400">
+                          <span className="text-muted-foreground">
                             {t("common.disabled")}
                           </span>
                         )}
                       </p>
                     </div>
                     <div>
-                      <Label className="text-gray-300">
+                      <Label className="text-foreground">
                         {t("common.version")}
                       </Label>
                       <p className="text-lg font-medium mt-1 text-foreground">
@@ -355,10 +355,10 @@ export function UserProfile({
                   <div className="mt-6 pt-6 border-t border-border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label className="text-gray-300">
+                        <Label className="text-foreground">
                           {t("common.language")}
                         </Label>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                           {t("profile.selectPreferredLanguage")}
                         </p>
                       </div>
@@ -369,10 +369,10 @@ export function UserProfile({
                   <div className="mt-6 pt-6 border-t border-border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label className="text-gray-300">
+                        <Label className="text-foreground">
                           {t("profile.appearance", "Appearance")}
                         </Label>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                           {t("profile.appearanceDesc", "Choose your preferred theme")}
                         </p>
                       </div>
@@ -407,10 +407,10 @@ export function UserProfile({
                   <div className="mt-6 pt-6 border-t border-border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label className="text-gray-300">
+                        <Label className="text-foreground">
                           {t("profile.fileColorCoding")}
                         </Label>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                           {t("profile.fileColorCodingDesc")}
                         </p>
                       </div>
@@ -424,10 +424,10 @@ export function UserProfile({
                   <div className="mt-6 pt-6 border-t border-border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label className="text-gray-300">
+                        <Label className="text-foreground">
                           {t("profile.commandAutocomplete")}
                         </Label>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                           {t("profile.commandAutocompleteDesc")}
                         </p>
                       </div>
@@ -441,10 +441,10 @@ export function UserProfile({
                   <div className="mt-6 pt-6 border-t border-border">
                     <div className="flex items-center justify-between">
                       <div>
-                        <Label className="text-red-400">
+                        <Label className="text-red-600 dark:text-red-400">
                           {t("leftSidebar.deleteAccount")}
                         </Label>
-                        <p className="text-sm text-gray-400 mt-1">
+                        <p className="text-sm text-muted-foreground mt-1">
                           {t(
                             "leftSidebar.deleteAccountWarningShort",
                             "This action is not reversible and will permanently delete your account.",
@@ -487,7 +487,6 @@ export function UserProfile({
           <div
             className="w-[400px] h-full bg-muted border-r-2 border-border flex flex-col shadow-2xl relative isolate z-[9999999]"
             style={{
-              boxShadow: "4px 0 20px rgba(0, 0, 0, 0.5)",
               transform: "translateZ(0)",
             }}
             onClick={(e) => e.stopPropagation()}
@@ -504,7 +503,7 @@ export function UserProfile({
                   setDeletePassword("");
                   setDeleteError(null);
                 }}
-                className="h-8 w-8 p-0 hover:bg-red-500 hover:text-foreground transition-colors flex items-center justify-center"
+                className="h-8 w-8 p-0 hover:bg-red-500 dark:hover:bg-red-600 hover:text-white dark:hover:text-white transition-colors flex items-center justify-center"
                 title={t("leftSidebar.closeDeleteAccount")}
               >
                 <span className="text-lg font-bold leading-none">×</span>
@@ -513,7 +512,7 @@ export function UserProfile({
 
             <div className="flex-1 overflow-y-auto p-4">
               <div className="space-y-4">
-                <div className="text-sm text-gray-300">
+                <div className="text-sm text-foreground">
                   {t("leftSidebar.deleteAccountWarning")}
                   <Alert variant="destructive" className="mb-5 mt-5">
                     <AlertTitle>{t("common.warning")}</AlertTitle>

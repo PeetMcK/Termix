@@ -572,7 +572,7 @@ export function CredentialEditor({
                                   type="button"
                                   variant="ghost"
                                   size="sm"
-                                  className="w-full justify-start text-left rounded px-2 py-1.5 hover:bg-white/15 focus:bg-white/20 focus:outline-none"
+                                  className="w-full justify-start text-left rounded px-2 py-1.5 hover:bg-black/10 dark:hover:bg-white/15 focus:bg-black/15 dark:focus:bg-white/20 focus:outline-none"
                                   onClick={() => handleFolderClick(folder)}
                                 >
                                   {folder}
@@ -597,12 +597,12 @@ export function CredentialEditor({
                               (tag: string, idx: number) => (
                                 <span
                                   key={`${tag}-${idx}`}
-                                  className="flex items-center bg-gray-200 text-gray-800 rounded-full px-2 py-0.5 text-xs"
+                                  className="flex items-center bg-accent text-accent-foreground rounded-full px-2 py-0.5 text-xs"
                                 >
                                   {tag}
                                   <button
                                     type="button"
-                                    className="ml-1 text-gray-500 hover:text-red-500 focus:outline-none"
+                                    className="ml-1 text-muted-foreground hover:text-red-600 dark:hover:text-red-500 focus:outline-none"
                                     onClick={(e) => {
                                       e.preventDefault();
                                       e.stopPropagation();
@@ -960,7 +960,7 @@ export function CredentialEditor({
                                       detectedKeyType === "invalid" ||
                                       detectedKeyType === "error"
                                         ? "text-destructive"
-                                        : "text-green-600"
+                                        : "text-green-600 dark:text-green-500"
                                     }`}
                                   >
                                     {getFriendlyKeyTypeName(detectedKeyType)}
@@ -1120,7 +1120,7 @@ export function CredentialEditor({
                                       detectedPublicKeyType === "invalid" ||
                                       detectedPublicKeyType === "error"
                                         ? "text-destructive"
-                                        : "text-green-600"
+                                        : "text-green-600 dark:text-green-500"
                                     }`}
                                   >
                                     {getFriendlyKeyTypeName(

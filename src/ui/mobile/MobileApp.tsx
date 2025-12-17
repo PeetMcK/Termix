@@ -171,7 +171,7 @@ const AppContent: FC = () => {
             <h1 className="text-lg font-semibold">
               {t("mobile.selectHostToStart")}
             </h1>
-            <p className="text-sm text-gray-300 max-w-xs">
+            <p className="text-sm text-foreground max-w-xs">
               {t("mobile.limitedSupportMessage")}
             </p>
             <button
@@ -197,7 +197,7 @@ const AppContent: FC = () => {
 
       {isSidebarOpen && (
         <div
-          className="absolute inset-0 bg-black/30 backdrop-blur-sm z-10"
+          className="absolute inset-0 bg-foreground/30 backdrop-blur-sm z-10"
           onClick={() => setIsSidebarOpen(false)}
         />
       )}

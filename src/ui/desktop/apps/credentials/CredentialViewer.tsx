@@ -108,9 +108,9 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
 
   const getAuthIcon = (authType: string) => {
     return authType === "password" ? (
-      <Key className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+      <Key className="h-5 w-5 text-muted-foreground" />
     ) : (
-      <Shield className="h-5 w-5 text-zinc-500 dark:text-zinc-400" />
+      <Shield className="h-5 w-5 text-muted-foreground" />
     );
   };
 
@@ -127,7 +127,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
     return (
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">
+          <label className="text-sm font-medium text-foreground">
             {label}
           </label>
           <div className="flex items-center space-x-2">
@@ -152,7 +152,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
           </div>
         </div>
         <div
-          className={`p-3 rounded-md bg-zinc-800 dark:bg-zinc-800 ${isMultiline ? "" : "min-h-[2.5rem]"}`}
+          className={`p-3 rounded-md bg-muted ${isMultiline ? "" : "min-h-[2.5rem]"}`}
         >
           {isVisible ? (
             <pre
@@ -161,7 +161,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
               {value}
             </pre>
           ) : (
-            <div className="text-sm text-zinc-500 dark:text-zinc-400">
+            <div className="text-sm text-muted-foreground">
               {"•".repeat(isMultiline ? 50 : 20)}
             </div>
           )}
@@ -175,7 +175,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
       <Sheet open={true} onOpenChange={onClose}>
         <SheetContent className="w-[600px] max-w-[50vw]">
           <div className="flex items-center justify-center h-64">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-zinc-600"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-border"></div>
           </div>
         </SheetContent>
       </Sheet>
@@ -187,28 +187,28 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
       <SheetContent className="w-[600px] max-w-[50vw] overflow-y-auto">
         <SheetHeader className="space-y-6 pb-8">
           <SheetTitle className="flex items-center space-x-4">
-            <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
+            <div className="p-2 rounded-lg bg-muted">
               {getAuthIcon(credentialDetails.authType)}
             </div>
             <div className="flex-1">
               <div className="text-xl font-semibold">
                 {credentialDetails.name}
               </div>
-              <div className="text-sm font-normal text-zinc-600 dark:text-zinc-400 mt-1">
+              <div className="text-sm font-normal text-muted-foreground mt-1">
                 {credentialDetails.description}
               </div>
             </div>
             <div className="flex items-center space-x-2">
               <Badge
                 variant="outline"
-                className="border-zinc-300 dark:border-zinc-600 text-zinc-600 dark:text-zinc-400"
+                className="border-border text-muted-foreground"
               >
                 {credentialDetails.authType}
               </Badge>
               {credentialDetails.keyType && (
                 <Badge
                   variant="secondary"
-                  className="bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300"
+                  className="bg-muted text-foreground"
                 >
                   {credentialDetails.keyType}
                 </Badge>
@@ -218,7 +218,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
         </SheetHeader>
 
         <div className="space-y-10">
-          <div className="flex space-x-2 p-2 bg-zinc-100 dark:bg-zinc-800 border border-zinc-200 dark:border-zinc-700 rounded-lg">
+          <div className="flex space-x-2 p-2 bg-muted border border-border rounded-lg">
             <Button
               variant={activeTab === "overview" ? "default" : "ghost"}
               size="sm"
@@ -250,7 +250,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
 
           {activeTab === "overview" && (
             <div className="grid gap-10 lg:grid-cols-2">
-              <Card className="border-zinc-200 dark:border-zinc-700">
+              <Card className="border-border">
                 <CardHeader className="pb-8">
                   <CardTitle className="text-lg font-semibold">
                     {t("credentials.basicInformation")}
@@ -258,14 +258,14 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
                 </CardHeader>
                 <CardContent className="space-y-8">
                   <div className="flex items-center space-x-5">
-                    <div className="p-2 rounded-lg bg-zinc-100 dark:bg-zinc-800">
-                      <User className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                    <div className="p-2 rounded-lg bg-muted">
+                      <User className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <div>
-                      <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                      <div className="text-sm text-muted-foreground">
                         {t("common.username")}
                       </div>
-                      <div className="font-medium text-zinc-800 dark:text-zinc-200">
+                      <div className="font-medium text-foreground">
                         {credentialDetails.username}
                       </div>
                     </div>
@@ -273,9 +273,9 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
 
                   {credentialDetails.folder && (
                     <div className="flex items-center space-x-4">
-                      <Folder className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                      <Folder className="h-4 w-4 text-muted-foreground" />
                       <div>
-                        <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                        <div className="text-sm text-muted-foreground">
                           {t("common.folder")}
                         </div>
                         <div className="font-medium">
@@ -287,9 +287,9 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
 
                   {credentialDetails.tags.length > 0 && (
                     <div className="flex items-start space-x-4">
-                      <Hash className="h-4 w-4 text-zinc-500 dark:text-zinc-400 mt-1" />
+                      <Hash className="h-4 w-4 text-muted-foreground mt-1" />
                       <div className="flex-1">
-                        <div className="text-sm text-zinc-500 dark:text-zinc-400 mb-3">
+                        <div className="text-sm text-muted-foreground mb-3">
                           {t("hosts.tags")}
                         </div>
                         <div className="flex flex-wrap gap-2">
@@ -310,9 +310,9 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
                   <Separator />
 
                   <div className="flex items-center space-x-4">
-                    <Calendar className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
                     <div>
-                      <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                      <div className="text-sm text-muted-foreground">
                         {t("credentials.created")}
                       </div>
                       <div className="font-medium">
@@ -322,9 +322,9 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
                   </div>
 
                   <div className="flex items-center space-x-4">
-                    <Calendar className="h-4 w-4 text-zinc-500 dark:text-zinc-400" />
+                    <Calendar className="h-4 w-4 text-muted-foreground" />
                     <div>
-                      <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                      <div className="text-sm text-muted-foreground">
                         {t("credentials.lastModified")}
                       </div>
                       <div className="font-medium">
@@ -342,20 +342,20 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
                   </CardTitle>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <div className="text-center p-6 bg-zinc-900/20 dark:bg-zinc-900/20 rounded-lg">
-                    <div className="text-3xl font-bold text-zinc-600 dark:text-zinc-400">
+                  <div className="text-center p-6 bg-muted/50 rounded-lg">
+                    <div className="text-3xl font-bold text-muted-foreground">
                       {credentialDetails.usageCount}
                     </div>
-                    <div className="text-sm text-zinc-600 dark:text-zinc-400">
+                    <div className="text-sm text-muted-foreground">
                       {t("credentials.timesUsed")}
                     </div>
                   </div>
 
                   {credentialDetails.lastUsed && (
-                    <div className="flex items-center space-x-4 p-4 bg-zinc-900/20 dark:bg-zinc-900/20 rounded-lg">
-                      <Clock className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+                    <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-lg">
+                      <Clock className="h-5 w-5 text-muted-foreground" />
                       <div>
-                        <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                        <div className="text-sm text-muted-foreground">
                           {t("credentials.lastUsed")}
                         </div>
                         <div className="font-medium">
@@ -365,10 +365,10 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
                     </div>
                   )}
 
-                  <div className="flex items-center space-x-4 p-4 bg-zinc-900/20 dark:bg-zinc-900/20 rounded-lg">
-                    <Server className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+                  <div className="flex items-center space-x-4 p-4 bg-muted/50 rounded-lg">
+                    <Server className="h-5 w-5 text-muted-foreground" />
                     <div>
-                      <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                      <div className="text-sm text-muted-foreground">
                         {t("credentials.connectedHosts")}
                       </div>
                       <div className="font-medium">{hostsUsing.length}</div>
@@ -383,7 +383,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center space-x-2">
-                  <Shield className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+                  <Shield className="h-5 w-5 text-muted-foreground" />
                   <span>{t("credentials.securityDetails")}</span>
                 </CardTitle>
                 <CardDescription>
@@ -391,13 +391,13 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
                 </CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
-                <div className="flex items-center space-x-4 p-6 bg-zinc-900/20 dark:bg-zinc-900/20 rounded-lg">
-                  <CheckCircle className="h-6 w-6 text-zinc-600 dark:text-zinc-400" />
+                <div className="flex items-center space-x-4 p-6 bg-muted/50 rounded-lg">
+                  <CheckCircle className="h-6 w-6 text-muted-foreground" />
                   <div>
-                    <div className="font-medium text-zinc-800 dark:text-zinc-200">
+                    <div className="font-medium text-foreground">
                       {t("credentials.credentialSecured")}
                     </div>
-                    <div className="text-sm text-zinc-700 dark:text-zinc-300">
+                    <div className="text-sm text-foreground">
                       {t("credentials.credentialSecuredDescription")}
                     </div>
                   </div>
@@ -424,7 +424,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
 
                     <div className="grid gap-6 md:grid-cols-2">
                       <div>
-                        <div className="text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-3">
+                        <div className="text-sm font-medium text-foreground mb-3">
                           {t("credentials.keyType")}
                         </div>
                         <Badge variant="outline" className="text-sm">
@@ -450,13 +450,13 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
                   </div>
                 )}
 
-                <div className="flex items-start space-x-4 p-6 bg-zinc-900/20 dark:bg-zinc-900/20 rounded-lg">
-                  <AlertTriangle className="h-5 w-5 text-zinc-600 dark:text-zinc-400 mt-0.5" />
+                <div className="flex items-start space-x-4 p-6 bg-muted/50 rounded-lg">
+                  <AlertTriangle className="h-5 w-5 text-muted-foreground mt-0.5" />
                   <div className="text-sm">
-                    <div className="font-medium text-zinc-800 dark:text-zinc-200 mb-2">
+                    <div className="font-medium text-foreground mb-2">
                       {t("credentials.securityReminder")}
                     </div>
-                    <div className="text-zinc-700 dark:text-zinc-300">
+                    <div className="text-foreground">
                       {t("credentials.securityReminderText")}
                     </div>
                   </div>
@@ -469,15 +469,15 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg flex items-center space-x-2">
-                  <Server className="h-5 w-5 text-zinc-600 dark:text-zinc-400" />
+                  <Server className="h-5 w-5 text-muted-foreground" />
                   <span>{t("credentials.hostsUsingCredential")}</span>
                   <Badge variant="secondary">{hostsUsing.length}</Badge>
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 {hostsUsing.length === 0 ? (
-                  <div className="text-center py-10 text-zinc-500 dark:text-zinc-400">
-                    <Server className="h-12 w-12 mx-auto mb-6 text-zinc-300 dark:text-zinc-600" />
+                  <div className="text-center py-10 text-muted-foreground">
+                    <Server className="h-12 w-12 mx-auto mb-6 text-muted-foreground" />
                     <p>{t("credentials.noHostsUsingCredential")}</p>
                   </div>
                 ) : (
@@ -486,22 +486,22 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
                       {hostsUsing.map((host) => (
                         <div
                           key={host.id}
-                          className="flex items-center justify-between p-4 border rounded-lg hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                          className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent"
                         >
                           <div className="flex items-center space-x-3">
-                            <div className="p-2 bg-zinc-100 dark:bg-zinc-800 rounded">
-                              <Server className="h-4 w-4 text-zinc-600 dark:text-zinc-400" />
+                            <div className="p-2 bg-muted rounded">
+                              <Server className="h-4 w-4 text-muted-foreground" />
                             </div>
                             <div>
                               <div className="font-medium">
                                 {host.name || `${host.ip}:${host.port}`}
                               </div>
-                              <div className="text-sm text-zinc-500 dark:text-zinc-400">
+                              <div className="text-sm text-muted-foreground">
                                 {host.ip}:{host.port}
                               </div>
                             </div>
                           </div>
-                          <div className="text-right text-sm text-zinc-500 dark:text-zinc-400">
+                          <div className="text-right text-sm text-muted-foreground">
                             {formatDate(host.createdAt)}
                           </div>
                         </div>

@@ -688,7 +688,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
     return (
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
-          <p className="text-red-500 mb-4">{error}</p>
+          <p className="text-red-600 dark:text-red-500 mb-4">{error}</p>
           <Button onClick={fetchHosts} variant="outline">
             {t("hosts.retry")}
           </Button>
@@ -1097,7 +1097,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
                       ) : (
                         <>
                           <span
-                            className="font-medium cursor-pointer hover:text-blue-400 transition-colors"
+                            className="font-medium cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                             onClick={(e) => {
                               e.stopPropagation();
                               if (folder !== t("hosts.uncategorized")) {
@@ -1163,7 +1163,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
                                     e.stopPropagation();
                                     handleDeleteAllHostsInFolder(folder);
                                   }}
-                                  className="h-6 w-6 p-0 opacity-50 hover:opacity-100 hover:text-red-400 transition-all"
+                                  className="h-6 w-6 p-0 opacity-50 hover:opacity-100 hover:text-red-600 dark:hover:text-red-400 transition-all"
                                 >
                                   <Trash className="h-3 w-3" />
                                 </Button>
@@ -1187,7 +1187,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
                                 draggable
                                 onDragStart={(e) => handleDragStart(e, host)}
                                 onDragEnd={handleDragEnd}
-                                className={`bg-input border border-input rounded-lg cursor-pointer hover:shadow-lg hover:border-blue-400/50 hover:bg-accent transition-all duration-200 p-3 group relative ${
+                                className={`bg-input border border-input rounded-lg cursor-pointer hover:shadow-lg hover:border-primary/50 hover:bg-accent transition-all duration-200 p-3 group relative ${
                                   draggedHost?.id === host.id
                                     ? "opacity-50 scale-95"
                                     : ""
@@ -1224,7 +1224,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
                                         ) : null;
                                       })()}
                                       {host.pin && (
-                                        <Pin className="h-3 w-3 text-yellow-500 flex-shrink-0" />
+                                        <Pin className="h-3 w-3 text-yellow-600 dark:text-yellow-500 flex-shrink-0" />
                                       )}
                                       <h3 className="font-medium truncate text-sm">
                                         {host.name ||
@@ -1252,7 +1252,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
                                               e.stopPropagation();
                                               handleRemoveFromFolder(host);
                                             }}
-                                            className="h-5 w-5 p-0 text-orange-500 hover:text-orange-700 hover:bg-orange-500/10"
+                                            className="h-5 w-5 p-0 text-orange-600 dark:text-orange-500 hover:text-orange-700 dark:hover:text-orange-400 hover:bg-orange-500/10"
                                             disabled={operationLoading}
                                           >
                                             <FolderMinus className="h-3 w-3" />
@@ -1296,7 +1296,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
                                                 `${host.username}@${host.ip}`,
                                             );
                                           }}
-                                          className="h-5 w-5 p-0 text-red-500 hover:text-red-700 hover:bg-red-500/10"
+                                          className="h-5 w-5 p-0 text-red-600 dark:text-red-500 hover:text-red-700 dark:hover:text-red-400 hover:bg-red-500/10"
                                         >
                                           <Trash2 className="h-3 w-3" />
                                         </Button>
@@ -1314,7 +1314,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
                                             e.stopPropagation();
                                             handleExport(host);
                                           }}
-                                          className="h-5 w-5 p-0 text-blue-500 hover:text-blue-700 hover:bg-blue-500/10"
+                                          className="h-5 w-5 p-0 text-blue-600 dark:text-blue-500 hover:text-blue-700 dark:hover:text-blue-400 hover:bg-blue-500/10"
                                         >
                                           <Upload className="h-3 w-3" />
                                         </Button>
@@ -1467,7 +1467,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
                                               hostConfig: host,
                                             });
                                           }}
-                                          className="h-7 px-2 hover:bg-blue-500/10 hover:border-blue-500/50 flex-1"
+                                          className="h-7 px-2 hover:bg-primary/10 hover:border-primary/50 flex-1"
                                         >
                                           <Terminal className="h-3.5 w-3.5" />
                                         </Button>
@@ -1520,7 +1520,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
                                             hostConfig: host,
                                           });
                                         }}
-                                        className="h-7 px-2 hover:bg-purple-500/10 hover:border-purple-500/50 flex-1"
+                                        className="h-7 px-2 hover:bg-purple-600/10 dark:hover:bg-purple-500/10 hover:border-purple-600/50 dark:hover:border-purple-500/50 flex-1"
                                       >
                                         <Server className="h-3.5 w-3.5" />
                                       </Button>

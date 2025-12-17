@@ -22,7 +22,7 @@ export function UptimeWidget({ metrics }: UptimeWidgetProps) {
   return (
     <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
-        <Clock className="h-5 w-5 text-cyan-400" />
+        <Clock className="h-5 w-5 text-cyan-500 dark:text-cyan-400" />
         <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.uptime")}
         </h3>
@@ -30,13 +30,13 @@ export function UptimeWidget({ metrics }: UptimeWidgetProps) {
 
       <div className="flex flex-col items-center justify-center flex-1">
         <div className="relative mb-4">
-          <div className="w-24 h-24 rounded-full bg-cyan-500/10 flex items-center justify-center">
-            <Activity className="h-12 w-12 text-cyan-400" />
+          <div className="w-24 h-24 rounded-full bg-cyan-500/10 dark:bg-cyan-500/10 flex items-center justify-center">
+            <Activity className="h-12 w-12 text-cyan-500 dark:text-cyan-400" />
           </div>
         </div>
 
         <div className="text-center">
-          <div className="text-3xl font-bold text-cyan-400 mb-2">
+          <div className="text-3xl font-bold text-cyan-500 dark:text-cyan-400 mb-2">
             {uptime?.formatted || "N/A"}
           </div>
           <div className="text-sm text-muted-foreground">

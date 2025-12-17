@@ -28,6 +28,7 @@ export interface TerminalTheme {
 }
 
 export const TERMINAL_THEMES: Record<string, TerminalTheme> = {
+  // Auto-switching theme - uses termixDark/termixLight based on app theme
   termix: {
     name: "Termix Default",
     category: "dark",
@@ -53,6 +54,63 @@ export const TERMINAL_THEMES: Record<string, TerminalTheme> = {
       brightMagenta: "#ad7fa8",
       brightCyan: "#34e2e2",
       brightWhite: "#eeeeec",
+    },
+  },
+
+  termixDark: {
+    name: "Termix Dark",
+    category: "dark",
+    colors: {
+      background: "#18181b",
+      foreground: "#f7f7f7",
+      cursor: "#f7f7f7",
+      cursorAccent: "#18181b",
+      selectionBackground: "#3a3a3d",
+      black: "#2e3436",
+      red: "#cc0000",
+      green: "#4e9a06",
+      yellow: "#c4a000",
+      blue: "#3465a4",
+      magenta: "#75507b",
+      cyan: "#06989a",
+      white: "#d3d7cf",
+      brightBlack: "#555753",
+      brightRed: "#ef2929",
+      brightGreen: "#8ae234",
+      brightYellow: "#fce94f",
+      brightBlue: "#729fcf",
+      brightMagenta: "#ad7fa8",
+      brightCyan: "#34e2e2",
+      brightWhite: "#eeeeec",
+    },
+  },
+
+  termixLight: {
+    name: "Termix Light",
+    category: "light",
+    colors: {
+      background: "#ffffff",
+      foreground: "#1e1e1e",
+      cursor: "#1e1e1e",
+      cursorAccent: "#ffffff",
+      selectionBackground: "#add6ff",
+      // Darker ANSI colors for readability on white
+      black: "#000000",
+      red: "#cd3131",
+      green: "#008000",
+      yellow: "#949800",
+      blue: "#0451a5",
+      magenta: "#bc05bc",
+      cyan: "#0598bc",
+      white: "#555555",
+      brightBlack: "#666666",
+      brightRed: "#cd3131",
+      brightGreen: "#14ce14",
+      brightYellow: "#b5ba00",
+      brightBlue: "#0451a5",
+      brightMagenta: "#bc05bc",
+      brightCyan: "#0598bc",
+      brightWhite: "#a5a5a5",
     },
   },
 

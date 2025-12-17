@@ -1181,8 +1181,8 @@ export function SSHToolsSidebar({
                                   size="sm"
                                   className={`rounded-full px-3 py-1 text-xs flex items-center gap-1 ${
                                     selectedTabIds.includes(tab.id)
-                                      ? "text-foreground bg-gray-700"
-                                      : "text-gray-500"
+                                      ? "text-foreground bg-accent"
+                                      : "text-muted-foreground"
                                   }`}
                                   onClick={() => handleTabToggle(tab.id)}
                                 >
@@ -1269,8 +1269,8 @@ export function SSHToolsSidebar({
                                   size="sm"
                                   className={`rounded-full px-3 py-1 text-xs flex items-center gap-1 ${
                                     selectedSnippetTabIds.includes(tab.id)
-                                      ? "text-foreground bg-gray-700"
-                                      : "text-gray-500"
+                                      ? "text-foreground bg-accent"
+                                      : "text-muted-foreground"
                                   }`}
                                   onClick={() => handleSnippetTabToggle(tab.id)}
                                 >
@@ -1420,7 +1420,7 @@ export function SSHToolsSidebar({
                                           }
                                           onDrop={(e) => handleDrop(e, snippet)}
                                           onDragEnd={handleDragEnd}
-                                          className={`bg-input border border-input rounded-lg cursor-move hover:shadow-lg hover:border-gray-400/50 hover:bg-accent transition-all duration-200 p-3 group ${
+                                          className={`bg-input border border-input rounded-lg cursor-move hover:shadow-lg hover:border-accent/50 hover:bg-accent transition-all duration-200 p-3 group ${
                                             draggedSnippet?.id === snippet.id
                                               ? "opacity-50"
                                               : ""
@@ -1665,7 +1665,7 @@ export function SSHToolsSidebar({
                           {filteredCommands.map((command, index) => (
                             <div
                               key={index}
-                              className="bg-muted border-2 border-border rounded-md px-3 py-2.5 hover:bg-accent hover:border-gray-600 transition-all duration-200 group h-12 flex items-center"
+                              className="bg-muted border-2 border-border rounded-md px-3 py-2.5 hover:bg-accent hover:border-accent transition-all duration-200 group h-12 flex items-center"
                             >
                               <div className="flex items-center justify-between gap-2 w-full min-w-0">
                                 <span
@@ -1678,7 +1678,7 @@ export function SSHToolsSidebar({
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 hover:bg-red-500/20 hover:text-red-400 flex-shrink-0"
+                                  className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 hover:bg-red-500/20 hover:text-red-600 dark:hover:text-red-400 flex-shrink-0"
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     handleCommandDelete(command);
@@ -1769,7 +1769,7 @@ export function SSHToolsSidebar({
                                       ${
                                         isAssigned
                                           ? "bg-muted/50 text-muted-foreground cursor-not-allowed opacity-50"
-                                          : "bg-muted border border-border hover:border-gray-400 hover:bg-muted-input"
+                                          : "bg-muted border border-border hover:border-accent hover:bg-muted-input"
                                       }
                                       ${isDragging ? "opacity-50" : ""}
                                     `}
@@ -1826,11 +1826,11 @@ export function SSHToolsSidebar({
                                         ${
                                           isEmpty
                                             ? "border-dashed border-border"
-                                            : "border-solid border-gray-400 bg-gray-500/10"
+                                            : "border-solid border-border bg-muted/50"
                                         }
                                         ${
                                           isHovered && draggedTabId
-                                            ? "border-gray-500 bg-gray-500/20 ring-2 ring-gray-500/50"
+                                            ? "border-accent bg-accent/50 ring-2 ring-accent/50"
                                             : ""
                                         }
                                       `}

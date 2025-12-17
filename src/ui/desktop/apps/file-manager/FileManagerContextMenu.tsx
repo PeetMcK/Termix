@@ -303,7 +303,7 @@ export function FileManagerContextMenu({
 
       if (isCurrentlyPinned && onUnpinFile) {
         menuItems.push({
-          icon: <Star className="w-4 h-4 fill-yellow-400" />,
+          icon: <Star className="w-4 h-4 fill-yellow-500 dark:fill-yellow-400" />,
           label: t("fileManager.unpinFile"),
           action: () => onUnpinFile(files[0]),
         });
@@ -538,7 +538,7 @@ export function FileManagerContextMenu({
                 "hover:bg-accent transition-colors",
                 "first:rounded-t-lg last:rounded-b-lg",
                 item.disabled && "opacity-50 cursor-not-allowed",
-                item.danger && "text-red-400 hover:bg-red-500/10",
+                item.danger && "text-red-600 dark:text-red-400 hover:bg-red-500/10",
               )}
               onClick={() => {
                 if (!item.disabled) {

@@ -134,14 +134,14 @@ function getLanguageIcon(filename: string): React.ReactNode {
     yml: <SiYaml className="w-6 h-6 text-red-400" />,
     toml: <SiToml className="w-6 h-6 text-orange-400" />,
     sql: <SiMysql className="w-6 h-6 text-blue-500" />,
-    sh: <SiGnubash className="w-6 h-6 text-gray-700" />,
-    bash: <SiGnubash className="w-6 h-6 text-gray-700" />,
-    zsh: <SiShell className="w-6 h-6 text-gray-700" />,
+    sh: <SiGnubash className="w-6 h-6 text-muted-foreground" />,
+    bash: <SiGnubash className="w-6 h-6 text-muted-foreground" />,
+    zsh: <SiShell className="w-6 h-6 text-muted-foreground" />,
     vue: <SiVuedotjs className="w-6 h-6 text-green-500" />,
     svelte: <SiSvelte className="w-6 h-6 text-orange-500" />,
-    md: <SiMarkdown className="w-6 h-6 text-gray-600" />,
-    conf: <SiShell className="w-6 h-6 text-gray-600" />,
-    ini: <Code className="w-6 h-6 text-gray-600" />,
+    md: <SiMarkdown className="w-6 h-6 text-muted-foreground" />,
+    conf: <SiShell className="w-6 h-6 text-muted-foreground" />,
+    ini: <Code className="w-6 h-6 text-muted-foreground" />,
   };
 
   return iconMap[ext] || <Code className="w-6 h-6 text-yellow-500" />;
@@ -239,7 +239,7 @@ function getFileType(filename: string): {
     return {
       type: "unknown",
       icon: <FileIcon className="w-6 h-6" />,
-      color: "text-gray-500",
+      color: "text-muted-foreground",
     };
   }
 }
@@ -425,8 +425,8 @@ export function FileViewer({
     return (
       <div className="h-full flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-sm text-gray-600">Loading file...</p>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-sm text-muted-foreground">Loading file...</p>
         </div>
       </div>
     );
@@ -765,7 +765,7 @@ export function FileViewer({
             {imageLoading && !imageLoadError && (
               <div className="absolute inset-0 flex items-center justify-center bg-background/80">
                 <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
                   <p className="text-sm text-muted-foreground">
                     Loading image...
                   </p>
@@ -877,10 +877,9 @@ export function FileViewer({
                   <div className="relative">
                     <video
                       controls
-                      className="w-full rounded-lg shadow-sm"
+                      className="w-full rounded-lg shadow-sm bg-black dark:bg-black"
                       style={{
                         maxHeight: "calc(100vh - 200px)",
-                        backgroundColor: "#000",
                       }}
                       preload="metadata"
                       onError={(e) => {
@@ -1039,7 +1038,7 @@ export function FileViewer({
                             <li className="mb-1 text-foreground">{children}</li>
                           ),
                           blockquote: ({ children }) => (
-                            <blockquote className="border-l-4 border-blue-500 pl-3 mb-3 italic text-muted-foreground bg-muted/30 py-1">
+                            <blockquote className="border-l-4 border-blue-600 dark:border-blue-400 pl-3 mb-3 italic text-muted-foreground bg-muted/30 py-1">
                               {children}
                             </blockquote>
                           ),
@@ -1074,7 +1073,7 @@ export function FileViewer({
                               href={href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-blue-600 hover:text-blue-800 underline"
+                              className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline"
                             >
                               {children}
                             </a>
@@ -1152,7 +1151,7 @@ export function FileViewer({
                           <li className="mb-1 text-foreground">{children}</li>
                         ),
                         blockquote: ({ children }) => (
-                          <blockquote className="border-l-4 border-blue-500 pl-4 mb-4 italic text-muted-foreground bg-muted/30 py-2">
+                          <blockquote className="border-l-4 border-blue-600 dark:border-blue-400 pl-4 mb-4 italic text-muted-foreground bg-muted/30 py-2">
                             {children}
                           </blockquote>
                         ),
@@ -1185,7 +1184,7 @@ export function FileViewer({
                             href={href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-blue-600 hover:text-blue-800 underline"
+                            className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300 underline"
                           >
                             {children}
                           </a>
@@ -1255,7 +1254,7 @@ export function FileViewer({
               </div>
             </div>
 
-            <div className="flex-1 overflow-auto p-6 bg-gray-100 dark:bg-gray-900">
+            <div className="flex-1 overflow-auto p-6 bg-muted">
               <div className="flex justify-center">
                 {pdfError ? (
                   <div className="text-center text-muted-foreground p-8">
@@ -1297,7 +1296,7 @@ export function FileViewer({
                     }}
                     loading={
                       <div className="text-center p-8">
-                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
                         <p className="text-sm text-muted-foreground">
                           Loading PDF...
                         </p>
@@ -1310,7 +1309,7 @@ export function FileViewer({
                       className="shadow-lg"
                       loading={
                         <div className="text-center p-4">
-                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 mx-auto mb-2"></div>
+                          <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto mb-2"></div>
                           <p className="text-xs text-muted-foreground">
                             Loading page...
                           </p>
@@ -1355,11 +1354,11 @@ export function FileViewer({
                     <div className="flex justify-center">
                       <div
                         className={cn(
-                          "w-32 h-32 rounded-lg bg-gradient-to-br from-pink-100 to-purple-100 flex items-center justify-center shadow-lg",
+                          "w-32 h-32 rounded-lg bg-gradient-to-br from-pink-100 to-purple-100 dark:from-pink-900 dark:to-purple-900 flex items-center justify-center shadow-lg",
                           fileTypeInfo.color,
                         )}
                       >
-                        <Music className="w-16 h-16 text-pink-600" />
+                        <Music className="w-16 h-16 text-pink-600 dark:text-pink-400" />
                       </div>
                     </div>
 
@@ -1432,7 +1431,7 @@ export function FileViewer({
         <div className="flex justify-between items-center">
           <span>{file.path}</span>
           {hasChanges && (
-            <span className="text-orange-600 font-medium">
+            <span className="text-orange-600 dark:text-orange-500 font-medium">
               ● Unsaved changes
             </span>
           )}

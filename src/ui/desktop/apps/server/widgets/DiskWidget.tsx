@@ -29,7 +29,7 @@ export function DiskWidget({ metrics }: DiskWidgetProps) {
   return (
     <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
-        <HardDrive className="h-5 w-5 text-orange-400" />
+        <HardDrive className="h-5 w-5 text-orange-500 dark:text-orange-400" />
         <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.diskUsage")}
         </h3>
@@ -64,7 +64,7 @@ export function DiskWidget({ metrics }: DiskWidgetProps) {
                 y="50%"
                 textAnchor="middle"
                 dominantBaseline="middle"
-                className="text-2xl font-bold fill-orange-400"
+                className="text-2xl font-bold fill-orange-500 dark:fill-orange-400"
               >
                 {typeof metrics?.disk?.percent === "number"
                   ? `${metrics.disk.percent}%`

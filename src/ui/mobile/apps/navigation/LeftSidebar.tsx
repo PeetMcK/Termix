@@ -206,7 +206,7 @@ export function LeftSidebar({
 
             {hostsError && (
               <div className="px-1">
-                <div className="text-xs text-red-500 bg-red-500/10 rounded-lg px-2 py-1 border w-full">
+                <div className="text-xs text-red-600 dark:text-red-500 bg-red-500/10 rounded-lg px-2 py-1 border w-full">
                   {t("leftSidebar.failedToLoadHosts")}
                 </div>
               </div>
@@ -250,7 +250,7 @@ export function LeftSidebar({
                     className="min-w-[var(--radix-popper-anchor-width)] bg-sidebar-accent text-sidebar-accent-foreground border border-border rounded-md shadow-2xl p-1"
                   >
                     <DropdownMenuItem
-                      className="rounded px-2 py-1.5 hover:bg-white/15 hover:text-accent-foreground focus:bg-white/20 focus:text-accent-foreground cursor-pointer focus:outline-none"
+                      className="rounded px-2 py-1.5 hover:bg-black/10 dark:hover:bg-white/15 hover:text-accent-foreground focus:bg-black/15 dark:focus:bg-white/20 focus:text-accent-foreground cursor-pointer focus:outline-none"
                       onClick={handleLogout}
                     >
                       <span>{t("common.logout")}</span>

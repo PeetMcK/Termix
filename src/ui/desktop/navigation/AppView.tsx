@@ -16,6 +16,7 @@ import {
   TERMINAL_THEMES,
   DEFAULT_TERMINAL_CONFIG,
 } from "@/constants/terminal-themes";
+import { useTheme } from "@/components/theme-provider";
 import { SSHAuthDialog } from "@/ui/desktop/navigation/SSHAuthDialog.tsx";
 
 interface TabData {
@@ -51,6 +52,11 @@ export function AppView({
     removeTab: (id: number) => void;
   };
   const { state: sidebarState } = useSidebar();
+  const { theme: appTheme } = useTheme();
+
+  // Auto-switch terminal theme based on app theme when using "termix" (default)
+  const isDarkMode = appTheme === "dark" ||
+    (appTheme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
 
   const terminalTabs = useMemo(
     () =>
@@ -286,9 +292,15 @@ export function AppView({
             ...DEFAULT_TERMINAL_CONFIG,
             ...(t.hostConfig as any)?.terminalConfig,
           };
-          const themeColors =
-            TERMINAL_THEMES[terminalConfig.theme]?.colors ||
-            TERMINAL_THEMES.termix.colors;
+          // Auto-switch terminal theme based on app theme when using "termix" (default)
+          let themeColors;
+          if (terminalConfig.theme === "termix") {
+            themeColors = isDarkMode
+              ? TERMINAL_THEMES.termixDark.colors
+              : TERMINAL_THEMES.termixLight.colors;
+          } else {
+            themeColors = TERMINAL_THEMES[terminalConfig.theme]?.colors || TERMINAL_THEMES.termixDark.colors;
+          }
           const backgroundColor = themeColors.background;
 
           return (
@@ -643,9 +655,15 @@ export function AppView({
     ...DEFAULT_TERMINAL_CONFIG,
     ...(currentTabData?.hostConfig as any)?.terminalConfig,
   };
-  const themeColors =
-    TERMINAL_THEMES[terminalConfig.theme]?.colors ||
-    TERMINAL_THEMES.termix.colors;
+  // Auto-switch terminal theme based on app theme when using "termix" (default)
+  let themeColors;
+  if (terminalConfig.theme === "termix") {
+    themeColors = isDarkMode
+      ? TERMINAL_THEMES.termixDark.colors
+      : TERMINAL_THEMES.termixLight.colors;
+  } else {
+    themeColors = TERMINAL_THEMES[terminalConfig.theme]?.colors || TERMINAL_THEMES.termixDark.colors;
+  }
   const terminalBackgroundColor = themeColors.background;
 
   const topMarginPx = isTopbarOpen ? 74 : 26;

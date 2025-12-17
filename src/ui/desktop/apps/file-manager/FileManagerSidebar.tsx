@@ -521,7 +521,7 @@ export function FileManagerSidebar({
                   <>
                     <div className="border-t border-border" />
                     <button
-                      className="w-full px-3 py-2 text-left text-sm flex items-center gap-3 hover:bg-accent text-red-400 hover:bg-red-500/10 first:rounded-t-lg last:rounded-b-lg"
+                      className="w-full px-3 py-2 text-left text-sm flex items-center gap-3 hover:bg-accent text-red-600 dark:text-red-400 hover:bg-red-500/10 first:rounded-t-lg last:rounded-b-lg"
                       onClick={() => {
                         handleClearAllRecent();
                         closeContextMenu();

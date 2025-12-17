@@ -37,7 +37,7 @@ export function LoginStatsWidget({ metrics }: LoginStatsWidgetProps) {
   return (
     <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
-        <UserCheck className="h-5 w-5 text-green-400" />
+        <UserCheck className="h-5 w-5 text-green-500 dark:text-green-400" />
         <h3 className="font-semibold text-lg text-foreground">
           {t("serverStats.loginStats")}
         </h3>
@@ -50,7 +50,7 @@ export function LoginStatsWidget({ metrics }: LoginStatsWidgetProps) {
               <Activity className="h-3 w-3" />
               <span>{t("serverStats.totalLogins")}</span>
             </div>
-            <div className="text-xl font-bold text-green-400">
+            <div className="text-xl font-bold text-green-500 dark:text-green-400">
               {totalLogins}
             </div>
           </div>
@@ -59,14 +59,14 @@ export function LoginStatsWidget({ metrics }: LoginStatsWidgetProps) {
               <MapPin className="h-3 w-3" />
               <span>{t("serverStats.uniqueIPs")}</span>
             </div>
-            <div className="text-xl font-bold text-blue-400">{uniqueIPs}</div>
+            <div className="text-xl font-bold text-blue-500 dark:text-blue-400">{uniqueIPs}</div>
           </div>
         </div>
 
         <div className="flex-1 min-h-0 overflow-y-auto space-y-2">
           <div className="flex-shrink-0">
             <div className="flex items-center gap-2 mb-1">
-              <UserCheck className="h-4 w-4 text-green-400" />
+              <UserCheck className="h-4 w-4 text-green-500 dark:text-green-400" />
               <span className="text-sm font-semibold text-foreground">
                 {t("serverStats.recentSuccessfulLogins")}
               </span>
@@ -83,13 +83,13 @@ export function LoginStatsWidget({ metrics }: LoginStatsWidgetProps) {
                     className="text-xs bg-card p-2 rounded border border-border/30 flex justify-between items-center"
                   >
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-green-400 font-mono truncate">
+                      <span className="text-green-600 dark:text-green-400 font-mono truncate">
                         {login.user}
                       </span>
                       <span className="text-muted-foreground">
                         {t("serverStats.from")}
                       </span>
-                      <span className="text-blue-400 font-mono truncate">
+                      <span className="text-blue-500 dark:text-blue-400 font-mono truncate">
                         {login.ip}
                       </span>
                     </div>
@@ -105,7 +105,7 @@ export function LoginStatsWidget({ metrics }: LoginStatsWidgetProps) {
           {failedLogins.length > 0 && (
             <div className="flex-shrink-0">
               <div className="flex items-center gap-2 mb-1">
-                <UserX className="h-4 w-4 text-red-400" />
+                <UserX className="h-4 w-4 text-red-500 dark:text-red-400" />
                 <span className="text-sm font-semibold text-foreground">
                   {t("serverStats.recentFailedAttempts")}
                 </span>
@@ -114,16 +114,16 @@ export function LoginStatsWidget({ metrics }: LoginStatsWidgetProps) {
                 {failedLogins.slice(0, 3).map((login, idx) => (
                   <div
                     key={idx}
-                    className="text-xs bg-red-900/20 p-2 rounded border border-red-500/30 flex justify-between items-center"
+                    className="text-xs bg-red-100 dark:bg-red-900/20 p-2 rounded border border-red-300 dark:border-red-500/30 flex justify-between items-center"
                   >
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className="text-red-400 font-mono truncate">
+                      <span className="text-red-600 dark:text-red-400 font-mono truncate">
                         {login.user}
                       </span>
                       <span className="text-muted-foreground">
                         {t("serverStats.from")}
                       </span>
-                      <span className="text-blue-400 font-mono truncate">
+                      <span className="text-blue-500 dark:text-blue-400 font-mono truncate">
                         {login.ip}
                       </span>
                     </div>
