@@ -926,10 +926,10 @@ async function requestAgentFile(agentId: string, filePath: string): Promise<{ co
   });
 }
 
-// Stream endpoint
-streamApp.get("/stream/:agentId/*", async (req, res) => {
-  const { agentId } = req.params;
-  const filePath = "/" + req.params[0]; // Reconstruct path from wildcard
+// Stream endpoint - use regex to capture file path with slashes
+streamApp.get(/^\/stream\/([^\/]+)\/(.+)$/, async (req, res) => {
+  const agentId = req.params[0];
+  const filePath = "/" + req.params[1]; // Reconstruct path
   const userId = (req as any).userId as string;
 
   if (!userId) {
