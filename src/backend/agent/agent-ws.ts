@@ -846,7 +846,7 @@ const streamApp = express();
 streamApp.use(cors());
 
 // Custom auth middleware that accepts token from query string (for media elements)
-streamApp.use((req, res, next) => {
+streamApp.use(async (req, res, next) => {
   // Try to get token from Authorization header first
   const authHeader = req.headers.authorization;
   let token: string | undefined;
@@ -865,12 +865,12 @@ streamApp.use((req, res, next) => {
   }
 
   // Verify token
-  const decoded = authManager.verifyToken(token);
+  const decoded = await authManager.verifyJWTToken(token);
   if (!decoded) {
     return res.status(401).json({ error: "Invalid token" });
   }
 
-  req.userId = decoded.userId;
+  (req as any).userId = decoded.userId;
   next();
 });
 
@@ -930,7 +930,7 @@ async function requestAgentFile(agentId: string, filePath: string): Promise<{ co
 streamApp.get("/stream/:agentId/*", async (req, res) => {
   const { agentId } = req.params;
   const filePath = "/" + req.params[0]; // Reconstruct path from wildcard
-  const userId = req.userId;
+  const userId = (req as any).userId as string;
 
   if (!userId) {
     return res.status(401).json({ error: "Unauthorized" });
