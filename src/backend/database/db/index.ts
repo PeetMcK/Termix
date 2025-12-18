@@ -328,6 +328,44 @@ async function initializeCompleteDatabase(): Promise<void> {
         FOREIGN KEY (host_id) REFERENCES ssh_data (id) ON DELETE CASCADE
     );
 
+    CREATE TABLE IF NOT EXISTS install_tokens (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        token TEXT NOT NULL UNIQUE,
+        max_uses INTEGER,
+        current_uses INTEGER NOT NULL DEFAULT 0,
+        expires_at TEXT,
+        config_template TEXT NOT NULL,
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        revoked_at TEXT,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
+    );
+
+    CREATE TABLE IF NOT EXISTS agents (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        install_token_id TEXT,
+        device_id TEXT NOT NULL,
+        hostname TEXT,
+        platform TEXT,
+        os TEXT,
+        arch TEXT,
+        agent_version TEXT,
+        agent_token TEXT NOT NULL UNIQUE,
+        folder TEXT,
+        tags TEXT,
+        enable_terminal INTEGER NOT NULL DEFAULT 1,
+        enable_file_manager INTEGER NOT NULL DEFAULT 1,
+        enable_tunnels INTEGER NOT NULL DEFAULT 1,
+        status TEXT NOT NULL DEFAULT 'offline',
+        last_seen_at TEXT,
+        created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        revoked_at TEXT,
+        FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
+        FOREIGN KEY (install_token_id) REFERENCES install_tokens (id) ON DELETE SET NULL
+    );
+
 `);
 
   try {

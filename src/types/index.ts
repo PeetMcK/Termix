@@ -322,11 +322,32 @@ export interface TabContextTab {
     | "server"
     | "admin"
     | "file_manager"
-    | "user_profile";
+    | "user_profile"
+    | "agent_terminal"
+    | "agent_file_manager";
   title: string;
   hostConfig?: SSHHost;
+  agentConfig?: AgentConfig;
   terminalRef?: any;
   initialTab?: string;
+}
+
+export interface AgentConfig {
+  id: string;
+  deviceId: string;
+  hostname: string | null;
+  platform: string | null;
+  os: string | null;
+  arch: string | null;
+  agentVersion: string | null;
+  folder: string | null;
+  tags: string[];
+  enableTerminal: boolean;
+  enableFileManager: boolean;
+  enableTunnels: boolean;
+  status: "online" | "offline";
+  lastSeenAt: string | null;
+  createdAt: string;
 }
 
 export type SplitLayout = "2h" | "2v" | "3l" | "3r" | "3t" | "4grid";

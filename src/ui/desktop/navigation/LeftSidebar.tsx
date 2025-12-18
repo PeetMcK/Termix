@@ -8,7 +8,7 @@ import {
   RotateCcw,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { isElectron, logoutUser } from "@/ui/main-axios.ts";
+import { isElectron, logoutUser, getAgents, type Agent } from "@/ui/main-axios.ts";
 
 import {
   Sidebar,
@@ -145,9 +145,11 @@ export function LeftSidebar({
   };
 
   const [hosts, setHosts] = useState<SSHHost[]>([]);
+  const [agents, setAgents] = useState<Agent[]>([]);
   const [hostsLoading] = useState(false);
   const [hostsError, setHostsError] = useState<string | null>(null);
   const prevHostsRef = React.useRef<SSHHost[]>([]);
+  const prevAgentsRef = React.useRef<Agent[]>([]);
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [folderMetadata, setFolderMetadata] = useState<Map<string, SSHFolder>>(
@@ -229,15 +231,52 @@ export function LeftSidebar({
     }
   }, [updateHostConfig]);
 
+  const fetchAgents = React.useCallback(async () => {
+    try {
+      const newAgents = await getAgents();
+      const prevAgents = prevAgentsRef.current;
+
+      // Check if agents changed
+      let hasChanges = false;
+      if (newAgents.length !== prevAgents.length) {
+        hasChanges = true;
+      } else {
+        for (let i = 0; i < newAgents.length; i++) {
+          const newAgent = newAgents[i];
+          const prevAgent = prevAgents.find((a) => a.id === newAgent.id);
+          if (
+            !prevAgent ||
+            newAgent.status !== prevAgent.status ||
+            newAgent.hostname !== prevAgent.hostname ||
+            newAgent.folder !== prevAgent.folder ||
+            JSON.stringify(newAgent.tags) !== JSON.stringify(prevAgent.tags)
+          ) {
+            hasChanges = true;
+            break;
+          }
+        }
+      }
+
+      if (hasChanges) {
+        setAgents(newAgents);
+        prevAgentsRef.current = newAgents;
+      }
+    } catch (error) {
+      console.error("Failed to fetch agents:", error);
+    }
+  }, []);
+
   React.useEffect(() => {
     fetchHosts();
+    fetchAgents();
     fetchFolderMetadata();
     const interval = setInterval(() => {
       fetchHosts();
+      fetchAgents();
       fetchFolderMetadata();
-    }, 300000);
+    }, 30000); // Poll every 30s for agent status updates
     return () => clearInterval(interval);
-  }, [fetchHosts, fetchFolderMetadata]);
+  }, [fetchHosts, fetchAgents, fetchFolderMetadata]);
 
   React.useEffect(() => {
     const handleHostsChanged = () => {
@@ -250,6 +289,9 @@ export function LeftSidebar({
     const handleFoldersChanged = () => {
       fetchFolderMetadata();
     };
+    const handleAgentsChanged = () => {
+      fetchAgents();
+    };
     window.addEventListener(
       "ssh-hosts:changed",
       handleHostsChanged as EventListener,
@@ -261,6 +303,10 @@ export function LeftSidebar({
     window.addEventListener(
       "folders:changed",
       handleFoldersChanged as EventListener,
+    );
+    window.addEventListener(
+      "agents:changed",
+      handleAgentsChanged as EventListener,
     );
     return () => {
       window.removeEventListener(
@@ -275,8 +321,12 @@ export function LeftSidebar({
         "folders:changed",
         handleFoldersChanged as EventListener,
       );
+      window.removeEventListener(
+        "agents:changed",
+        handleAgentsChanged as EventListener,
+      );
     };
-  }, [fetchHosts, fetchFolderMetadata]);
+  }, [fetchHosts, fetchAgents, fetchFolderMetadata]);
 
   React.useEffect(() => {
     const handler = setTimeout(() => setDebouncedSearch(search), 200);
@@ -380,6 +430,25 @@ export function LeftSidebar({
     });
   }, [hosts, debouncedSearch]);
 
+  const filteredAgents = React.useMemo(() => {
+    if (!debouncedSearch.trim()) return agents;
+    const q = debouncedSearch.trim().toLowerCase();
+    return agents.filter((a) => {
+      const searchableText = [
+        a.hostname || "",
+        a.deviceId,
+        a.folder || "",
+        ...(a.tags || []),
+        a.platform || "",
+        a.os || "",
+        a.arch || "",
+      ]
+        .join(" ")
+        .toLowerCase();
+      return searchableText.includes(q);
+    });
+  }, [agents, debouncedSearch]);
+
   const hostsByFolder = React.useMemo(() => {
     const map: Record<string, SSHHost[]> = {};
     filteredHosts.forEach((h) => {
@@ -391,15 +460,31 @@ export function LeftSidebar({
     return map;
   }, [filteredHosts]);
 
+  const agentsByFolder = React.useMemo(() => {
+    const map: Record<string, Agent[]> = {};
+    filteredAgents.forEach((a) => {
+      const folder =
+        a.folder && a.folder.trim() ? a.folder : t("leftSidebar.noFolder");
+      if (!map[folder]) map[folder] = [];
+      map[folder].push(a);
+    });
+    return map;
+  }, [filteredAgents]);
+
   const sortedFolders = React.useMemo(() => {
-    const folders = Object.keys(hostsByFolder);
+    // Combine folder names from both hosts and agents
+    const allFolders = new Set([
+      ...Object.keys(hostsByFolder),
+      ...Object.keys(agentsByFolder),
+    ]);
+    const folders = Array.from(allFolders);
     folders.sort((a, b) => {
       if (a === t("leftSidebar.noFolder")) return -1;
       if (b === t("leftSidebar.noFolder")) return 1;
       return a.localeCompare(b);
     });
     return folders;
-  }, [hostsByFolder]);
+  }, [hostsByFolder, agentsByFolder]);
 
   const getSortedHosts = React.useCallback((arr: SSHHost[]) => {
     const pinned = arr
@@ -492,11 +577,14 @@ export function LeftSidebar({
 
                 {sortedFolders.map((folder, idx) => {
                   const metadata = folderMetadata.get(folder);
+                  const folderHosts = hostsByFolder[folder] || [];
+                  const folderAgents = agentsByFolder[folder] || [];
                   return (
                     <FolderCard
-                      key={`folder-${folder}-${hostsByFolder[folder]?.length || 0}`}
+                      key={`folder-${folder}-${folderHosts.length}-${folderAgents.length}`}
                       folderName={folder}
-                      hosts={getSortedHosts(hostsByFolder[folder])}
+                      hosts={getSortedHosts(folderHosts)}
+                      agents={folderAgents}
                       isFirst={idx === 0}
                       isLast={idx === sortedFolders.length - 1}
                       folderColor={metadata?.color}

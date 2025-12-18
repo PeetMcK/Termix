@@ -103,6 +103,7 @@ import { systemLogger, versionLogger } from "./utils/logger.js";
     await import("./ssh/file-manager.js");
     await import("./ssh/server-stats.js");
     await import("./dashboard.js");
+    await import("./agent/agent-ws.js");
 
     process.on("SIGINT", () => {
       systemLogger.info(

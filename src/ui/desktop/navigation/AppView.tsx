@@ -1,7 +1,9 @@
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { Terminal } from "@/ui/desktop/apps/terminal/Terminal.tsx";
+import { AgentTerminal } from "@/ui/desktop/apps/terminal/AgentTerminal.tsx";
 import { Server as ServerView } from "@/ui/desktop/apps/server/Server.tsx";
 import { FileManager } from "@/ui/desktop/apps/file-manager/FileManager.tsx";
+import { AgentFileManager } from "@/ui/desktop/apps/file-manager/AgentFileManager.tsx";
 import { useTabs } from "@/ui/desktop/navigation/tabs/TabContext.tsx";
 import {
   ResizablePanelGroup,
@@ -57,8 +59,10 @@ export function AppView({
       tabs.filter(
         (tab: TabData) =>
           tab.type === "terminal" ||
+          tab.type === "agent_terminal" ||
           tab.type === "server" ||
-          tab.type === "file_manager",
+          tab.type === "file_manager" ||
+          tab.type === "agent_file_manager",
       ),
     [tabs],
   );
@@ -210,7 +214,7 @@ export function AppView({
     const mainTab = terminalTabs.find((tab: TabData) => tab.id === currentTab);
 
     if (allSplitScreenTab.length === 0 && mainTab) {
-      const isFileManagerTab = mainTab.type === "file_manager";
+      const isFileManagerTab = mainTab.type === "file_manager" || mainTab.type === "agent_file_manager";
       const newStyle = {
         position: "absolute" as const,
         top: isFileManagerTab ? 0 : 4,
@@ -259,7 +263,7 @@ export function AppView({
 
           const previousStyle = previousStylesRef.current[t.id];
 
-          const isFileManagerTab = t.type === "file_manager";
+          const isFileManagerTab = t.type === "file_manager" || t.type === "agent_file_manager";
           const standardStyle = {
             position: "absolute" as const,
             top: isFileManagerTab ? 0 : 4,
@@ -281,7 +285,7 @@ export function AppView({
 
           const effectiveVisible = isVisible;
 
-          const isTerminal = t.type === "terminal";
+          const isTerminal = t.type === "terminal" || t.type === "agent_terminal";
           const terminalConfig = {
             ...DEFAULT_TERMINAL_CONFIG,
             ...(t.hostConfig as any)?.terminalConfig,
@@ -309,6 +313,16 @@ export function AppView({
                     splitScreen={allSplitScreenTab.length > 0}
                     onClose={() => removeTab(t.id)}
                   />
+                ) : t.type === "agent_terminal" ? (
+                  <AgentTerminal
+                    ref={t.terminalRef}
+                    agentConfig={(t as any).agentConfig}
+                    isVisible={effectiveVisible}
+                    title={t.title}
+                    showTitle={false}
+                    splitScreen={allSplitScreenTab.length > 0}
+                    onClose={() => removeTab(t.id)}
+                  />
                 ) : t.type === "server" ? (
                   <ServerView
                     hostConfig={t.hostConfig}
@@ -316,6 +330,11 @@ export function AppView({
                     isVisible={effectiveVisible}
                     isTopbarOpen={isTopbarOpen}
                     embedded
+                  />
+                ) : t.type === "agent_file_manager" ? (
+                  <AgentFileManager
+                    agentConfig={(t as any).agentConfig}
+                    onClose={() => removeTab(t.id)}
                   />
                 ) : (
                   <FileManager
@@ -635,8 +654,8 @@ export function AppView({
   };
 
   const currentTabData = tabs.find((tab: TabData) => tab.id === currentTab);
-  const isFileManager = currentTabData?.type === "file_manager";
-  const isTerminal = currentTabData?.type === "terminal";
+  const isFileManager = currentTabData?.type === "file_manager" || currentTabData?.type === "agent_file_manager";
+  const isTerminal = currentTabData?.type === "terminal" || currentTabData?.type === "agent_terminal";
   const isSplitScreen = allSplitScreenTab.length > 0;
 
   const terminalConfig = {

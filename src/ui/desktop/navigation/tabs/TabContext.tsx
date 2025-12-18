@@ -136,8 +136,10 @@ export function TabProvider({ children }: TabProviderProps) {
     const id = nextTabId.current++;
     const needsUniqueTitle =
       tabData.type === "terminal" ||
+      tabData.type === "agent_terminal" ||
       tabData.type === "server" ||
-      tabData.type === "file_manager";
+      tabData.type === "file_manager" ||
+      tabData.type === "agent_file_manager";
     const effectiveTitle = needsUniqueTitle
       ? computeUniqueTitle(tabData.type, tabData.title)
       : tabData.title || "";
@@ -146,7 +148,7 @@ export function TabProvider({ children }: TabProviderProps) {
       id,
       title: effectiveTitle,
       terminalRef:
-        tabData.type === "terminal"
+        tabData.type === "terminal" || tabData.type === "agent_terminal"
           ? React.createRef<{ disconnect?: () => void }>()
           : undefined,
     };

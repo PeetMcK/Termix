@@ -117,12 +117,15 @@ export function Tab({
 
   if (
     tabType === "terminal" ||
+    tabType === "agent_terminal" ||
     tabType === "server" ||
     tabType === "file_manager" ||
+    tabType === "agent_file_manager" ||
     tabType === "user_profile"
   ) {
+    const isTerminal = tabType === "terminal" || tabType === "agent_terminal";
     const isServer = tabType === "server";
-    const isFileManager = tabType === "file_manager";
+    const isFileManager = tabType === "file_manager" || tabType === "agent_file_manager";
     const isUserProfile = tabType === "user_profile";
 
     const displayTitle =
@@ -133,7 +136,9 @@ export function Tab({
           ? t("nav.fileManager")
           : isUserProfile
             ? t("nav.userProfile")
-            : t("nav.terminal"));
+            : isTerminal
+              ? t("nav.terminal")
+              : t("nav.terminal"));
 
     const { base, suffix } = splitTitle(displayTitle);
 
@@ -153,6 +158,8 @@ export function Tab({
             <FolderIcon className="h-4 w-4 flex-shrink-0" />
           ) : isUserProfile ? (
             <UserIcon className="h-4 w-4 flex-shrink-0" />
+          ) : isTerminal ? (
+            <TerminalIcon className="h-4 w-4 flex-shrink-0" />
           ) : (
             <TerminalIcon className="h-4 w-4 flex-shrink-0" />
           )}

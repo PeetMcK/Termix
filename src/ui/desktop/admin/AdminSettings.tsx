@@ -42,6 +42,7 @@ import {
   Smartphone,
   Globe,
   Clock,
+  Server,
 } from "lucide-react";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -67,6 +68,10 @@ import {
   linkOIDCToPasswordAccount,
   unlinkOIDCFromPasswordAccount,
 } from "@/ui/main-axios.ts";
+import {
+  InstallTokensManager,
+  AgentsManager,
+} from "./AgentManagement.tsx";
 
 interface AdminSettingsProps {
   isTopbarOpen?: boolean;
@@ -774,6 +779,10 @@ export function AdminSettings({
               <TabsTrigger value="security" className="flex items-center gap-2">
                 <Database className="h-4 w-4" />
                 {t("admin.databaseSecurity")}
+              </TabsTrigger>
+              <TabsTrigger value="agents" className="flex items-center gap-2">
+                <Server className="h-4 w-4" />
+                Agents
               </TabsTrigger>
             </TabsList>
 
@@ -1528,6 +1537,12 @@ export function AdminSettings({
                   </div>
                 </div>
               </div>
+            </TabsContent>
+
+            <TabsContent value="agents" className="space-y-6">
+              <InstallTokensManager />
+              <Separator />
+              <AgentsManager />
             </TabsContent>
           </Tabs>
         </div>

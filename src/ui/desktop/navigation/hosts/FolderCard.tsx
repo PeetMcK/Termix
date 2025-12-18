@@ -15,7 +15,9 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button.tsx";
 import { Host } from "@/ui/desktop/navigation/hosts/Host.tsx";
+import { AgentHost } from "@/ui/desktop/navigation/hosts/AgentHost.tsx";
 import { Separator } from "@/components/ui/separator.tsx";
+import type { Agent } from "@/ui/main-axios";
 
 interface SSHHost {
   id: number;
@@ -47,9 +49,14 @@ interface SSHHost {
   updatedAt: string;
 }
 
+export type FolderItem =
+  | { type: "ssh"; data: SSHHost }
+  | { type: "agent"; data: Agent };
+
 interface FolderCardProps {
   folderName: string;
   hosts: SSHHost[];
+  agents?: Agent[];
   isFirst: boolean;
   isLast: boolean;
   folderColor?: string;
@@ -59,6 +66,7 @@ interface FolderCardProps {
 export function FolderCard({
   folderName,
   hosts,
+  agents = [],
   folderColor,
   folderIcon,
 }: FolderCardProps): React.ReactElement {
@@ -92,6 +100,31 @@ export function FolderCard({
   const FolderIcon =
     folderIcon && iconMap[folderIcon] ? iconMap[folderIcon] : Folder;
 
+  // Combine hosts and agents into a unified list
+  const items: FolderItem[] = [
+    ...hosts.map((h) => ({ type: "ssh" as const, data: h })),
+    ...agents.map((a) => ({ type: "agent" as const, data: a })),
+  ];
+
+  // Sort: pinned SSH hosts first, then by name
+  items.sort((a, b) => {
+    // SSH hosts with pin come first
+    const aPin = a.type === "ssh" && a.data.pin ? 1 : 0;
+    const bPin = b.type === "ssh" && b.data.pin ? 1 : 0;
+    if (aPin !== bPin) return bPin - aPin;
+
+    // Then sort by name
+    const aName =
+      a.type === "ssh"
+        ? a.data.name || a.data.ip
+        : a.data.hostname || a.data.deviceId;
+    const bName =
+      b.type === "ssh"
+        ? b.data.name || b.data.ip
+        : b.data.hostname || b.data.deviceId;
+    return aName.localeCompare(bName);
+  });
+
   return (
     <div className="bg-dark-bg-darker border-2 border-dark-border rounded-lg overflow-hidden p-0 m-0">
       <div
@@ -123,12 +156,20 @@ export function FolderCard({
       </div>
       {isExpanded && (
         <div className="flex flex-col p-2 gap-y-3">
-          {hosts.map((host, index) => (
+          {items.map((item, index) => (
             <React.Fragment
-              key={`${folderName}-host-${host.id}-${host.name || host.ip}`}
+              key={
+                item.type === "ssh"
+                  ? `${folderName}-host-${item.data.id}-${item.data.name || item.data.ip}`
+                  : `${folderName}-agent-${item.data.id}-${item.data.hostname || item.data.deviceId}`
+              }
             >
-              <Host host={host} />
-              {index < hosts.length - 1 && (
+              {item.type === "ssh" ? (
+                <Host host={item.data} />
+              ) : (
+                <AgentHost agent={item.data} />
+              )}
+              {index < items.length - 1 && (
                 <div className="relative -mx-2">
                   <Separator className="p-0.25 absolute inset-x-0" />
                 </div>

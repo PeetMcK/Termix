@@ -3109,3 +3109,369 @@ export async function unlinkOIDCFromPasswordAccount(
     throw handleApiError(error, "unlink OIDC from password account");
   }
 }
+
+// ============================================================================
+// AGENT TOKEN MANAGEMENT
+// ============================================================================
+
+export interface InstallToken {
+  id: string;
+  name: string;
+  token?: string;
+  maxUses: number | null;
+  currentUses: number;
+  expiresAt: string | null;
+  configTemplate: {
+    folder: string | null;
+    tags: string[];
+    enableTerminal: boolean;
+    enableFileManager: boolean;
+    enableTunnels: boolean;
+  };
+  createdAt: string;
+  isExpired: boolean;
+  isExhausted: boolean;
+}
+
+export interface Agent {
+  id: string;
+  deviceId: string;
+  hostname: string | null;
+  platform: string | null;
+  os: string | null;
+  arch: string | null;
+  agentVersion: string | null;
+  folder: string | null;
+  tags: string[];
+  enableTerminal: boolean;
+  enableFileManager: boolean;
+  enableTunnels: boolean;
+  status: "online" | "offline";
+  lastSeenAt: string | null;
+  createdAt: string;
+}
+
+export async function getInstallTokens(): Promise<InstallToken[]> {
+  try {
+    const response = await authApi.get("/agents/install-tokens");
+    return response.data;
+  } catch (error) {
+    throw handleApiError(error, "fetch install tokens");
+  }
+}
+
+export async function createInstallToken(data: {
+  name: string;
+  maxUses?: number | null;
+  expiresInMinutes?: number | null;
+  configTemplate?: {
+    folder?: string | null;
+    tags?: string[];
+    enableTerminal?: boolean;
+    enableFileManager?: boolean;
+    enableTunnels?: boolean;
+  };
+}): Promise<InstallToken> {
+  try {
+    const response = await authApi.post("/agents/install-tokens", data);
+    return response.data;
+  } catch (error) {
+    throw handleApiError(error, "create install token");
+  }
+}
+
+export async function revokeInstallToken(id: string): Promise<void> {
+  try {
+    await authApi.delete(`/agents/install-tokens/${id}`);
+  } catch (error) {
+    throw handleApiError(error, "revoke install token");
+  }
+}
+
+export async function getAgents(): Promise<Agent[]> {
+  try {
+    const response = await authApi.get("/agents");
+    return response.data;
+  } catch (error) {
+    throw handleApiError(error, "fetch agents");
+  }
+}
+
+export async function getAgent(id: string): Promise<Agent> {
+  try {
+    const response = await authApi.get(`/agents/${id}`);
+    return response.data;
+  } catch (error) {
+    throw handleApiError(error, "fetch agent");
+  }
+}
+
+export async function updateAgent(
+  id: string,
+  data: {
+    folder?: string | null;
+    tags?: string[];
+    enableTerminal?: boolean;
+    enableFileManager?: boolean;
+    enableTunnels?: boolean;
+  },
+): Promise<void> {
+  try {
+    await authApi.put(`/agents/${id}`, data);
+  } catch (error) {
+    throw handleApiError(error, "update agent");
+  }
+}
+
+export async function revokeAgent(id: string): Promise<void> {
+  try {
+    await authApi.delete(`/agents/${id}`);
+  } catch (error) {
+    throw handleApiError(error, "revoke agent");
+  }
+}
+
+// ============================================================================
+// AGENT FILE OPERATIONS (via WebSocket)
+// ============================================================================
+
+interface AgentFileItem {
+  name: string;
+  path: string;
+  type: "file" | "directory" | "link";
+  size: number;
+  modTime: string;
+  permissions: string;
+  owner?: string;
+  group?: string;
+  executable?: boolean;
+  linkTarget?: string;
+}
+
+interface AgentFileListResponse {
+  requestId: string;
+  path: string;
+  files: AgentFileItem[];
+}
+
+interface AgentFileContentResponse {
+  requestId: string;
+  path: string;
+  fileName: string;
+  content: string;
+  mimeType: string;
+  size: number;
+}
+
+interface AgentFileOpResult {
+  requestId: string;
+  success: boolean;
+  message?: string;
+  uniqueName?: string;
+}
+
+interface AgentFileError {
+  requestId: string;
+  code: number;
+  message: string;
+}
+
+type AgentFileResponse = AgentFileListResponse | AgentFileContentResponse | AgentFileOpResult | AgentFileError;
+
+// WebSocket connection for agent file operations
+let agentFileWs: WebSocket | null = null;
+const agentFilePendingRequests = new Map<string, {
+  resolve: (value: AgentFileResponse) => void;
+  reject: (error: Error) => void;
+}>();
+
+function getAgentFileWsUrl(): string {
+  const isDev =
+    !isElectron() &&
+    (window.location.port === "3000" ||
+      window.location.port === "5173" ||
+      window.location.hostname === "localhost");
+
+  if (isElectron()) {
+    const configuredUrl = (window as unknown as { configuredServerUrl?: string }).configuredServerUrl;
+    if (configuredUrl) {
+      const url = new URL(configuredUrl);
+      return `${url.protocol === "https:" ? "wss" : "ws"}://${url.host}/ws/agent-terminal`;
+    }
+    return "ws://localhost:30008";
+  }
+
+  if (isDev) {
+    const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+    return `${protocol}://localhost:30008`;
+  }
+
+  const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+  return `${protocol}://${window.location.host}/ws/agent-terminal`;
+}
+
+function ensureAgentFileWs(): Promise<WebSocket> {
+  return new Promise((resolve, reject) => {
+    if (agentFileWs && agentFileWs.readyState === WebSocket.OPEN) {
+      resolve(agentFileWs);
+      return;
+    }
+
+    const jwt = getCookie("jwt");
+    const wsUrl = getAgentFileWsUrl();
+    const wsUrlWithToken = jwt ? `${wsUrl}?token=${encodeURIComponent(jwt)}` : wsUrl;
+
+    const ws = new WebSocket(wsUrlWithToken);
+
+    ws.onopen = () => {
+      agentFileWs = ws;
+      resolve(ws);
+    };
+
+    ws.onerror = (err) => {
+      reject(new Error("WebSocket connection failed"));
+    };
+
+    ws.onclose = () => {
+      agentFileWs = null;
+    };
+
+    ws.onmessage = (event) => {
+      try {
+        const msg = JSON.parse(event.data);
+        console.log("[AgentFileWs] Received message:", msg);
+        const requestId = msg.data?.requestId;
+
+        if (requestId && agentFilePendingRequests.has(requestId)) {
+          const pending = agentFilePendingRequests.get(requestId)!;
+          agentFilePendingRequests.delete(requestId);
+
+          if (msg.type === "file_error") {
+            pending.reject(new Error(msg.data.message || "File operation failed"));
+          } else {
+            pending.resolve(msg.data);
+          }
+        }
+      } catch (err) {
+        console.error("Failed to parse agent file message:", err);
+      }
+    };
+  });
+}
+
+function generateRequestId(): string {
+  return `req-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+}
+
+async function sendAgentFileOp<T extends AgentFileResponse>(
+  agentId: string,
+  msgType: string,
+  data: Record<string, unknown>
+): Promise<T> {
+  const ws = await ensureAgentFileWs();
+  const requestId = generateRequestId();
+
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      agentFilePendingRequests.delete(requestId);
+      reject(new Error("Request timeout"));
+    }, 60000);
+
+    agentFilePendingRequests.set(requestId, {
+      resolve: (value) => {
+        clearTimeout(timeout);
+        resolve(value as T);
+      },
+      reject: (err) => {
+        clearTimeout(timeout);
+        reject(err);
+      },
+    });
+
+    const msgPayload = {
+      type: msgType,
+      data: { agentId, requestId, ...data },
+    };
+    console.log("[AgentFileWs] Sending message:", msgPayload);
+    ws.send(JSON.stringify(msgPayload));
+  });
+}
+
+export async function listAgentFiles(agentId: string, path: string): Promise<{ files: AgentFileItem[]; path: string }> {
+  const result = await sendAgentFileOp<AgentFileListResponse>(agentId, "list_files", { path });
+  return { files: result.files, path: result.path };
+}
+
+export async function downloadAgentFile(agentId: string, filePath: string): Promise<{
+  content: string;
+  fileName: string;
+  mimeType: string;
+  size: number;
+}> {
+  const result = await sendAgentFileOp<AgentFileContentResponse>(agentId, "download_file", { path: filePath });
+  return {
+    content: result.content,
+    fileName: result.fileName,
+    mimeType: result.mimeType,
+    size: result.size,
+  };
+}
+
+export async function uploadAgentFile(
+  agentId: string,
+  path: string,
+  fileName: string,
+  content: string
+): Promise<void> {
+  await sendAgentFileOp<AgentFileOpResult>(agentId, "upload_file", { path, fileName, content });
+}
+
+export async function createAgentFile(
+  agentId: string,
+  path: string,
+  fileName: string,
+  content: string = ""
+): Promise<void> {
+  await sendAgentFileOp<AgentFileOpResult>(agentId, "create_file", { path, fileName, content });
+}
+
+export async function createAgentFolder(
+  agentId: string,
+  path: string,
+  folderName: string
+): Promise<void> {
+  await sendAgentFileOp<AgentFileOpResult>(agentId, "create_folder", { path, folderName });
+}
+
+export async function deleteAgentItem(
+  agentId: string,
+  path: string,
+  isDirectory: boolean
+): Promise<void> {
+  await sendAgentFileOp<AgentFileOpResult>(agentId, "delete_item", { path, isDirectory });
+}
+
+export async function copyAgentItem(
+  agentId: string,
+  sourcePath: string,
+  targetDir: string
+): Promise<{ uniqueName?: string }> {
+  const result = await sendAgentFileOp<AgentFileOpResult>(agentId, "copy_item", { sourcePath, targetDir });
+  return { uniqueName: result.uniqueName };
+}
+
+export async function moveAgentItem(
+  agentId: string,
+  sourcePath: string,
+  targetPath: string
+): Promise<void> {
+  await sendAgentFileOp<AgentFileOpResult>(agentId, "move_item", { sourcePath, targetPath });
+}
+
+export async function renameAgentItem(
+  agentId: string,
+  path: string,
+  newName: string
+): Promise<void> {
+  await sendAgentFileOp<AgentFileOpResult>(agentId, "rename_item", { path, newName });
+}

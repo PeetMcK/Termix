@@ -276,3 +276,56 @@ export const commandHistory = sqliteTable("command_history", {
     .notNull()
     .default(sql`CURRENT_TIMESTAMP`),
 });
+
+// Agent install tokens - short-lived enrollment tokens
+export const installTokens = sqliteTable("install_tokens", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  token: text("token").notNull().unique(),
+  maxUses: integer("max_uses"),
+  currentUses: integer("current_uses").notNull().default(0),
+  expiresAt: text("expires_at"),
+  configTemplate: text("config_template").notNull(),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  revokedAt: text("revoked_at"),
+});
+
+// Registered agents with long-lived tokens
+export const agents = sqliteTable("agents", {
+  id: text("id").primaryKey(),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  installTokenId: text("install_token_id").references(() => installTokens.id, {
+    onDelete: "set null",
+  }),
+  deviceId: text("device_id").notNull(),
+  hostname: text("hostname"),
+  platform: text("platform"),
+  os: text("os"),
+  arch: text("arch"),
+  agentVersion: text("agent_version"),
+  agentToken: text("agent_token").notNull().unique(),
+  folder: text("folder"),
+  tags: text("tags"),
+  enableTerminal: integer("enable_terminal", { mode: "boolean" })
+    .notNull()
+    .default(true),
+  enableFileManager: integer("enable_file_manager", { mode: "boolean" })
+    .notNull()
+    .default(true),
+  enableTunnels: integer("enable_tunnels", { mode: "boolean" })
+    .notNull()
+    .default(true),
+  status: text("status").notNull().default("offline"),
+  lastSeenAt: text("last_seen_at"),
+  createdAt: text("created_at")
+    .notNull()
+    .default(sql`CURRENT_TIMESTAMP`),
+  revokedAt: text("revoked_at"),
+});

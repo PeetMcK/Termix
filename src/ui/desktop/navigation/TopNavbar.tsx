@@ -366,9 +366,9 @@ export function TopNavbar({
             const isSplit =
               Array.isArray(allSplitScreenTab) &&
               allSplitScreenTab.includes(tab.id);
-            const isTerminal = tab.type === "terminal";
+            const isTerminal = tab.type === "terminal" || tab.type === "agent_terminal";
             const isServer = tab.type === "server";
-            const isFileManager = tab.type === "file_manager";
+            const isFileManager = tab.type === "file_manager" || tab.type === "agent_file_manager";
             const isSshManager = tab.type === "ssh_manager";
             const isAdmin = tab.type === "admin";
             const isUserProfile = tab.type === "user_profile";
@@ -448,7 +448,6 @@ export function TopNavbar({
                 onDragOver={handleDragOver}
                 onDrop={handleDrop}
                 onDragEnd={handleDragEnd}
-                e
                 onMouseDown={(e) => {
                   if (e.button === 1 && !disableClose) {
                     e.preventDefault();
