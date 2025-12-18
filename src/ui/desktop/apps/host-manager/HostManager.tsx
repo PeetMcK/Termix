@@ -87,7 +87,7 @@ export function HostManager({
 
   return (
     <div
-      className="bg-muted text-foreground rounded-lg border-2 border-border overflow-hidden"
+      className="bg-primary-element text-foreground rounded-lg border-2 border-border overflow-hidden"
       style={{
         marginLeft: leftMarginPx,
         marginRight: rightSidebarOpen
@@ -111,7 +111,7 @@ export function HostManager({
             onValueChange={handleTabChange}
             className="flex-1 flex flex-col h-full min-h-0"
           >
-            <TabsList className="bg-muted border-2 border-border mb-4">
+            <TabsList className="bg-primary-element border-2 border-border mb-4">
               <TabsTrigger value="host_viewer">
                 {t("hosts.hostViewer")}
               </TabsTrigger>

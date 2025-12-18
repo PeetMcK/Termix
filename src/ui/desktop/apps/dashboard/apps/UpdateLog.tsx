@@ -106,7 +106,7 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
       <Sheet open={isOpen} onOpenChange={setIsOpen}>
         <SheetContent
           side="right"
-          className="w-[500px] bg-muted border-l-2 border-border text-foreground sm:max-w-[500px] p-0 flex flex-col [&>button]:hidden"
+          className="w-[500px] bg-primary-element border-l-2 border-border text-foreground sm:max-w-[500px] p-0 flex flex-col [&>button]:hidden"
         >
           <div className="flex items-center justify-between p-4 border-b border-border">
             <h2 className="text-lg font-semibold text-foreground">
@@ -125,7 +125,7 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
 
           <div className="flex-1 overflow-y-auto p-4">
             {versionInfo && versionInfo.status === "requires_update" && (
-              <Alert className="bg-card border-border text-foreground mb-3">
+              <Alert className="bg-section border-border text-foreground mb-3">
                 <AlertTitle className="text-foreground">
                   {t("common.updateAvailable")}
                 </AlertTitle>
@@ -161,7 +161,7 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
               {releases?.items.map((release) => (
                 <div
                   key={release.id}
-                  className="border border-border rounded-lg p-3 hover:bg-card transition-colors cursor-pointer bg-card/50"
+                  className="border border-border rounded-lg p-3 hover:bg-section transition-colors cursor-pointer bg-section/50"
                   onClick={() => window.open(release.link, "_blank")}
                 >
                   <div className="flex items-start justify-between mb-2">
@@ -198,7 +198,7 @@ export function UpdateLog({ loggedIn }: UpdateLogProps) {
             </div>
 
             {releases && releases.items.length === 0 && !loading && (
-              <Alert className="bg-card border-border text-foreground">
+              <Alert className="bg-section border-border text-foreground">
                 <AlertTitle className="text-foreground">
                   {t("common.noReleases")}
                 </AlertTitle>

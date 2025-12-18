@@ -563,7 +563,7 @@ export function CredentialEditor({
                         {folderDropdownOpen && filteredFolders.length > 0 && (
                           <div
                             ref={folderDropdownRef}
-                            className="absolute top-full left-0 z-50 mt-1 w-full bg-muted border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
+                            className="absolute top-full left-0 z-50 mt-1 w-full bg-primary-element border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
                           >
                             <div className="grid grid-cols-1 gap-1 p-0">
                               {filteredFolders.map((folder) => (
@@ -592,7 +592,7 @@ export function CredentialEditor({
                       <FormItem className="col-span-10 overflow-visible">
                         <FormLabel>{t("credentials.tags")}</FormLabel>
                         <FormControl>
-                          <div className="flex flex-wrap items-center gap-1 border border-input rounded-md px-3 py-2 bg-input focus-within:ring-2 ring-ring min-h-[40px]">
+                          <div className="flex flex-wrap items-center gap-1 border border-input rounded-md px-3 py-2 bg-input-field dark:bg-input/30 focus-within:ring-2 ring-ring min-h-[40px]">
                             {(field.value || []).map(
                               (tag: string, idx: number) => (
                                 <span

@@ -196,7 +196,7 @@ export function CredentialSelector({
                         variant="ghost"
                         size="sm"
                         className={`w-full justify-start text-left rounded-lg px-3 py-7 hover:bg-muted focus:bg-muted focus:outline-none transition-colors duration-200 ${
-                          credential.id === value ? "bg-muted" : ""
+                          credential.id === value ? "bg-primary-element" : ""
                         }`}
                         onClick={() => handleCredentialSelect(credential)}
                       >

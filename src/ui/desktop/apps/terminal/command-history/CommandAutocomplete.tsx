@@ -38,7 +38,7 @@ export function CommandAutocomplete({
   return (
     <div
       ref={containerRef}
-      className="fixed z-[9999] bg-muted border border-border rounded-md shadow-lg min-w-[200px] max-w-[600px] flex flex-col"
+      className="fixed z-[9999] bg-primary-element border border-border rounded-md shadow-lg min-w-[200px] max-w-[600px] flex flex-col"
       style={{
         top: `${position.top}px`,
         left: `${position.left}px`,

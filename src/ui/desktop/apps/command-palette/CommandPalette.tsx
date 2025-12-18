@@ -333,7 +333,7 @@ export function CommandPalette({
                           <DropdownMenuContent
                             align="end"
                             side="right"
-                            className="w-56 bg-muted border-border text-foreground"
+                            className="w-56 bg-primary-element border-border text-foreground"
                           >
                             <DropdownMenuItem
                               onClick={(e) => {

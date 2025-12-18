@@ -187,7 +187,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
       <SheetContent className="w-[600px] max-w-[50vw] overflow-y-auto">
         <SheetHeader className="space-y-6 pb-8">
           <SheetTitle className="flex items-center space-x-4">
-            <div className="p-2 rounded-lg bg-muted">
+            <div className="p-2 rounded-lg bg-primary-element">
               {getAuthIcon(credentialDetails.authType)}
             </div>
             <div className="flex-1">
@@ -208,7 +208,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
               {credentialDetails.keyType && (
                 <Badge
                   variant="secondary"
-                  className="bg-muted text-foreground"
+                  className="bg-primary-element text-foreground"
                 >
                   {credentialDetails.keyType}
                 </Badge>
@@ -218,7 +218,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
         </SheetHeader>
 
         <div className="space-y-10">
-          <div className="flex space-x-2 p-2 bg-muted border border-border rounded-lg">
+          <div className="flex space-x-2 p-2 bg-primary-element border border-border rounded-lg">
             <Button
               variant={activeTab === "overview" ? "default" : "ghost"}
               size="sm"
@@ -258,7 +258,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
                 </CardHeader>
                 <CardContent className="space-y-8">
                   <div className="flex items-center space-x-5">
-                    <div className="p-2 rounded-lg bg-muted">
+                    <div className="p-2 rounded-lg bg-primary-element">
                       <User className="h-4 w-4 text-muted-foreground" />
                     </div>
                     <div>
@@ -489,7 +489,7 @@ const CredentialViewer: React.FC<CredentialViewerProps> = ({
                           className="flex items-center justify-between p-4 border rounded-lg hover:bg-accent"
                         >
                           <div className="flex items-center space-x-3">
-                            <div className="p-2 bg-muted rounded">
+                            <div className="p-2 bg-primary-element rounded">
                               <Server className="h-4 w-4 text-muted-foreground" />
                             </div>
                             <div>

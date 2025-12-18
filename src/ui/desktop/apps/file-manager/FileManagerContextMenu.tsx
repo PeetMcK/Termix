@@ -513,7 +513,7 @@ export function FileManagerContextMenu({
       <div
         data-context-menu
         className={cn(
-          "fixed bg-muted border border-border rounded-lg shadow-xl min-w-[180px] max-w-[250px] z-[99995] overflow-hidden",
+          "fixed bg-primary-element border border-border rounded-lg shadow-xl min-w-[180px] max-w-[250px] z-[99995] overflow-hidden",
         )}
         style={{
           left: menuPosition.x,

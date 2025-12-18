@@ -71,7 +71,7 @@ export function CompressDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-muted border-2 border-border">
+      <DialogContent className="sm:max-w-[500px] bg-primary-element border-2 border-border">
         <DialogHeader>
           <DialogTitle>{t("fileManager.compressFiles")}</DialogTitle>
           <DialogDescription className="text-muted-foreground">

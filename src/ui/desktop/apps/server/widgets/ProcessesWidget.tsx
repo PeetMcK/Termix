@@ -28,7 +28,7 @@ export function ProcessesWidget({ metrics }: ProcessesWidgetProps) {
   const topProcesses = processes?.top || [];
 
   return (
-    <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
+    <div className="h-full w-full p-4 rounded-lg bg-primary-element/50 border border-border/50 hover:bg-primary-element/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
         <List className="h-5 w-5 text-yellow-500 dark:text-yellow-400" />
         <h3 className="font-semibold text-lg text-foreground">
@@ -62,7 +62,7 @@ export function ProcessesWidget({ metrics }: ProcessesWidgetProps) {
             {topProcesses.map((proc, index: number) => (
               <div
                 key={index}
-                className="p-2.5 rounded-lg bg-muted/30 hover:bg-muted/50 transition-colors border border-border/20"
+                className="p-2.5 rounded-lg bg-primary-element/30 hover:bg-primary-element/50 transition-colors border border-border/20"
               >
                 <div className="flex items-center justify-between mb-1.5">
                   <span className="text-xs font-mono text-muted-foreground font-medium">

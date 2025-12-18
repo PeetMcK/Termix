@@ -43,7 +43,7 @@ export function CpuWidget({ metrics, metricsHistory }: CpuWidgetProps) {
   }, [metricsHistory]);
 
   return (
-    <div className="h-full w-full p-4 rounded-lg bg-muted/50 border border-border/50 hover:bg-muted/70 transition-colors duration-200 flex flex-col overflow-hidden">
+    <div className="h-full w-full p-4 rounded-lg bg-primary-element/50 border border-border/50 hover:bg-primary-element/70 transition-colors duration-200 flex flex-col overflow-hidden">
       <div className="flex items-center gap-2 flex-shrink-0 mb-3">
         <Cpu className="h-5 w-5 text-blue-500 dark:text-blue-400" />
         <h3 className="font-semibold text-lg text-foreground">

@@ -699,7 +699,7 @@ export function Auth({
   if (showServerConfig === null && !isInElectronWebView()) {
     return (
       <div
-        className={`w-[420px] max-w-full p-6 flex flex-col bg-muted border-2 border-border rounded-md overflow-y-auto my-2 animate-in fade-in zoom-in-95 duration-300 ${className || ""}`}
+        className={`w-[420px] max-w-full p-6 flex flex-col bg-primary-element border-2 border-border rounded-md overflow-y-auto my-2 animate-in fade-in zoom-in-95 duration-300 ${className || ""}`}
         style={{ maxHeight: "calc(100vh - 1rem)" }}
         {...props}
       >
@@ -713,7 +713,7 @@ export function Auth({
   if (showServerConfig && !isInElectronWebView()) {
     return (
       <div
-        className={`w-[420px] max-w-full p-6 flex flex-col bg-muted border-2 border-border rounded-md overflow-y-auto my-2 animate-in fade-in zoom-in-95 duration-300 ${className || ""}`}
+        className={`w-[420px] max-w-full p-6 flex flex-col bg-primary-element border-2 border-border rounded-md overflow-y-auto my-2 animate-in fade-in zoom-in-95 duration-300 ${className || ""}`}
         style={{ maxHeight: "calc(100vh - 1rem)" }}
         {...props}
       >
@@ -738,7 +738,7 @@ export function Auth({
   ) {
     return (
       <div
-        className={`w-[420px] max-w-full p-6 flex flex-col bg-muted border-2 border-border rounded-md overflow-y-auto my-2 animate-in fade-in zoom-in-95 duration-300 ${className || ""}`}
+        className={`w-[420px] max-w-full p-6 flex flex-col bg-primary-element border-2 border-border rounded-md overflow-y-auto my-2 animate-in fade-in zoom-in-95 duration-300 ${className || ""}`}
         style={{ maxHeight: "calc(100vh - 1rem)" }}
         {...props}
       >
@@ -771,7 +771,7 @@ export function Auth({
   if (dbHealthChecking && !dbConnectionFailed) {
     return (
       <div
-        className={`w-[420px] max-w-full p-6 flex flex-col bg-muted border-2 border-border rounded-md overflow-y-auto my-2 animate-in fade-in zoom-in-95 duration-300 ${className || ""}`}
+        className={`w-[420px] max-w-full p-6 flex flex-col bg-primary-element border-2 border-border rounded-md overflow-y-auto my-2 animate-in fade-in zoom-in-95 duration-300 ${className || ""}`}
         style={{ maxHeight: "calc(100vh - 1rem)" }}
         {...props}
       >
@@ -790,7 +790,7 @@ export function Auth({
   if (dbConnectionFailed) {
     return (
       <div
-        className={`w-[420px] max-w-full p-6 flex flex-col bg-muted border-2 border-border rounded-md overflow-y-auto my-2 animate-in fade-in zoom-in-95 duration-300 ${className || ""}`}
+        className={`w-[420px] max-w-full p-6 flex flex-col bg-primary-element border-2 border-border rounded-md overflow-y-auto my-2 animate-in fade-in zoom-in-95 duration-300 ${className || ""}`}
         style={{ maxHeight: "calc(100vh - 1rem)" }}
         {...props}
       >
@@ -866,7 +866,7 @@ export function Auth({
     >
       <div className="w-full h-full flex flex-col md:flex-row">
         <div
-          className="hidden md:flex md:w-2/5 items-center justify-center relative border-r-2 border-border bg-muted"
+          className="hidden md:flex md:w-2/5 items-center justify-center relative border-r-2 border-border bg-primary-element"
           style={{
             backgroundImage: `repeating-linear-gradient(
               45deg,

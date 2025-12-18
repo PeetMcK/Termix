@@ -874,7 +874,7 @@ export function FileManagerGrid({
   ]);
 
   return (
-    <div className="h-full flex flex-col bg-muted overflow-hidden relative">
+    <div className="h-full flex flex-col bg-primary-element overflow-hidden relative">
       <div className="flex-shrink-0 border-b border-border">
         <div className="flex items-center gap-1 p-2 border-b border-border">
           <button
@@ -934,7 +934,7 @@ export function FileManagerGrid({
                     cancelEditingPath();
                   }
                 }}
-                className="flex-1 px-2 py-1 bg-muted border border-border rounded text-sm focus:outline-none focus:ring-1 focus:ring-primary"
+                className="flex-1 px-2 py-1 bg-primary-element border border-border rounded text-sm focus:outline-none focus:ring-1 focus:ring-primary"
                 placeholder={t("fileManager.enterPath")}
                 autoFocus
               />

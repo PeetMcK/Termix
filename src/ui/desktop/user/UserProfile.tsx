@@ -205,7 +205,7 @@ export function UserProfile({
     return (
       <div
         style={wrapperStyle}
-        className="bg-muted text-foreground rounded-lg border-2 border-border overflow-hidden"
+        className="bg-primary-element text-foreground rounded-lg border-2 border-border overflow-hidden"
       >
         <div className="h-full w-full flex flex-col">
           <div className="flex items-center justify-between px-3 pt-2 pb-2">
@@ -226,7 +226,7 @@ export function UserProfile({
     return (
       <div
         style={wrapperStyle}
-        className="bg-muted text-foreground rounded-lg border-2 border-border overflow-hidden"
+        className="bg-primary-element text-foreground rounded-lg border-2 border-border overflow-hidden"
       >
         <div className="h-full w-full flex flex-col">
           <div className="flex items-center justify-between px-3 pt-2 pb-2">
@@ -256,7 +256,7 @@ export function UserProfile({
     <>
       <div
         style={wrapperStyle}
-        className="bg-muted text-foreground rounded-lg border-2 border-border overflow-hidden"
+        className="bg-primary-element text-foreground rounded-lg border-2 border-border overflow-hidden"
       >
         <div className="h-full w-full flex flex-col">
           <div className="flex items-center justify-between px-3 pt-2 pb-2">
@@ -266,7 +266,7 @@ export function UserProfile({
 
           <div className="px-6 py-4 overflow-auto flex-1">
             <Tabs defaultValue="profile" className="w-full">
-              <TabsList className="mb-4 bg-muted border-2 border-border">
+              <TabsList className="mb-4 bg-primary-element border-2 border-border">
                 <TabsTrigger
                   value="profile"
                   className="flex items-center gap-2"
@@ -286,7 +286,7 @@ export function UserProfile({
               </TabsList>
 
               <TabsContent value="profile" className="space-y-4">
-                <div className="rounded-lg border-2 border-border bg-card p-4">
+                <div className="rounded-lg border-2 border-border bg-section p-4">
                   <h3 className="text-lg font-semibold mb-4">
                     {t("profile.accountInfo")}
                   </h3>
@@ -377,7 +377,7 @@ export function UserProfile({
                         </p>
                       </div>
                       <Select value={theme} onValueChange={setTheme}>
-                        <SelectTrigger className="w-[140px]">
+                        <SelectTrigger className="w-[140px] dark:bg-input/30">
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
@@ -485,7 +485,7 @@ export function UserProfile({
           }}
         >
           <div
-            className="w-[400px] h-full bg-muted border-r-2 border-border flex flex-col shadow-2xl relative isolate z-[9999999]"
+            className="w-[400px] h-full bg-primary-element border-r-2 border-border flex flex-col shadow-2xl relative isolate z-[9999999]"
             style={{
               transform: "translateZ(0)",
             }}

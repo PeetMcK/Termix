@@ -94,7 +94,7 @@ export function FolderEditDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] bg-muted border-2 border-border">
+      <DialogContent className="sm:max-w-[500px] bg-primary-element border-2 border-border">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Folder className="w-5 h-5" />
@@ -141,7 +141,7 @@ export function FolderEditDialog({
                   className={`h-14 rounded-md border-2 transition-all hover:scale-105 flex items-center justify-center ${
                     selectedIcon === value
                       ? "border-primary bg-primary/10"
-                      : "border-border bg-card"
+                      : "border-border bg-section"
                   }`}
                   onClick={() => setSelectedIcon(value)}
                   title={label}
@@ -156,7 +156,7 @@ export function FolderEditDialog({
             <Label className="text-base font-semibold text-foreground">
               {t("hosts.preview")}
             </Label>
-            <div className="flex items-center gap-3 p-4 rounded-md bg-card border border-border">
+            <div className="flex items-center gap-3 p-4 rounded-md bg-section border border-border">
               {(() => {
                 const IconComponent =
                   AVAILABLE_ICONS.find((i) => i.value === selectedIcon)?.Icon ||

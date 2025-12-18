@@ -603,7 +603,7 @@ export function CredentialsManager({
                                     handleDragStart(e, credential)
                                   }
                                   onDragEnd={handleDragEnd}
-                                  className={`bg-input border border-input rounded-lg cursor-pointer hover:shadow-lg hover:border-primary/50 hover:bg-accent transition-all duration-200 p-3 group relative ${
+                                  className={`bg-input-field border border-input rounded-lg cursor-pointer hover:shadow-lg hover:border-primary/50 hover:bg-accent transition-all duration-200 p-3 group relative ${
                                     draggedCredential?.id === credential.id
                                       ? "opacity-50 scale-95"
                                       : ""
@@ -808,7 +808,7 @@ export function CredentialsManager({
       )}
 
       <Sheet open={showDeployDialog} onOpenChange={setShowDeployDialog}>
-        <SheetContent className="w-[500px] max-w-[50vw] overflow-y-auto bg-muted">
+        <SheetContent className="w-[500px] max-w-[50vw] overflow-y-auto bg-primary-element">
           <div className="px-4 py-4">
             <div className="space-y-3 pb-4">
               <div className="flex items-center space-x-3">
@@ -832,7 +832,7 @@ export function CredentialsManager({
                   </h4>
                   <div className="space-y-2">
                     <div className="flex items-center space-x-3 px-2 py-1">
-                      <div className="p-1.5 rounded bg-muted">
+                      <div className="p-1.5 rounded bg-primary-element">
                         <User className="h-3 w-3 text-muted-foreground" />
                       </div>
                       <div className="flex-1">
@@ -846,7 +846,7 @@ export function CredentialsManager({
                       </div>
                     </div>
                     <div className="flex items-center space-x-3 px-2 py-1">
-                      <div className="p-1.5 rounded bg-muted">
+                      <div className="p-1.5 rounded bg-primary-element">
                         <User className="h-3 w-3 text-muted-foreground" />
                       </div>
                       <div className="flex-1">
@@ -859,7 +859,7 @@ export function CredentialsManager({
                       </div>
                     </div>
                     <div className="flex items-center space-x-3 px-2 py-1">
-                      <div className="p-1.5 rounded bg-muted">
+                      <div className="p-1.5 rounded bg-primary-element">
                         <Key className="h-3 w-3 text-muted-foreground" />
                       </div>
                       <div className="flex-1">
@@ -936,7 +936,7 @@ export function CredentialsManager({
                               )}
                             />
                             <div className="flex items-center gap-3">
-                              <div className="p-1.5 rounded bg-muted">
+                              <div className="p-1.5 rounded bg-primary-element">
                                 <Server className="h-3 w-3 text-muted-foreground" />
                               </div>
                               <div className="flex-1">

@@ -437,7 +437,7 @@ export function FileViewer({
       <div className="flex-shrink-0 bg-card border-b border-border p-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className={cn("p-2 rounded-lg bg-muted", fileTypeInfo.color)}>
+            <div className={cn("p-2 rounded-lg bg-primary-element", fileTypeInfo.color)}>
               {fileTypeInfo.icon}
             </div>
             <div>
@@ -453,7 +453,7 @@ export function FileViewer({
                   className={cn(
                     "px-2 py-1 rounded-full text-xs",
                     fileTypeInfo.color,
-                    "bg-muted",
+                    "bg-primary-element",
                   )}
                 >
                   {fileTypeInfo.type.toUpperCase()}
@@ -992,7 +992,7 @@ export function FileViewer({
                               </SyntaxHighlighter>
                             ) : (
                               <code
-                                className="bg-muted px-1 py-0.5 rounded text-sm font-mono"
+                                className="bg-primary-element px-1 py-0.5 rounded text-sm font-mono"
                                 {...props}
                               >
                                 {children}
@@ -1050,7 +1050,7 @@ export function FileViewer({
                             </div>
                           ),
                           thead: ({ children }) => (
-                            <thead className="bg-muted">{children}</thead>
+                            <thead className="bg-primary-element">{children}</thead>
                           ),
                           tbody: ({ children }) => <tbody>{children}</tbody>,
                           tr: ({ children }) => (
@@ -1105,7 +1105,7 @@ export function FileViewer({
                             </SyntaxHighlighter>
                           ) : (
                             <code
-                              className="bg-muted px-1 py-0.5 rounded text-sm font-mono"
+                              className="bg-primary-element px-1 py-0.5 rounded text-sm font-mono"
                               {...props}
                             >
                               {children}
@@ -1163,7 +1163,7 @@ export function FileViewer({
                           </div>
                         ),
                         thead: ({ children }) => (
-                          <thead className="bg-muted">{children}</thead>
+                          <thead className="bg-primary-element">{children}</thead>
                         ),
                         tbody: ({ children }) => <tbody>{children}</tbody>,
                         tr: ({ children }) => (
@@ -1254,7 +1254,7 @@ export function FileViewer({
               </div>
             </div>
 
-            <div className="flex-1 overflow-auto p-6 bg-muted">
+            <div className="flex-1 overflow-auto p-6 bg-primary-element">
               <div className="flex justify-center">
                 {pdfError ? (
                   <div className="text-center text-muted-foreground p-8">

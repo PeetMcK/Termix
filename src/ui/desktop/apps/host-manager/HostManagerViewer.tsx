@@ -1187,7 +1187,7 @@ export function HostManagerViewer({ onEditHost }: SSHManagerHostViewerProps) {
                                 draggable
                                 onDragStart={(e) => handleDragStart(e, host)}
                                 onDragEnd={handleDragEnd}
-                                className={`bg-input border border-input rounded-lg cursor-pointer hover:shadow-lg hover:border-primary/50 hover:bg-accent transition-all duration-200 p-3 group relative ${
+                                className={`bg-input-field border border-input rounded-lg cursor-pointer hover:shadow-lg hover:border-primary/50 hover:bg-accent transition-all duration-200 p-3 group relative ${
                                   draggedHost?.id === host.id
                                     ? "opacity-50 scale-95"
                                     : ""

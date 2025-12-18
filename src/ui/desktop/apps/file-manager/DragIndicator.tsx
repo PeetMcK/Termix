@@ -79,7 +79,7 @@ export function DragIndicator({
     <div
       className={cn(
         "fixed top-4 right-4 z-50 min-w-[300px] max-w-[400px]",
-        "bg-muted border border-border rounded-lg shadow-lg",
+        "bg-primary-element border border-border rounded-lg shadow-lg",
         "p-4 transition-all duration-300 ease-in-out",
         isVisible ? "opacity-100 translate-x-0" : "opacity-0 translate-x-full",
         className,

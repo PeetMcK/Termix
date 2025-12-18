@@ -53,9 +53,9 @@ export function FolderCard({
   };
 
   return (
-    <div className="bg-card border-2 border-border rounded-lg overflow-hidden p-0 m-0">
+    <div className="bg-section border-2 border-border rounded-lg overflow-hidden p-0 m-0">
       <div
-        className={`px-4 py-3 relative ${isExpanded ? "border-b-2" : ""} bg-muted`}
+        className={`px-4 py-3 relative ${isExpanded ? "border-b-2" : ""} bg-header`}
       >
         <div className="flex gap-2 pr-10">
           <div className="flex-shrink-0 flex items-center">

@@ -369,7 +369,7 @@ export function Dashboard({
         </div>
       ) : (
         <div
-          className="bg-muted text-foreground rounded-lg border-2 border-border overflow-hidden flex min-w-0"
+          className="bg-primary-element text-foreground rounded-lg border-2 border-border overflow-hidden flex min-w-0"
           style={{
             marginLeft: leftMarginPx,
             marginRight: rightSidebarOpen
@@ -445,13 +445,13 @@ export function Dashboard({
 
             <div className="flex flex-col flex-1 my-5 mx-5 gap-4 min-h-0 min-w-0">
               <div className="flex flex-row flex-1 gap-4 min-h-0 min-w-0">
-                <div className="flex-1 min-w-0 border-2 border-border rounded-md bg-card flex flex-col overflow-hidden">
+                <div className="flex-1 min-w-0 border-2 border-border rounded-md bg-section flex flex-col overflow-hidden transition-all duration-150 hover:border-primary/20">
                   <div className="flex flex-col mx-3 my-2 overflow-y-auto overflow-x-hidden">
                     <p className="text-xl font-semibold mb-3 mt-1 flex flex-row items-center">
                       <Server className="mr-3" />
                       {t("dashboard.serverOverview")}
                     </p>
-                    <div className="bg-muted w-full h-auto border-2 border-border rounded-md px-3 py-3">
+                    <div className="bg-primary-element w-full h-auto border-2 border-border rounded-md px-3 py-3">
                       <div className="flex flex-row items-center justify-between mb-3 min-w-0 gap-2">
                         <div className="flex flex-row items-center min-w-0">
                           <History
@@ -524,7 +524,7 @@ export function Dashboard({
                       </div>
                     </div>
                     <div className="flex flex-col grid grid-cols-2 gap-2 mt-2">
-                      <div className="flex flex-row items-center justify-between bg-muted w-full h-auto mt-3 border-2 border-border rounded-md px-3 py-3 min-w-0 gap-2">
+                      <div className="flex flex-row items-center justify-between bg-primary-element w-full h-auto mt-3 border-2 border-border rounded-md px-3 py-3 min-w-0 gap-2">
                         <div className="flex flex-row items-center min-w-0">
                           <Server
                             size={16}
@@ -539,7 +539,7 @@ export function Dashboard({
                           {totalServers}
                         </p>
                       </div>
-                      <div className="flex flex-row items-center justify-between bg-muted w-full h-auto mt-3 border-2 border-border rounded-md px-3 py-3 min-w-0 gap-2">
+                      <div className="flex flex-row items-center justify-between bg-primary-element w-full h-auto mt-3 border-2 border-border rounded-md px-3 py-3 min-w-0 gap-2">
                         <div className="flex flex-row items-center min-w-0">
                           <Network
                             size={16}
@@ -556,7 +556,7 @@ export function Dashboard({
                       </div>
                     </div>
                     <div className="flex flex-col grid grid-cols-2 gap-2 mt-2">
-                      <div className="flex flex-row items-center justify-between bg-muted w-full h-auto mt-3 border-2 border-border rounded-md px-3 py-3 min-w-0 gap-2">
+                      <div className="flex flex-row items-center justify-between bg-primary-element w-full h-auto mt-3 border-2 border-border rounded-md px-3 py-3 min-w-0 gap-2">
                         <div className="flex flex-row items-center min-w-0">
                           <Key
                             size={16}
@@ -574,7 +574,7 @@ export function Dashboard({
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 min-w-0 border-2 border-border rounded-md bg-card flex flex-col overflow-hidden transition-all duration-150 hover:border-primary/20">
+                <div className="flex-1 min-w-0 border-2 border-border rounded-md bg-section flex flex-col overflow-hidden transition-all duration-150 hover:border-primary/20">
                   <div className="flex flex-col mx-3 my-2 flex-1 overflow-hidden">
                     <div className="flex flex-row items-center justify-between mb-3 mt-1">
                       <p className="text-xl font-semibold flex flex-row items-center">
@@ -607,7 +607,7 @@ export function Dashboard({
                           <Button
                             key={item.id}
                             variant="outline"
-                            className="border-2 !border-border bg-muted min-w-0"
+                            className="border-2 !border-border bg-primary-element min-w-0"
                             onClick={() => handleActivityClick(item)}
                           >
                             {item.type === "terminal" ? (
@@ -626,7 +626,7 @@ export function Dashboard({
                 </div>
               </div>
               <div className="flex flex-row flex-1 gap-4 min-h-0 min-w-0">
-                <div className="flex-1 min-w-0 border-2 border-border rounded-md bg-card flex flex-col overflow-hidden transition-all duration-150 hover:border-primary/20">
+                <div className="flex-1 min-w-0 border-2 border-border rounded-md bg-section flex flex-col overflow-hidden transition-all duration-150 hover:border-primary/20">
                   <div className="flex flex-col mx-3 my-2 overflow-y-auto overflow-x-hidden">
                     <p className="text-xl font-semibold mb-3 mt-1 flex flex-row items-center">
                       <FastForward className="mr-3" />
@@ -635,7 +635,7 @@ export function Dashboard({
                     <div className="grid gap-4 grid-cols-3 auto-rows-min overflow-y-auto overflow-x-hidden">
                       <Button
                         variant="outline"
-                        className="border-2 !border-border flex flex-col items-center justify-center h-auto p-3 min-w-0"
+                        className="border-2 !border-border bg-primary-element flex flex-col items-center justify-center h-auto p-3 min-w-0"
                         onClick={handleAddHost}
                       >
                         <Server
@@ -648,7 +648,7 @@ export function Dashboard({
                       </Button>
                       <Button
                         variant="outline"
-                        className="border-2 !border-border flex flex-col items-center justify-center h-auto p-3 min-w-0"
+                        className="border-2 !border-border bg-primary-element flex flex-col items-center justify-center h-auto p-3 min-w-0"
                         onClick={handleAddCredential}
                       >
                         <Key
@@ -662,7 +662,7 @@ export function Dashboard({
                       {isAdmin && (
                         <Button
                           variant="outline"
-                          className="border-2 !border-border flex flex-col items-center justify-center h-auto p-3 min-w-0"
+                          className="border-2 !border-border bg-primary-element flex flex-col items-center justify-center h-auto p-3 min-w-0"
                           onClick={handleOpenAdminSettings}
                         >
                           <Settings
@@ -676,7 +676,7 @@ export function Dashboard({
                       )}
                       <Button
                         variant="outline"
-                        className="border-2 !border-border flex flex-col items-center justify-center h-auto p-3 min-w-0"
+                        className="border-2 !border-border bg-primary-element flex flex-col items-center justify-center h-auto p-3 min-w-0"
                         onClick={handleOpenUserProfile}
                       >
                         <User
@@ -690,7 +690,7 @@ export function Dashboard({
                     </div>
                   </div>
                 </div>
-                <div className="flex-1 min-w-0 border-2 border-border rounded-md bg-card flex flex-col overflow-hidden transition-all duration-150 hover:border-primary/20">
+                <div className="flex-1 min-w-0 border-2 border-border rounded-md bg-section flex flex-col overflow-hidden transition-all duration-150 hover:border-primary/20">
                   <div className="flex flex-col mx-3 my-2 flex-1 overflow-hidden">
                     <p className="text-xl font-semibold mb-3 mt-1 flex flex-row items-center">
                       <ChartLine className="mr-3" />
@@ -713,7 +713,7 @@ export function Dashboard({
                           <Button
                             key={server.id}
                             variant="outline"
-                            className="border-2 !border-border bg-muted h-auto p-3 min-w-0"
+                            className="border-2 !border-border bg-primary-element h-auto p-3 min-w-0"
                           >
                             <div className="flex flex-col w-full">
                               <div className="flex flex-row items-center mb-2">

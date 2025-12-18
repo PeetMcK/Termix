@@ -124,7 +124,7 @@ const AppContent: FC = () => {
 
   if (authLoading) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-muted">
+      <div className="h-screen w-screen flex items-center justify-center bg-primary-element">
         <div className="text-center">
           <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mx-auto mb-4" />
           <p className="text-muted-foreground">{t("common.loading")}</p>
@@ -135,7 +135,7 @@ const AppContent: FC = () => {
 
   if (!isAuthenticated || isReactNativeWebView()) {
     return (
-      <div className="h-screen w-screen flex items-center justify-center bg-muted p-4">
+      <div className="h-screen w-screen flex items-center justify-center bg-primary-element p-4">
         <Auth
           setLoggedIn={setIsAuthenticated}
           setIsAdmin={setIsAdmin}

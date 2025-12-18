@@ -454,7 +454,7 @@ export function FileManagerSidebar({
 
   return (
     <>
-      <div className="h-full flex flex-col bg-muted border-r border-border">
+      <div className="h-full flex flex-col bg-primary-element border-r border-border">
         <div className="flex-1 relative overflow-hidden">
           <div className="absolute inset-1.5 overflow-y-auto thin-scrollbar space-y-4">
             {renderSection(
@@ -495,7 +495,7 @@ export function FileManagerSidebar({
           <div className="fixed inset-0 z-40" />
           <div
             data-sidebar-context-menu
-            className="fixed bg-muted border border-border rounded-lg shadow-xl min-w-[160px] z-50 overflow-hidden"
+            className="fixed bg-primary-element border border-border rounded-lg shadow-xl min-w-[160px] z-50 overflow-hidden"
             style={{
               left: contextMenu.x,
               top: contextMenu.y,

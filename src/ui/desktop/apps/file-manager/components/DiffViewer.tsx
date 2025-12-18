@@ -210,7 +210,7 @@ export function DiffViewer({
 
   if (isLoading) {
     return (
-      <div className="h-full flex items-center justify-center bg-muted">
+      <div className="h-full flex items-center justify-center bg-primary-element">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-2"></div>
           <p className="text-sm text-muted-foreground">
@@ -223,7 +223,7 @@ export function DiffViewer({
 
   if (error) {
     return (
-      <div className="h-full flex items-center justify-center bg-muted">
+      <div className="h-full flex items-center justify-center bg-primary-element">
         <div className="text-center max-w-md">
           <FileText className="w-16 h-16 mx-auto mb-4 text-red-600 dark:text-red-500 opacity-50" />
           <p className="text-red-600 dark:text-red-500 mb-4">{error}</p>
@@ -237,7 +237,7 @@ export function DiffViewer({
   }
 
   return (
-    <div className="h-full flex flex-col bg-muted">
+    <div className="h-full flex flex-col bg-primary-element">
       <div className="flex-shrink-0 border-b border-border p-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-4">

@@ -464,19 +464,19 @@ export function LeftSidebar({
               </SidebarGroup>
               <Separator className="p-0.25" />
               <SidebarGroup className="flex flex-col gap-y-2 !-mt-2">
-                <div className="bg-input rounded-lg">
+                <div className="bg-input-field dark:bg-input/30 rounded-lg">
                   <Input
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                     placeholder={t("placeholders.searchHostsAny")}
-                    className="w-full h-8 text-sm border-2 bg-input border-border rounded-md"
+                    className="w-full h-8 text-sm border-2 bg-input-field dark:bg-input/30 border-border rounded-md"
                     autoComplete="off"
                   />
                 </div>
 
                 {hostsError && (
-                  <div className="bg-input rounded-lg">
-                    <div className="w-full h-8 text-sm border-2 bg-input border-border rounded-md px-3 py-1.5 flex items-center text-red-600 dark:text-red-500">
+                  <div className="bg-input-field dark:bg-input/30 rounded-lg">
+                    <div className="w-full h-8 text-sm border-2 bg-input-field dark:bg-input/30 border-border rounded-md px-3 py-1.5 flex items-center text-red-600 dark:text-red-500">
                       {t("leftSidebar.failedToLoadHosts")}
                     </div>
                   </div>

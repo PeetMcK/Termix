@@ -737,7 +737,7 @@ export function AdminSettings({
   return (
     <div
       style={wrapperStyle}
-      className="bg-muted text-foreground rounded-lg border-2 border-border overflow-hidden"
+      className="bg-primary-element text-foreground rounded-lg border-2 border-border overflow-hidden"
     >
       <div className="h-full w-full flex flex-col">
         <div className="flex items-center justify-between px-3 pt-2 pb-2">
@@ -747,7 +747,7 @@ export function AdminSettings({
 
         <div className="px-6 py-4 overflow-auto">
           <Tabs defaultValue="registration" className="w-full">
-            <TabsList className="mb-4 bg-muted border-2 border-border">
+            <TabsList className="mb-4 bg-primary-element border-2 border-border">
               <TabsTrigger
                 value="registration"
                 className="flex items-center gap-2"
@@ -1307,7 +1307,7 @@ export function AdminSettings({
                 <h3 className="text-lg font-semibold">
                   {t("admin.adminManagement")}
                 </h3>
-                <div className="space-y-4 p-4 border rounded-md bg-muted-panel">
+                <div className="space-y-4 p-4 border rounded-md bg-panel">
                   <h4 className="font-semibold">{t("admin.makeUserAdmin")}</h4>
                   <form onSubmit={handleMakeUserAdmin} className="space-y-4">
                     <div className="space-y-2">
@@ -1407,7 +1407,7 @@ export function AdminSettings({
                 </div>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                  <div className="p-4 border rounded-lg bg-muted-panel">
+                  <div className="p-4 border rounded-lg bg-panel">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <Download className="h-4 w-4 text-blue-600 dark:text-blue-500" />
@@ -1458,7 +1458,7 @@ export function AdminSettings({
                     </div>
                   </div>
 
-                  <div className="p-4 border rounded-lg bg-muted-panel">
+                  <div className="p-4 border rounded-lg bg-panel">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <Upload className="h-4 w-4 text-green-600 dark:text-green-500" />
@@ -1538,7 +1538,7 @@ export function AdminSettings({
           open={linkAccountAlertOpen}
           onOpenChange={setLinkAccountAlertOpen}
         >
-          <DialogContent className="sm:max-w-[500px] bg-muted border-2 border-border">
+          <DialogContent className="sm:max-w-[500px] bg-primary-element border-2 border-border">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Link2 className="w-5 h-5" />

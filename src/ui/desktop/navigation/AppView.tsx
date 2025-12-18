@@ -313,7 +313,7 @@ export function AppView({
               <div
                 className="absolute inset-0 rounded-md overflow-hidden"
                 style={{
-                  backgroundColor: isTerminal ? backgroundColor : "var(--muted)",
+                  backgroundColor: isTerminal ? backgroundColor : "var(--primary-element)",
                 }}
               >
                 {t.type === "terminal" ? (
@@ -355,7 +355,7 @@ export function AppView({
       variant="ghost"
       onClick={onClick}
       aria-label="Reset split sizes"
-      className="absolute top-0 right-0 h-[28px] w-[28px] !rounded-none border-l-1 border-b-1 border-border-panel bg-muted-panel hover:bg-muted-panel-hover text-foreground flex items-center justify-center p-0"
+      className="absolute top-0 right-0 h-[28px] w-[28px] !rounded-none border-l-1 border-b-1 border-border-panel bg-panel hover:bg-panel-hover text-foreground flex items-center justify-center p-0"
     >
       <RefreshCcw className="h-4 w-4" />
     </Button>
@@ -408,7 +408,7 @@ export function AppView({
                 }}
                 className="h-full w-full flex flex-col bg-transparent relative"
               >
-                <div className="bg-muted-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                <div className="bg-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                   {a.title}
                 </div>
               </div>
@@ -427,7 +427,7 @@ export function AppView({
                 }}
                 className="h-full w-full flex flex-col bg-transparent relative"
               >
-                <div className="bg-muted-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                <div className="bg-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                   {b.title}
                   <ResetButton onClick={handleReset} />
                 </div>
@@ -475,7 +475,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-muted-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {a.title}
                     </div>
                   </div>
@@ -494,7 +494,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-muted-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {b.title}
                       <ResetButton onClick={handleReset} />
                     </div>
@@ -516,7 +516,7 @@ export function AppView({
                 }}
                 className="h-full w-full flex flex-col relative"
               >
-                <div className="bg-muted-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                <div className="bg-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                   {c.title}
                 </div>
               </div>
@@ -563,7 +563,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-muted-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {a.title}
                     </div>
                   </div>
@@ -582,7 +582,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-muted-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {b.title}
                       <ResetButton onClick={handleReset} />
                     </div>
@@ -618,7 +618,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-muted-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {c.title}
                     </div>
                   </div>
@@ -637,7 +637,7 @@ export function AppView({
                     }}
                     className="h-full w-full flex flex-col relative"
                   >
-                    <div className="bg-muted-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
+                    <div className="bg-panel text-foreground text-[13px] h-[28px] leading-[28px] px-[10px] border-b border-border-panel tracking-[1px] m-0 pointer-events-auto z-[11] relative">
                       {d.title}
                     </div>
                   </div>
@@ -675,7 +675,7 @@ export function AppView({
   const leftMarginPx = sidebarState === "collapsed" ? 26 : 8;
   const bottomMarginPx = 8;
 
-  let containerBackground = "var(--muted)";
+  let containerBackground = "var(--primary-element)";
   if (isFileManager && !isSplitScreen) {
     containerBackground = "var(--card)";
   } else if (isTerminal) {

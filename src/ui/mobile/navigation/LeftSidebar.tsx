@@ -195,12 +195,12 @@ export function LeftSidebar({
           <Separator />
           <SidebarContent>
             <SidebarGroup className="flex flex-col gap-y-2">
-              <div className="!bg-input rounded-lg">
+              <div className="!bg-input-field dark:bg-input/30 rounded-lg">
                 <Input
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder={t("placeholders.searchHostsAny")}
-                  className="w-full h-8 text-sm border-2 !bg-input border-border rounded-md"
+                  className="w-full h-8 text-sm border-2 !bg-input-field dark:bg-input/30 border-border rounded-md"
                   autoComplete="off"
                 />
               </div>

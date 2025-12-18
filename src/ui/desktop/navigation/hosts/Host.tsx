@@ -193,7 +193,7 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
           {tags.map((tag: string) => (
             <div
               key={tag}
-              className="bg-muted border-1 border-border pl-2 pr-2 rounded-[10px]"
+              className="bg-primary-element border-1 border-border pl-2 pr-2 rounded-[10px]"
             >
               <p className="text-sm">{tag}</p>
             </div>

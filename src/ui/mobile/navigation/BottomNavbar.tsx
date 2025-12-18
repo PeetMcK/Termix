@@ -11,7 +11,7 @@ export function BottomNavbar({ onSidebarOpenClick }: MenuProps) {
   const { tabs, currentTab, setCurrentTab, removeTab } = useTabs();
 
   return (
-    <div className="w-full h-[50px] bg-muted items-center p-1">
+    <div className="w-full h-[50px] bg-primary-element items-center p-1">
       <div className="flex gap-2 !mb-0.5">
         <Button
           className="w-[40px] h-[40px] flex-shrink-0"

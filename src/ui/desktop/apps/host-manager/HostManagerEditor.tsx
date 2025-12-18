@@ -1296,7 +1296,7 @@ export function HostManagerEditor({
                           {folderDropdownOpen && filteredFolders.length > 0 && (
                             <div
                               ref={folderDropdownRef}
-                              className="absolute top-full left-0 z-50 mt-1 w-full bg-muted border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
+                              className="absolute top-full left-0 z-50 mt-1 w-full bg-primary-element border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
                             >
                               <div className="grid grid-cols-1 gap-1 p-0">
                                 {filteredFolders.map((folder) => (
@@ -1325,7 +1325,7 @@ export function HostManagerEditor({
                         <FormItem className="col-span-10 overflow-visible">
                           <FormLabel>{t("hosts.tags")}</FormLabel>
                           <FormControl>
-                            <div className="flex flex-wrap items-center gap-1 border border-input rounded-md px-3 py-2 bg-input focus-within:ring-2 ring-ring min-h-[40px]">
+                            <div className="flex flex-wrap items-center gap-1 border border-input rounded-md px-3 py-2 bg-input-field dark:bg-input/30 focus-within:ring-2 ring-ring min-h-[40px]">
                               {field.value.map((tag: string, idx: number) => (
                                 <span
                                   key={tag + idx}
@@ -1451,7 +1451,7 @@ export function HostManagerEditor({
                         }}
                         className="w-full"
                       >
-                        <TabsList className="inline-flex items-center justify-center rounded-md bg-muted p-1 text-muted-foreground">
+                        <TabsList className="inline-flex items-center justify-center rounded-md bg-primary-element p-1 text-muted-foreground">
                           <TabsTrigger value="upload">
                             {t("hosts.uploadFile")}
                           </TabsTrigger>
@@ -1580,7 +1580,7 @@ export function HostManagerEditor({
                                     ref={keyTypeButtonRef}
                                     type="button"
                                     variant="outline"
-                                    className="w-full justify-start text-left rounded-md px-2 py-2 bg-muted border border-input text-foreground"
+                                    className="w-full justify-start text-left rounded-md px-2 py-2 bg-primary-element border border-input text-foreground"
                                     onClick={() =>
                                       setKeyTypeDropdownOpen((open) => !open)
                                     }
@@ -1592,7 +1592,7 @@ export function HostManagerEditor({
                                   {keyTypeDropdownOpen && (
                                     <div
                                       ref={keyTypeDropdownRef}
-                                      className="absolute bottom-full left-0 z-50 mb-1 w-full bg-muted border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
+                                      className="absolute bottom-full left-0 z-50 mb-1 w-full bg-primary-element border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
                                     >
                                       <div className="grid grid-cols-1 gap-1 p-0">
                                         {keyTypeOptions.map((opt) => (
@@ -1601,7 +1601,7 @@ export function HostManagerEditor({
                                             type="button"
                                             variant="ghost"
                                             size="sm"
-                                            className="w-full justify-start text-left rounded-md px-2 py-1.5 bg-muted text-foreground hover:bg-black/10 dark:hover:bg-white/15 focus:bg-black/15 dark:focus:bg-white/20 focus:outline-none"
+                                            className="w-full justify-start text-left rounded-md px-2 py-1.5 bg-primary-element text-foreground hover:bg-black/10 dark:hover:bg-white/15 focus:bg-black/15 dark:focus:bg-white/20 focus:outline-none"
                                             onClick={() => {
                                               field.onChange(opt.value);
                                               setKeyTypeDropdownOpen(false);
@@ -2550,7 +2550,7 @@ export function HostManagerEditor({
                           <strong>{t("hosts.sshpassRequired")}</strong>
                           <div>
                             {t("hosts.sshpassRequiredDesc")}{" "}
-                            <code className="bg-muted px-1 rounded inline">
+                            <code className="bg-primary-element px-1 rounded inline">
                               sudo apt install sshpass
                             </code>{" "}
                             {t("hosts.debianUbuntuEquivalent")}
@@ -2559,17 +2559,17 @@ export function HostManagerEditor({
                             <strong>{t("hosts.otherInstallMethods")}</strong>
                             <div>
                               • {t("hosts.centosRhelFedora")}{" "}
-                              <code className="bg-muted px-1 rounded inline">
+                              <code className="bg-primary-element px-1 rounded inline">
                                 sudo yum install sshpass
                               </code>{" "}
                               {t("hosts.or")}{" "}
-                              <code className="bg-muted px-1 rounded inline">
+                              <code className="bg-primary-element px-1 rounded inline">
                                 sudo dnf install sshpass
                               </code>
                             </div>
                             <div>
                               • {t("hosts.macos")}{" "}
-                              <code className="bg-muted px-1 rounded inline">
+                              <code className="bg-primary-element px-1 rounded inline">
                                 brew install hudochenkov/sshpass/sshpass
                               </code>
                             </div>
@@ -2584,21 +2584,21 @@ export function HostManagerEditor({
                           <div>{t("hosts.sshServerConfigDesc")}</div>
                           <div>
                             •{" "}
-                            <code className="bg-muted px-1 rounded inline">
+                            <code className="bg-primary-element px-1 rounded inline">
                               GatewayPorts yes
                             </code>{" "}
                             {t("hosts.gatewayPortsYes")}
                           </div>
                           <div>
                             •{" "}
-                            <code className="bg-muted px-1 rounded inline">
+                            <code className="bg-primary-element px-1 rounded inline">
                               AllowTcpForwarding yes
                             </code>{" "}
                             {t("hosts.allowTcpForwardingYes")}
                           </div>
                           <div>
                             •{" "}
-                            <code className="bg-muted px-1 rounded inline">
+                            <code className="bg-primary-element px-1 rounded inline">
                               PermitRootLogin yes
                             </code>{" "}
                             {t("hosts.permitRootLoginYes")}
@@ -2746,7 +2746,7 @@ export function HostManagerEditor({
                                                       index
                                                     ] = el;
                                                   }}
-                                                  className="absolute top-full left-0 z-50 mt-1 w-full bg-muted border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
+                                                  className="absolute top-full left-0 z-50 mt-1 w-full bg-primary-element border border-input rounded-md shadow-lg max-h-40 overflow-y-auto p-1"
                                                 >
                                                   <div className="grid grid-cols-1 gap-1 p-0">
                                                     {getFilteredSshConfigs(

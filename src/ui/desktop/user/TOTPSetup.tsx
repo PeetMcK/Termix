@@ -277,7 +277,7 @@ export function TOTPSetup({
                       {t("auth.download")}
                     </Button>
                   </div>
-                  <div className="grid grid-cols-2 gap-2 p-4 bg-muted rounded-lg font-mono text-sm">
+                  <div className="grid grid-cols-2 gap-2 p-4 bg-primary-element rounded-lg font-mono text-sm">
                     {backupCodes.map((code, i) => (
                       <div key={i}>{code}</div>
                     ))}
@@ -412,7 +412,7 @@ export function TOTPSetup({
                 Download
               </Button>
             </div>
-            <div className="grid grid-cols-2 gap-2 p-4 bg-muted rounded-lg font-mono text-sm">
+            <div className="grid grid-cols-2 gap-2 p-4 bg-primary-element rounded-lg font-mono text-sm">
               {backupCodes.map((code, i) => (
                 <div key={i} className="flex items-center gap-2">
                   <span className="text-muted-foreground">{i + 1}.</span>

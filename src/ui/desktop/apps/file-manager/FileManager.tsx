@@ -1912,7 +1912,7 @@ function FileManagerContent({ initialHost, onClose }: FileManagerProps) {
   }
 
   return (
-    <div className="h-full flex flex-col bg-muted">
+    <div className="h-full flex flex-col bg-primary-element">
       <div className="flex-shrink-0 border-b border-border">
         <div className="flex items-center justify-between p-3">
           <div className="flex items-center gap-2">

@@ -332,7 +332,7 @@ export function Server({
 
   const containerClass = embedded
     ? "h-full w-full text-foreground overflow-hidden bg-transparent"
-    : "bg-muted text-foreground rounded-lg border-2 border-border overflow-hidden";
+    : "bg-primary-element text-foreground rounded-lg border-2 border-border overflow-hidden";
 
   return (
     <div style={wrapperStyle} className={containerClass}>
@@ -458,11 +458,11 @@ export function Server({
         </div>
         <Separator className="p-0.25 w-full" />
 
-        <div className="flex-1 overflow-y-auto min-h-0">
+        <div className="flex-1 overflow-y-auto min-h-0 thin-scrollbar">
           {(metricsEnabled && showStatsUI) ||
           (currentHostConfig?.quickActions &&
             currentHostConfig.quickActions.length > 0) ? (
-            <div className="rounded-lg border-2 border-border m-3 bg-card p-4 overflow-y-auto relative flex-1 flex flex-col">
+            <div className="rounded-lg border-2 border-border m-3 bg-section p-4 overflow-y-auto relative flex-1 flex flex-col thin-scrollbar">
               {currentHostConfig?.quickActions &&
                 currentHostConfig.quickActions.length > 0 && (
                   <div className={metricsEnabled && showStatsUI ? "mb-4" : ""}>
@@ -603,7 +603,7 @@ export function Server({
 
           {currentHostConfig?.tunnelConnections &&
             currentHostConfig.tunnelConnections.length > 0 && (
-              <div className="rounded-lg border-2 border-border m-3 bg-card h-[360px] overflow-hidden flex flex-col min-h-0">
+              <div className="rounded-lg border-2 border-border m-3 bg-section h-[360px] overflow-hidden flex flex-col min-h-0">
                 <Tunnel
                   filterHostKey={
                     currentHostConfig?.name &&

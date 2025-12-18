@@ -585,7 +585,7 @@ export function Auth({
   if (isReactNativeWebView() && mobileAuthSuccess) {
     return (
       <div
-        className={`w-full max-w-md flex flex-col bg-muted overflow-y-auto my-2 ${className || ""}`}
+        className={`w-full max-w-md flex flex-col bg-primary-element overflow-y-auto my-2 ${className || ""}`}
         style={{ maxHeight: "calc(100vh - 1rem)" }}
         {...props}
       >
@@ -620,7 +620,7 @@ export function Auth({
 
   return (
     <div
-      className={`w-full max-w-md flex flex-col bg-muted overflow-y-auto my-2 ${className || ""}`}
+      className={`w-full max-w-md flex flex-col bg-primary-element overflow-y-auto my-2 ${className || ""}`}
       style={{ maxHeight: "calc(100vh - 1rem)" }}
       {...props}
     >
