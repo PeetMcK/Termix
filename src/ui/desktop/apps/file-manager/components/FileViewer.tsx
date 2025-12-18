@@ -68,7 +68,7 @@ import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark as syntaxTheme } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Document, Page, pdfjs } from "react-pdf";
 
-pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.min.js";
+pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
 interface FileItem {
   name: string;
