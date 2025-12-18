@@ -814,7 +814,7 @@ export function AdminSettings({
   return (
     <div
       style={wrapperStyle}
-      className="bg-dark-bg text-white rounded-lg border-2 border-dark-border overflow-hidden"
+      className="bg-canvas text-foreground rounded-lg border-2 border-edge overflow-hidden"
     >
       <div className="h-full w-full flex flex-col">
         <div className="flex items-center justify-between px-3 pt-2 pb-2">
@@ -824,71 +824,71 @@ export function AdminSettings({
 
         <div className="px-6 py-4 overflow-auto">
           <Tabs defaultValue="registration" className="w-full">
-            <TabsList className="mb-4 bg-dark-bg border-2 border-dark-border">
+            <TabsList className="mb-4 bg-elevated border-2 border-edge">
               <TabsTrigger
                 value="registration"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 bg-elevated data-[state=active]:bg-button data-[state=active]:border data-[state=active]:border-edge"
               >
                 <Users className="h-4 w-4" />
                 {t("admin.general")}
               </TabsTrigger>
-              <TabsTrigger value="oidc" className="flex items-center gap-2">
+              <TabsTrigger value="oidc" className="flex items-center gap-2 bg-elevated data-[state=active]:bg-button data-[state=active]:border data-[state=active]:border-edge">
                 <Shield className="h-4 w-4" />
                 OIDC
               </TabsTrigger>
-              <TabsTrigger value="users" className="flex items-center gap-2">
+              <TabsTrigger value="users" className="flex items-center gap-2 bg-elevated data-[state=active]:bg-button data-[state=active]:border data-[state=active]:border-edge">
                 <Users className="h-4 w-4" />
                 {t("admin.users")}
               </TabsTrigger>
-              <TabsTrigger value="sessions" className="flex items-center gap-2">
+              <TabsTrigger value="sessions" className="flex items-center gap-2 bg-elevated data-[state=active]:bg-button data-[state=active]:border data-[state=active]:border-edge">
                 <Clock className="h-4 w-4" />
                 Sessions
               </TabsTrigger>
-              <TabsTrigger value="admins" className="flex items-center gap-2">
+              <TabsTrigger value="admins" className="flex items-center gap-2 bg-elevated data-[state=active]:bg-button data-[state=active]:border data-[state=active]:border-edge">
                 <Shield className="h-4 w-4" />
                 {t("admin.adminManagement")}
               </TabsTrigger>
-              <TabsTrigger value="roles" className="flex items-center gap-2">
+              <TabsTrigger value="roles" className="flex items-center gap-2 bg-elevated data-[state=active]:bg-button data-[state=active]:border data-[state=active]:border-edge">
                 <Shield className="h-4 w-4" />
                 {t("rbac.roles.label")}
               </TabsTrigger>
-              <TabsTrigger value="security" className="flex items-center gap-2">
+              <TabsTrigger value="security" className="flex items-center gap-2 bg-elevated data-[state=active]:bg-button data-[state=active]:border data-[state=active]:border-edge">
                 <Database className="h-4 w-4" />
                 {t("admin.databaseSecurity")}
               </TabsTrigger>
             </TabsList>
 
             <TabsContent value="registration" className="space-y-6">
-              <div className="space-y-4">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-4">
                 <h3 className="text-lg font-semibold">
                   {t("admin.userRegistration")}
                 </h3>
-                <label className="flex items-center gap-2">
-                  <Checkbox
-                    checked={allowRegistration}
-                    onCheckedChange={handleToggleRegistration}
-                    disabled={regLoading || !allowPasswordLogin}
-                  />
-                  {t("admin.allowNewAccountRegistration")}
-                  {!allowPasswordLogin && (
-                    <span className="text-xs text-muted-foreground">
-                      ({t("admin.requiresPasswordLogin")})
-                    </span>
-                  )}
-                </label>
-                <label className="flex items-center gap-2">
-                  <Checkbox
-                    checked={allowPasswordLogin}
-                    onCheckedChange={handleTogglePasswordLogin}
-                    disabled={passwordLoginLoading}
-                  />
-                  {t("admin.allowPasswordLogin")}
-                </label>
+                  <label className="flex items-center gap-2">
+                    <Checkbox
+                      checked={allowRegistration}
+                      onCheckedChange={handleToggleRegistration}
+                      disabled={regLoading || !allowPasswordLogin}
+                    />
+                    {t("admin.allowNewAccountRegistration")}
+                    {!allowPasswordLogin && (
+                      <span className="text-xs text-muted-foreground">
+                        ({t("admin.requiresPasswordLogin")})
+                      </span>
+                    )}
+                  </label>
+                  <label className="flex items-center gap-2">
+                    <Checkbox
+                      checked={allowPasswordLogin}
+                      onCheckedChange={handleTogglePasswordLogin}
+                      disabled={passwordLoginLoading}
+                    />
+                    {t("admin.allowPasswordLogin")}
+                  </label>
               </div>
             </TabsContent>
 
             <TabsContent value="oidc" className="space-y-6">
-              <div className="space-y-3">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-3">
                 <h3 className="text-lg font-semibold">
                   {t("admin.externalAuthentication")}
                 </h3>
@@ -1143,7 +1143,7 @@ export function AdminSettings({
             </TabsContent>
 
             <TabsContent value="users" className="space-y-6">
-              <div className="space-y-4">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold">
                     {t("admin.userManagement")}
@@ -1253,7 +1253,7 @@ export function AdminSettings({
             </TabsContent>
 
             <TabsContent value="sessions" className="space-y-6">
-              <div className="space-y-4">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-4">
                 <div className="flex items-center justify-between">
                   <h3 className="text-lg font-semibold">Session Management</h3>
                   <Button
@@ -1380,11 +1380,11 @@ export function AdminSettings({
             </TabsContent>
 
             <TabsContent value="admins" className="space-y-6">
-              <div className="space-y-6">
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-6">
                 <h3 className="text-lg font-semibold">
                   {t("admin.adminManagement")}
                 </h3>
-                <div className="space-y-4 p-4 border rounded-md bg-dark-bg-panel">
+                <div className="space-y-4 p-4 border rounded-md bg-surface">
                   <h4 className="font-semibold">{t("admin.makeUserAdmin")}</h4>
                   <form onSubmit={handleMakeUserAdmin} className="space-y-4">
                     <div className="space-y-2">
@@ -1472,15 +1472,13 @@ export function AdminSettings({
             </TabsContent>
 
             <TabsContent value="security" className="space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <h3 className="text-lg font-semibold">
-                    {t("admin.databaseSecurity")}
-                  </h3>
-                </div>
+              <div className="rounded-lg border-2 border-border bg-card p-4 space-y-4">
+                <h3 className="text-lg font-semibold">
+                  {t("admin.databaseSecurity")}
+                </h3>
 
                 <div className="grid gap-3 md:grid-cols-2">
-                  <div className="p-4 border rounded-lg bg-dark-bg-panel">
+                  <div className="p-4 border rounded-lg bg-surface">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <Download className="h-4 w-4 text-blue-500" />
@@ -1531,7 +1529,7 @@ export function AdminSettings({
                     </div>
                   </div>
 
-                  <div className="p-4 border rounded-lg bg-dark-bg-panel">
+                  <div className="p-4 border rounded-lg bg-surface">
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <Upload className="h-4 w-4 text-green-500" />
@@ -1611,7 +1609,7 @@ export function AdminSettings({
           open={linkAccountAlertOpen}
           onOpenChange={setLinkAccountAlertOpen}
         >
-          <DialogContent className="sm:max-w-[500px] bg-dark-bg border-2 border-dark-border">
+          <DialogContent className="sm:max-w-[500px] bg-canvas border-2 border-edge">
             <DialogHeader>
               <DialogTitle className="flex items-center gap-2">
                 <Link2 className="w-5 h-5" />

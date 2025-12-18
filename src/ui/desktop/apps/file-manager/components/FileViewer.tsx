@@ -133,14 +133,14 @@ function getLanguageIcon(filename: string): React.ReactNode {
     yml: <SiYaml className="w-6 h-6 text-red-400" />,
     toml: <SiToml className="w-6 h-6 text-orange-400" />,
     sql: <SiMysql className="w-6 h-6 text-blue-500" />,
-    sh: <SiGnubash className="w-6 h-6 text-gray-700" />,
-    bash: <SiGnubash className="w-6 h-6 text-gray-700" />,
-    zsh: <SiShell className="w-6 h-6 text-gray-700" />,
+    sh: <SiGnubash className="w-6 h-6 text-foreground" />,
+    bash: <SiGnubash className="w-6 h-6 text-foreground" />,
+    zsh: <SiShell className="w-6 h-6 text-foreground" />,
     vue: <SiVuedotjs className="w-6 h-6 text-green-500" />,
     svelte: <SiSvelte className="w-6 h-6 text-orange-500" />,
-    md: <SiMarkdown className="w-6 h-6 text-gray-600" />,
-    conf: <SiShell className="w-6 h-6 text-gray-600" />,
-    ini: <Code className="w-6 h-6 text-gray-600" />,
+    md: <SiMarkdown className="w-6 h-6 text-muted-foreground" />,
+    conf: <SiShell className="w-6 h-6 text-muted-foreground" />,
+    ini: <Code className="w-6 h-6 text-muted-foreground" />,
   };
 
   return iconMap[ext] || <Code className="w-6 h-6 text-yellow-500" />;
@@ -238,7 +238,7 @@ function getFileType(filename: string): {
     return {
       type: "unknown",
       icon: <FileIcon className="w-6 h-6" />,
-      color: "text-gray-500",
+      color: "text-foreground-subtle",
     };
   }
 }
@@ -423,7 +423,7 @@ export function FileViewer({
       <div className="h-full flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-sm text-gray-600">Loading file...</p>
+          <p className="text-sm text-muted-foreground">Loading file...</p>
         </div>
       </div>
     );

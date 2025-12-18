@@ -12,6 +12,8 @@ import { Unicode11Addon } from "@xterm/addon-unicode11";
 import { WebLinksAddon } from "@xterm/addon-web-links";
 import { useTranslation } from "react-i18next";
 import { isElectron, getCookie } from "@/ui/main-axios.ts";
+import { useTheme } from "@/components/theme-provider";
+import { TERMINAL_THEMES } from "@/constants/terminal-themes";
 
 interface HostConfig {
   id?: number;
@@ -45,6 +47,7 @@ export const Terminal = forwardRef<TerminalHandle, SSHTerminalProps>(
   function SSHTerminal({ hostConfig, isVisible }, ref) {
     const { t } = useTranslation();
     const { instance: terminal, ref: xtermRef } = useXTerm();
+    const { theme: appTheme } = useTheme();
     const fitAddonRef = useRef<FitAddon | null>(null);
     const webSocketRef = useRef<WebSocket | null>(null);
     const resizeTimeout = useRef<NodeJS.Timeout | null>(null);
@@ -64,6 +67,13 @@ export const Terminal = forwardRef<TerminalHandle, SSHTerminalProps>(
     const pendingSizeRef = useRef<{ cols: number; rows: number } | null>(null);
     const notifyTimerRef = useRef<NodeJS.Timeout | null>(null);
     const DEBOUNCE_MS = 140;
+
+    // Auto-switch terminal theme based on app theme
+    const isDarkMode = appTheme === "dark" ||
+      (appTheme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
+    const themeColors = isDarkMode
+      ? TERMINAL_THEMES.termixDark.colors
+      : TERMINAL_THEMES.termixLight.colors;
 
     useEffect(() => {
       isVisibleRef.current = isVisible;
@@ -270,7 +280,7 @@ export const Terminal = forwardRef<TerminalHandle, SSHTerminalProps>(
         fontSize: 14,
         fontFamily:
           '"Caskaydia Cove Nerd Font Mono", "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
-        theme: { background: "#09090b", foreground: "#f7f7f7" },
+        theme: themeColors,
         allowTransparency: true,
         convertEol: true,
         windowsMode: false,
@@ -419,7 +429,7 @@ export const Terminal = forwardRef<TerminalHandle, SSHTerminalProps>(
         setIsReady(false);
         isFittingRef.current = false;
       };
-    }, [xtermRef, terminal, hostConfig, isAuthenticated]);
+    }, [xtermRef, terminal, hostConfig, isAuthenticated, isDarkMode]);
 
     useEffect(() => {
       if (!isVisible || !isReady || !fitAddonRef.current || !terminal) {

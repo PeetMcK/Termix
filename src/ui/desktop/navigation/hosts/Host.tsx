@@ -8,8 +8,6 @@ import {
   Server,
   FolderOpen,
   Pencil,
-  ArrowDownUp,
-  Container,
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -65,7 +63,6 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
   }, [host.statsConfig]);
 
   const shouldShowStatus = statsConfig.statusCheckEnabled !== false;
-  const shouldShowMetrics = statsConfig.metricsEnabled !== false;
 
   useEffect(() => {
     if (!shouldShowStatus) {
@@ -130,7 +127,7 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
           {host.enableTerminal && (
             <Button
               variant="outline"
-              className="!px-2 border-1 border-dark-border"
+              className="!px-2 border-1 border-edge"
               onClick={handleTerminalClick}
             >
               <Terminal />
@@ -141,7 +138,7 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
             <DropdownMenuTrigger asChild>
               <Button
                 variant="outline"
-                className={`!px-2 border-1 border-dark-border ${
+                className={`!px-2 border-1 border-edge ${
                   host.enableTerminal ? "rounded-tl-none rounded-bl-none" : ""
                 }`}
               >
@@ -152,52 +149,26 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
             <DropdownMenuContent
               align="start"
               side="right"
-              className="w-56 bg-dark-bg border-dark-border text-white"
+              className="w-56 bg-canvas border-edge text-foreground"
             >
-              {shouldShowMetrics && (
-                <DropdownMenuItem
-                  onClick={() =>
-                    addTab({ type: "server", title, hostConfig: host })
-                  }
-                  className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-dark-hover text-gray-300"
-                >
-                  <Server className="h-4 w-4" />
-                  <span className="flex-1">Open Server Stats</span>
-                </DropdownMenuItem>
-              )}
-              {host.enableFileManager && (
-                <DropdownMenuItem
-                  onClick={() =>
-                    addTab({ type: "file_manager", title, hostConfig: host })
-                  }
-                  className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-dark-hover text-gray-300"
-                >
-                  <FolderOpen className="h-4 w-4" />
-                  <span className="flex-1">Open File Manager</span>
-                </DropdownMenuItem>
-              )}
-              {host.enableTunnel && (
-                <DropdownMenuItem
-                  onClick={() =>
-                    addTab({ type: "tunnel", title, hostConfig: host })
-                  }
-                  className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-dark-hover text-gray-300"
-                >
-                  <ArrowDownUp className="h-4 w-4" />
-                  <span className="flex-1">Open Tunnels</span>
-                </DropdownMenuItem>
-              )}
-              {host.enableDocker && (
-                <DropdownMenuItem
-                  onClick={() =>
-                    addTab({ type: "docker", title, hostConfig: host })
-                  }
-                  className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-dark-hover text-gray-300"
-                >
-                  <Container className="h-4 w-4" />
-                  <span className="flex-1">Open Docker</span>
-                </DropdownMenuItem>
-              )}
+              <DropdownMenuItem
+                onClick={() =>
+                  addTab({ type: "server", title, hostConfig: host })
+                }
+                className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-hover text-foreground-secondary"
+              >
+                <Server className="h-4 w-4" />
+                <span className="flex-1">Open Server Details</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={() =>
+                  addTab({ type: "file_manager", title, hostConfig: host })
+                }
+                className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-hover text-foreground-secondary"
+              >
+                <FolderOpen className="h-4 w-4" />
+                <span className="flex-1">Open File Manager</span>
+              </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() =>
                   addTab({
@@ -207,7 +178,7 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
                     initialTab: "add_host",
                   })
                 }
-                className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-dark-hover text-gray-300"
+                className="flex items-center gap-2 cursor-pointer px-3 py-2 hover:bg-hover text-foreground-secondary"
               >
                 <Pencil className="h-4 w-4" />
                 <span className="flex-1">Edit</span>
@@ -222,7 +193,7 @@ export function Host({ host: initialHost }: HostProps): React.ReactElement {
           {tags.map((tag: string) => (
             <div
               key={tag}
-              className="bg-dark-bg border-1 border-dark-border pl-2 pr-2 rounded-[10px]"
+              className="bg-canvas border-1 border-edge pl-2 pr-2 rounded-[10px]"
             >
               <p className="text-sm">{tag}</p>
             </div>
