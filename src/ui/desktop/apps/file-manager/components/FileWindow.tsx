@@ -107,6 +107,29 @@ export function FileWindow({
     const loadFileContent = async () => {
       if (file.type !== "file") return;
 
+      // Media extensions that use streaming for agents (no WebSocket download needed)
+      const streamingMediaExtensions = [
+        "mp3", "wav", "ogg", "aac", "flac", "m4a", "wma",
+        "mp4", "avi", "mov", "wmv", "flv", "mkv", "webm", "m4v",
+      ];
+
+      const allMediaExtensions = [
+        "jpg", "jpeg", "png", "gif", "bmp", "svg", "webp", "tiff", "ico",
+        ...streamingMediaExtensions,
+        "zip", "rar", "7z", "tar", "gz", "bz2", "xz",
+        "exe", "dll", "so", "dylib", "bin", "iso",
+      ];
+
+      const extension = file.name.split(".").pop()?.toLowerCase() || "";
+
+      // For agent mode + streaming media, skip WebSocket download - streaming URL handles it
+      if (isAgentMode && streamingMediaExtensions.includes(extension)) {
+        setIsLoading(false);
+        setIsEditable(false);
+        setContent(""); // Content will be streamed via URL
+        return;
+      }
+
       try {
         setIsLoading(true);
 
@@ -131,48 +154,7 @@ export function FileWindow({
           file.size = contentSize;
         }
 
-        const mediaExtensions = [
-          "jpg",
-          "jpeg",
-          "png",
-          "gif",
-          "bmp",
-          "svg",
-          "webp",
-          "tiff",
-          "ico",
-          "mp3",
-          "wav",
-          "ogg",
-          "aac",
-          "flac",
-          "m4a",
-          "wma",
-          "mp4",
-          "avi",
-          "mov",
-          "wmv",
-          "flv",
-          "mkv",
-          "webm",
-          "m4v",
-          "zip",
-          "rar",
-          "7z",
-          "tar",
-          "gz",
-          "bz2",
-          "xz",
-          "exe",
-          "dll",
-          "so",
-          "dylib",
-          "bin",
-          "iso",
-        ];
-
-        const extension = file.name.split(".").pop()?.toLowerCase();
-        setIsEditable(!mediaExtensions.includes(extension || ""));
+        setIsEditable(!allMediaExtensions.includes(extension));
       } catch (error: unknown) {
         console.error("Failed to load file:", error);
 
