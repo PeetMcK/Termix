@@ -32,7 +32,9 @@ import {
 import { useTranslation } from "react-i18next";
 import CodeMirror from "@uiw/react-codemirror";
 import { oneDark } from "@codemirror/theme-one-dark";
+import { githubLight } from "@uiw/codemirror-theme-github";
 import { EditorView } from "@codemirror/view";
+import { useTheme } from "@/components/theme-provider";
 import type {
   Credential,
   CredentialEditorProps,
@@ -44,6 +46,14 @@ export function CredentialEditor({
   onFormSubmit,
 }: CredentialEditorProps) {
   const { t } = useTranslation();
+  const { theme: appTheme } = useTheme();
+
+  // Determine CodeMirror theme based on app theme
+  const isDarkMode =
+    appTheme === "dark" ||
+    (appTheme === "system" &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches);
+  const editorTheme = isDarkMode ? oneDark : githubLight;
   const [, setCredentials] = useState<Credential[]>([]);
   const [folders, setFolders] = useState<string[]>([]);
   const [, setLoading] = useState(true);
@@ -927,7 +937,7 @@ export function CredentialEditor({
                                   placeholder={t(
                                     "placeholders.pastePrivateKey",
                                   )}
-                                  theme={oneDark}
+                                  theme={editorTheme}
                                   className="border border-input rounded-md"
                                   minHeight="120px"
                                   basicSetup={{
@@ -1087,7 +1097,7 @@ export function CredentialEditor({
                                     debouncedPublicKeyDetection(value);
                                   }}
                                   placeholder={t("placeholders.pastePublicKey")}
-                                  theme={oneDark}
+                                  theme={editorTheme}
                                   className="border border-input rounded-md"
                                   minHeight="120px"
                                   basicSetup={{
