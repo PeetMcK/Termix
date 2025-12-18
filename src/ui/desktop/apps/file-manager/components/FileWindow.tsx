@@ -456,6 +456,7 @@ export function FileWindow({
         onSave={(newContent) => handleSave(newContent)}
         onDownload={handleDownload}
         onMediaDimensionsChange={handleMediaDimensionsChange}
+        agentId={agentId}
       />
     </DraggableWindow>
   );

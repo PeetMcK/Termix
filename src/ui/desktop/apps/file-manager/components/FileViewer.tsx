@@ -67,6 +67,7 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark as syntaxTheme } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Document, Page, pdfjs } from "react-pdf";
+import { getAgentStreamUrl } from "@/ui/main-axios";
 
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.mjs`;
 
@@ -95,6 +96,7 @@ interface FileViewerProps {
     width: number;
     height: number;
   }) => void;
+  agentId?: string; // For streaming media files from agents
 }
 
 function getLanguageIcon(filename: string): React.ReactNode {
@@ -307,6 +309,7 @@ export function FileViewer({
   onRevert,
   onDownload,
   onMediaDimensionsChange,
+  agentId,
 }: FileViewerProps) {
   const { t } = useTranslation();
   const [editedContent, setEditedContent] = useState(content);
@@ -868,7 +871,10 @@ export function FileViewer({
                   }
                 })();
 
-                const videoUrl = `data:${mimeType};base64,${content}`;
+                // Use streaming URL for agents, base64 data URL for SSH
+                const videoUrl = agentId
+                  ? getAgentStreamUrl(agentId, file.path)
+                  : `data:${mimeType};base64,${content}`;
 
                 return (
                   <div className="relative">
@@ -879,7 +885,7 @@ export function FileViewer({
                         maxHeight: "calc(100vh - 200px)",
                         backgroundColor: "#000",
                       }}
-                      preload="metadata"
+                      preload={agentId ? "auto" : "metadata"}
                       onError={(e) => {
                         console.error(
                           "Video playback error:",
@@ -1345,7 +1351,10 @@ export function FileViewer({
                   }
                 })();
 
-                const audioUrl = `data:${mimeType};base64,${content}`;
+                // Use streaming URL for agents, base64 data URL for SSH
+                const audioUrl = agentId
+                  ? getAgentStreamUrl(agentId, file.path)
+                  : `data:${mimeType};base64,${content}`;
 
                 return (
                   <div className="space-y-4">

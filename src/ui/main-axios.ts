@@ -3475,3 +3475,11 @@ export async function renameAgentItem(
 ): Promise<void> {
   await sendAgentFileOp<AgentFileOpResult>(agentId, "rename_item", { path, newName });
 }
+
+// Generate streaming URL for agent media files (video, audio)
+// This allows the browser to handle streaming with Range requests
+export function getAgentStreamUrl(agentId: string, filePath: string): string {
+  const token = localStorage.getItem("jwt");
+  const baseUrl = `http://localhost:30009/stream/${agentId}${filePath}`;
+  return token ? `${baseUrl}?token=${encodeURIComponent(token)}` : baseUrl;
+}

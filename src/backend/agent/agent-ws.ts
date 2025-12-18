@@ -1,4 +1,6 @@
 import { WebSocketServer, WebSocket, type RawData } from "ws";
+import express from "express";
+import cors from "cors";
 import crypto from "crypto";
 import { nanoid } from "nanoid";
 import { parse as parseUrl } from "url";
@@ -10,6 +12,7 @@ import { AuthManager } from "../utils/auth-manager.js";
 
 const AGENT_WS_PORT = 30007;
 const APP_AGENT_TERMINAL_PORT = 30008;
+const AGENT_STREAM_PORT = 30009;
 const authManager = AuthManager.getInstance();
 
 interface AgentConnection {
@@ -782,6 +785,12 @@ function handleAgentFileOpResponse(msgType: string, data: Record<string, unknown
     return;
   }
 
+  // Check if this is a stream request (HTTP streaming endpoint)
+  if (requestId.startsWith("stream-")) {
+    handleAgentStreamResponse(data);
+    return;
+  }
+
   const pendingReq = pendingFileOps.get(requestId);
   if (!pendingReq) {
     authLogger.warn(`[FileOp] No pending request for ${requestId} (may have timed out)`, {
@@ -829,4 +838,171 @@ function handleAgentPtyExit(data: { sessionId: string; code: number }) {
   appWsToSession.delete(session.ws);
 }
 
-export { connectedAgents, agentWss, agentTerminalWss, appTerminalSessions };
+// ========================================
+// HTTP Streaming Server for Agent Files
+// ========================================
+
+const streamApp = express();
+streamApp.use(cors());
+
+// Custom auth middleware that accepts token from query string (for media elements)
+streamApp.use((req, res, next) => {
+  // Try to get token from Authorization header first
+  const authHeader = req.headers.authorization;
+  let token: string | undefined;
+
+  if (authHeader?.startsWith("Bearer ")) {
+    token = authHeader.substring(7);
+  }
+
+  // Fall back to query parameter (for video/audio src attributes)
+  if (!token && req.query.token) {
+    token = req.query.token as string;
+  }
+
+  if (!token) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  // Verify token
+  const decoded = authManager.verifyToken(token);
+  if (!decoded) {
+    return res.status(401).json({ error: "Invalid token" });
+  }
+
+  req.userId = decoded.userId;
+  next();
+});
+
+// Pending stream requests - similar to file ops but for HTTP
+const pendingStreamRequests = new Map<string, {
+  resolve: (data: { content: string; fileName: string; mimeType: string; size: number }) => void;
+  reject: (error: Error) => void;
+  timeout: NodeJS.Timeout;
+}>();
+
+// Handle stream response from agent
+function handleAgentStreamResponse(data: Record<string, unknown>) {
+  const requestId = data.requestId as string;
+  const pending = pendingStreamRequests.get(requestId);
+  if (!pending) return;
+
+  clearTimeout(pending.timeout);
+  pendingStreamRequests.delete(requestId);
+
+  if (data.error) {
+    pending.reject(new Error(data.error as string));
+  } else {
+    pending.resolve({
+      content: data.content as string,
+      fileName: data.fileName as string,
+      mimeType: data.mimeType as string,
+      size: data.size as number,
+    });
+  }
+}
+
+// Request file from agent and return promise
+async function requestAgentFile(agentId: string, filePath: string): Promise<{ content: string; fileName: string; mimeType: string; size: number }> {
+  const agentConn = connectedAgents.get(agentId);
+  if (!agentConn || agentConn.ws.readyState !== WebSocket.OPEN) {
+    throw new Error("Agent is offline");
+  }
+
+  const requestId = `stream-${nanoid()}`;
+
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      pendingStreamRequests.delete(requestId);
+      reject(new Error("Stream request timeout"));
+    }, 120000); // 2 minute timeout for large files
+
+    pendingStreamRequests.set(requestId, { resolve, reject, timeout });
+
+    agentConn.ws.send(JSON.stringify({
+      type: "download_file",
+      data: { requestId, path: filePath }
+    }));
+  });
+}
+
+// Stream endpoint
+streamApp.get("/stream/:agentId/*", async (req, res) => {
+  const { agentId } = req.params;
+  const filePath = "/" + req.params[0]; // Reconstruct path from wildcard
+  const userId = req.userId;
+
+  if (!userId) {
+    return res.status(401).json({ error: "Unauthorized" });
+  }
+
+  try {
+    const db = getDb();
+
+    // Verify user owns this agent
+    const agentList = await db
+      .select()
+      .from(agents)
+      .where(and(eq(agents.id, agentId), eq(agents.userId, userId), isNull(agents.revokedAt)));
+
+    if (agentList.length === 0) {
+      return res.status(403).json({ error: "Agent not found or not authorized" });
+    }
+
+    const agent = agentList[0];
+    if (!agent.enableFileManager) {
+      return res.status(403).json({ error: "File manager disabled for this agent" });
+    }
+
+    // Request file from agent
+    const fileData = await requestAgentFile(agentId, filePath);
+
+    // Decode base64 content
+    const buffer = Buffer.from(fileData.content, "base64");
+    const fileSize = buffer.length;
+
+    // Handle Range requests for streaming
+    const range = req.headers.range;
+
+    if (range) {
+      const parts = range.replace(/bytes=/, "").split("-");
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+      const chunkSize = end - start + 1;
+
+      res.writeHead(206, {
+        "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": chunkSize,
+        "Content-Type": fileData.mimeType || "application/octet-stream",
+      });
+
+      res.end(buffer.slice(start, end + 1));
+    } else {
+      res.writeHead(200, {
+        "Content-Length": fileSize,
+        "Content-Type": fileData.mimeType || "application/octet-stream",
+        "Accept-Ranges": "bytes",
+      });
+
+      res.end(buffer);
+    }
+  } catch (error) {
+    authLogger.error("Stream request failed", error, {
+      operation: "agent_stream_error",
+      agentId,
+      filePath,
+    });
+    const err = error as Error;
+    res.status(500).json({ error: err.message || "Stream failed" });
+  }
+});
+
+const streamServer = streamApp.listen(AGENT_STREAM_PORT, () => {
+  authLogger.info(`Agent file streaming server started on port ${AGENT_STREAM_PORT}`, {
+    operation: "agent_stream_start",
+    port: AGENT_STREAM_PORT,
+  });
+});
+
+export { connectedAgents, agentWss, agentTerminalWss, appTerminalSessions, streamServer };
