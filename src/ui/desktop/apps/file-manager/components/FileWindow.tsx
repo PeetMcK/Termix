@@ -8,6 +8,7 @@ import {
   writeSSHFile,
   getSSHStatus,
   connectSSH,
+  downloadAgentFile,
 } from "@/ui/main-axios";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -41,10 +42,11 @@ interface FileWindowProps {
   windowId: string;
   file: FileItem;
   sshSessionId: string;
-  sshHost: SSHHost;
+  sshHost: SSHHost | null;
   initialX?: number;
   initialY?: number;
   onFileNotFound?: (file: FileItem) => void;
+  agentId?: string;
 }
 
 export function FileWindow({
@@ -55,7 +57,9 @@ export function FileWindow({
   initialX = 100,
   initialY = 100,
   onFileNotFound,
+  agentId,
 }: FileWindowProps) {
+  const isAgentMode = !!agentId;
   const { closeWindow, maximizeWindow, focusWindow, windows } =
     useWindowManager();
 
@@ -73,6 +77,9 @@ export function FileWindow({
   const currentWindow = windows.find((w) => w.id === windowId);
 
   const ensureSSHConnection = async () => {
+    // Skip for agent mode - no SSH connection needed
+    if (isAgentMode || !sshHost) return;
+
     try {
       const status = await getSSHStatus(sshSessionId);
 
@@ -103,10 +110,19 @@ export function FileWindow({
       try {
         setIsLoading(true);
 
-        await ensureSSHConnection();
+        let fileContent = "";
 
-        const response = await readSSHFile(sshSessionId, file.path);
-        const fileContent = response.content || "";
+        if (isAgentMode && agentId) {
+          // Use agent API
+          const response = await downloadAgentFile(agentId, file.path);
+          fileContent = response.content || "";
+        } else {
+          // Use SSH API
+          await ensureSSHConnection();
+          const response = await readSSHFile(sshSessionId, file.path);
+          fileContent = response.content || "";
+        }
+
         setContent(fileContent);
         setPendingContent(fileContent);
 
@@ -221,7 +237,7 @@ export function FileWindow({
     };
 
     loadFileContent();
-  }, [file, sshSessionId, sshHost]);
+  }, [file, sshSessionId, sshHost, isAgentMode, agentId]);
 
   const handleRevert = async () => {
     const loadFileContent = async () => {
@@ -230,10 +246,17 @@ export function FileWindow({
       try {
         setIsLoading(true);
 
-        await ensureSSHConnection();
+        let fileContent = "";
 
-        const response = await readSSHFile(sshSessionId, file.path);
-        const fileContent = response.content || "";
+        if (isAgentMode && agentId) {
+          const response = await downloadAgentFile(agentId, file.path);
+          fileContent = response.content || "";
+        } else {
+          await ensureSSHConnection();
+          const response = await readSSHFile(sshSessionId, file.path);
+          fileContent = response.content || "";
+        }
+
         setContent(fileContent);
         setPendingContent("");
 
@@ -256,6 +279,12 @@ export function FileWindow({
   };
 
   const handleSave = async (newContent: string) => {
+    // Agent file editing not yet supported
+    if (isAgentMode) {
+      toast.info(t("fileManager.editingNotSupportedForAgents") || "File editing is not yet supported for agents");
+      return;
+    }
+
     try {
       setIsLoading(true);
 
@@ -280,7 +309,7 @@ export function FileWindow({
         err.message?.includes("established")
       ) {
         toast.error(
-          `SSH connection failed. Please check your connection to ${sshHost.name} (${sshHost.ip}:${sshHost.port})`,
+          `SSH connection failed. Please check your connection to ${sshHost?.name} (${sshHost?.ip}:${sshHost?.port})`,
         );
       } else {
         toast.error(
@@ -293,6 +322,9 @@ export function FileWindow({
   };
 
   const handleContentChange = (newContent: string) => {
+    // Skip content change handling for agents since editing isn't supported
+    if (isAgentMode) return;
+
     setPendingContent(newContent);
 
     if (autoSaveTimerRef.current) {
@@ -323,9 +355,14 @@ export function FileWindow({
 
   const handleDownload = async () => {
     try {
-      await ensureSSHConnection();
+      let response;
 
-      const response = await downloadSSHFile(sshSessionId, file.path);
+      if (isAgentMode && agentId) {
+        response = await downloadAgentFile(agentId, file.path);
+      } else {
+        await ensureSSHConnection();
+        response = await downloadSSHFile(sshSessionId, file.path);
+      }
 
       if (response?.content) {
         const byteCharacters = atob(response.content);
@@ -354,11 +391,12 @@ export function FileWindow({
 
       const err = error as { message?: string };
       if (
-        err.message?.includes("connection") ||
-        err.message?.includes("established")
+        !isAgentMode &&
+        (err.message?.includes("connection") ||
+          err.message?.includes("established"))
       ) {
         toast.error(
-          `SSH connection failed. Please check your connection to ${sshHost.name} (${sshHost.ip}:${sshHost.port})`,
+          `SSH connection failed. Please check your connection to ${sshHost?.name} (${sshHost?.ip}:${sshHost?.port})`,
         );
       } else {
         toast.error(
