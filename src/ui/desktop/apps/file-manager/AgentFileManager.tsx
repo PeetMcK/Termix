@@ -110,6 +110,7 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
 
   const initialLoadDoneRef = useRef(false);
   const currentLoadingPathRef = useRef<string>("");
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const loadDirectory = useCallback(
     async (path: string) => {
@@ -336,11 +337,20 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
       let offsetY: number;
 
       if (isVideo) {
-        // Video files: 1/4 canvas size, positioned in lower right
-        windowWidth = Math.floor(window.innerWidth / 2);
-        windowHeight = Math.floor(window.innerHeight / 2);
-        offsetX = Math.floor(window.innerWidth / 2);
-        offsetY = Math.floor(window.innerHeight / 2);
+        // Video files: half height of container, maintain 16:9 aspect ratio
+        const containerHeight = containerRef.current?.clientHeight || window.innerHeight;
+        const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
+
+        windowHeight = Math.floor(containerHeight / 2);
+
+        // Account for window chrome (title bar ~40px, header ~80px, footer ~30px = ~150px)
+        const windowChromeHeight = 150;
+        const videoAreaHeight = windowHeight - windowChromeHeight;
+        windowWidth = Math.floor(videoAreaHeight * 16 / 9) + 20; // 16:9 + small padding
+
+        // Position in lower right corner
+        offsetX = containerWidth - windowWidth - 10;
+        offsetY = containerHeight - windowHeight - 10;
       } else {
         // Other files: default sizing with cascading position
         windowWidth = 800;
@@ -362,7 +372,10 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
           sshHost={null}
           initialX={offsetX}
           initialY={offsetY}
+          initialWidth={windowWidth}
+          initialHeight={windowHeight}
           agentId={agentConfig.id}
+          disableAutoResize={isVideo}
         />
       );
 
@@ -613,7 +626,7 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
   const agentName = agentConfig.hostname || agentConfig.deviceId;
 
   return (
-    <div className="h-full flex flex-col bg-dark-bg">
+    <div ref={containerRef} className="h-full flex flex-col bg-dark-bg">
       <div className="flex-shrink-0 border-b border-dark-border">
         <div className="flex items-center justify-between p-3">
           <div className="flex items-center gap-2">

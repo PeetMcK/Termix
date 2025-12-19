@@ -46,8 +46,11 @@ interface FileWindowProps {
   sshHost: SSHHost | null;
   initialX?: number;
   initialY?: number;
+  initialWidth?: number;
+  initialHeight?: number;
   onFileNotFound?: (file: FileItem) => void;
   agentId?: string;
+  disableAutoResize?: boolean;
 }
 
 export function FileWindow({
@@ -57,8 +60,11 @@ export function FileWindow({
   sshHost,
   initialX = 100,
   initialY = 100,
+  initialWidth = 800,
+  initialHeight = 600,
   onFileNotFound,
   agentId,
+  disableAutoResize = false,
 }: FileWindowProps) {
   const isAgentMode = !!agentId;
   const { closeWindow, maximizeWindow, focusWindow, windows } =
@@ -424,8 +430,8 @@ export function FileWindow({
       title={file.name}
       initialX={initialX}
       initialY={initialY}
-      initialWidth={800}
-      initialHeight={600}
+      initialWidth={initialWidth}
+      initialHeight={initialHeight}
       minWidth={400}
       minHeight={300}
       onClose={handleClose}
@@ -433,7 +439,7 @@ export function FileWindow({
       onFocus={handleFocus}
       isMaximized={currentWindow.isMaximized}
       zIndex={currentWindow.zIndex}
-      targetSize={mediaDimensions}
+      targetSize={disableAutoResize ? undefined : mediaDimensions}
     >
       <FileViewer
         file={file}
