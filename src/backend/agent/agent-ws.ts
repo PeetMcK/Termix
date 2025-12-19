@@ -145,6 +145,12 @@ async function handleAgentMessage(ws: WebSocket, message: AgentMessage) {
       handleAgentFileOpResponse(message.type, message.data as Record<string, unknown>);
       break;
 
+    // Streaming responses from agent
+    case "stream_file_info_response":
+    case "stream_chunk_response":
+      handleAgentStreamingResponse(message.type, message.data as Record<string, unknown>);
+      break;
+
     default:
       authLogger.warn(`Unknown agent message type: ${message.type}`, {
         operation: "agent_unknown_message",
@@ -785,12 +791,6 @@ function handleAgentFileOpResponse(msgType: string, data: Record<string, unknown
     return;
   }
 
-  // Check if this is a stream request (HTTP streaming endpoint)
-  if (requestId.startsWith("stream-")) {
-    handleAgentStreamResponse(data);
-    return;
-  }
-
   const pendingReq = pendingFileOps.get(requestId);
   if (!pendingReq) {
     authLogger.warn(`[FileOp] No pending request for ${requestId} (may have timed out)`, {
@@ -861,70 +861,138 @@ streamApp.use(async (req, res, next) => {
   }
 
   if (!token) {
+    authLogger.warn("Stream request missing token", {
+      operation: "stream_auth_missing_token",
+      path: req.path,
+    });
     return res.status(401).json({ error: "Unauthorized" });
   }
 
-  // Verify token
-  const decoded = await authManager.verifyJWTToken(token);
-  if (!decoded) {
-    return res.status(401).json({ error: "Invalid token" });
-  }
+  try {
+    // Verify token
+    const decoded = await authManager.verifyJWTToken(token);
+    if (!decoded) {
+      authLogger.warn("Stream request invalid token", {
+        operation: "stream_auth_invalid_token",
+        path: req.path,
+      });
+      return res.status(401).json({ error: "Invalid token" });
+    }
 
-  (req as any).userId = decoded.userId;
-  next();
+    (req as any).userId = decoded.userId;
+    next();
+  } catch (error) {
+    authLogger.error("Stream auth error", error, {
+      operation: "stream_auth_error",
+      path: req.path,
+    });
+    return res.status(401).json({ error: "Authentication failed" });
+  }
 });
 
-// Pending stream requests - similar to file ops but for HTTP
-const pendingStreamRequests = new Map<string, {
-  resolve: (data: { content: string; fileName: string; mimeType: string; size: number }) => void;
+// Pending streaming requests
+interface StreamingRequest {
+  resolve: (data: Record<string, unknown>) => void;
   reject: (error: Error) => void;
   timeout: NodeJS.Timeout;
-}>();
+}
 
-// Handle stream response from agent
-function handleAgentStreamResponse(data: Record<string, unknown>) {
+const pendingStreamingRequests = new Map<string, StreamingRequest>();
+
+// Handle streaming responses from agent
+function handleAgentStreamingResponse(msgType: string, data: Record<string, unknown>) {
   const requestId = data.requestId as string;
-  const pending = pendingStreamRequests.get(requestId);
+  if (!requestId) return;
+
+  const pending = pendingStreamingRequests.get(requestId);
   if (!pending) return;
 
   clearTimeout(pending.timeout);
-  pendingStreamRequests.delete(requestId);
+  pendingStreamingRequests.delete(requestId);
 
   if (data.error) {
     pending.reject(new Error(data.error as string));
   } else {
-    pending.resolve({
-      content: data.content as string,
-      fileName: data.fileName as string,
-      mimeType: data.mimeType as string,
-      size: data.size as number,
-    });
+    pending.resolve(data);
   }
 }
 
-// Request file from agent and return promise
-async function requestAgentFile(agentId: string, filePath: string): Promise<{ content: string; fileName: string; mimeType: string; size: number }> {
+// Request file info from agent
+async function requestAgentFileInfo(agentId: string, filePath: string): Promise<{
+  fileName: string;
+  mimeType: string;
+  size: number;
+}> {
   const agentConn = connectedAgents.get(agentId);
   if (!agentConn || agentConn.ws.readyState !== WebSocket.OPEN) {
     throw new Error("Agent is offline");
   }
 
-  const requestId = `stream-${nanoid()}`;
+  const requestId = `stream-info-${nanoid()}`;
 
   return new Promise((resolve, reject) => {
     const timeout = setTimeout(() => {
-      pendingStreamRequests.delete(requestId);
-      reject(new Error("Stream request timeout"));
-    }, 120000); // 2 minute timeout for large files
+      pendingStreamingRequests.delete(requestId);
+      reject(new Error("Stream info request timeout"));
+    }, 30000);
 
-    pendingStreamRequests.set(requestId, { resolve, reject, timeout });
+    pendingStreamingRequests.set(requestId, {
+      resolve: (data) => {
+        resolve({
+          fileName: data.fileName as string,
+          mimeType: data.mimeType as string,
+          size: data.size as number,
+        });
+      },
+      reject,
+      timeout,
+    });
 
     agentConn.ws.send(JSON.stringify({
-      type: "download_file",
+      type: "stream_file_info",
       data: { requestId, path: filePath }
     }));
   });
 }
+
+// Request a chunk of file data from agent
+async function requestAgentFileChunk(
+  agentId: string,
+  filePath: string,
+  offset: number,
+  length: number
+): Promise<Buffer> {
+  const agentConn = connectedAgents.get(agentId);
+  if (!agentConn || agentConn.ws.readyState !== WebSocket.OPEN) {
+    throw new Error("Agent is offline");
+  }
+
+  const requestId = `stream-chunk-${nanoid()}`;
+
+  return new Promise((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      pendingStreamingRequests.delete(requestId);
+      reject(new Error("Stream chunk request timeout"));
+    }, 60000);
+
+    pendingStreamingRequests.set(requestId, {
+      resolve: (data) => {
+        const base64Data = data.data as string;
+        resolve(Buffer.from(base64Data, "base64"));
+      },
+      reject,
+      timeout,
+    });
+
+    agentConn.ws.send(JSON.stringify({
+      type: "stream_chunk",
+      data: { requestId, path: filePath, offset, length }
+    }));
+  });
+}
+
+// Chunk size for streaming (1MB chunks)
+const STREAM_CHUNK_SIZE = 1024 * 1024;
 
 // Stream endpoint - use regex to capture file path with slashes
 streamApp.get(/^\/stream\/([^\/]+)\/(.+)$/, async (req, res) => {
@@ -954,47 +1022,104 @@ streamApp.get(/^\/stream\/([^\/]+)\/(.+)$/, async (req, res) => {
       return res.status(403).json({ error: "File manager disabled for this agent" });
     }
 
-    // Request file from agent
-    const fileData = await requestAgentFile(agentId, filePath);
+    // First, get file info
+    const fileInfo = await requestAgentFileInfo(agentId, filePath);
+    const fileSize = fileInfo.size;
 
-    // Decode base64 content
-    const buffer = Buffer.from(fileData.content, "base64");
-    const fileSize = buffer.length;
+    authLogger.info(`Streaming file: ${filePath}, size: ${fileSize}`, {
+      operation: "agent_stream_start",
+      agentId,
+      filePath,
+      fileSize,
+    });
 
-    // Handle Range requests for streaming
+    // Handle Range requests for seeking
     const range = req.headers.range;
+    let start = 0;
+    let end = fileSize - 1;
 
     if (range) {
       const parts = range.replace(/bytes=/, "").split("-");
-      const start = parseInt(parts[0], 10);
-      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-      const chunkSize = end - start + 1;
+      start = parseInt(parts[0], 10);
+      end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+      // Ensure valid range
+      if (start >= fileSize || end >= fileSize || start > end) {
+        res.status(416).json({ error: "Range not satisfiable" });
+        return;
+      }
 
       res.writeHead(206, {
         "Content-Range": `bytes ${start}-${end}/${fileSize}`,
         "Accept-Ranges": "bytes",
-        "Content-Length": chunkSize,
-        "Content-Type": fileData.mimeType || "application/octet-stream",
+        "Content-Length": end - start + 1,
+        "Content-Type": fileInfo.mimeType || "application/octet-stream",
       });
-
-      res.end(buffer.slice(start, end + 1));
     } else {
       res.writeHead(200, {
         "Content-Length": fileSize,
-        "Content-Type": fileData.mimeType || "application/octet-stream",
+        "Content-Type": fileInfo.mimeType || "application/octet-stream",
         "Accept-Ranges": "bytes",
       });
-
-      res.end(buffer);
     }
+
+    // Stream the file in chunks
+    let currentOffset = start;
+    const targetEnd = end;
+
+    while (currentOffset <= targetEnd) {
+      const chunkSize = Math.min(STREAM_CHUNK_SIZE, targetEnd - currentOffset + 1);
+
+      try {
+        const chunk = await requestAgentFileChunk(agentId, filePath, currentOffset, chunkSize);
+
+        // Write chunk to response
+        const writeOk = res.write(chunk);
+
+        if (!writeOk) {
+          // Backpressure - wait for drain
+          await new Promise<void>((resolve) => res.once("drain", resolve));
+        }
+
+        currentOffset += chunk.length;
+
+        // Check if client disconnected
+        if (res.destroyed) {
+          authLogger.info("Client disconnected during stream", {
+            operation: "agent_stream_client_disconnect",
+            agentId,
+            filePath,
+          });
+          return;
+        }
+      } catch (chunkError) {
+        authLogger.error("Failed to fetch chunk", chunkError, {
+          operation: "agent_stream_chunk_error",
+          agentId,
+          filePath,
+          offset: currentOffset,
+        });
+        // End response on chunk error
+        res.end();
+        return;
+      }
+    }
+
+    res.end();
   } catch (error) {
     authLogger.error("Stream request failed", error, {
       operation: "agent_stream_error",
       agentId,
       filePath,
     });
-    const err = error as Error;
-    res.status(500).json({ error: err.message || "Stream failed" });
+
+    // Only send error if headers haven't been sent
+    if (!res.headersSent) {
+      const err = error as Error;
+      res.status(500).json({ error: err.message || "Stream failed" });
+    } else {
+      res.end();
+    }
   }
 });
 

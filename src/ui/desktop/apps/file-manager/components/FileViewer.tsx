@@ -876,6 +876,11 @@ export function FileViewer({
                   ? getAgentStreamUrl(agentId, file.path)
                   : `data:${mimeType};base64,${content}`;
 
+                // Debug: log streaming URL for agents
+                if (agentId) {
+                  console.log("Video streaming URL:", videoUrl);
+                }
+
                 return (
                   <div className="relative">
                     <video
@@ -885,12 +890,18 @@ export function FileViewer({
                         maxHeight: "calc(100vh - 200px)",
                         backgroundColor: "#000",
                       }}
+                      crossOrigin="anonymous"
                       preload={agentId ? "auto" : "metadata"}
                       onError={(e) => {
-                        console.error(
-                          "Video playback error:",
-                          e.currentTarget.error,
-                        );
+                        const video = e.currentTarget;
+                        const error = video.error;
+                        console.error("Video playback error:", {
+                          code: error?.code,
+                          message: error?.message,
+                          networkState: video.networkState,
+                          readyState: video.readyState,
+                          src: video.currentSrc,
+                        });
                       }}
                       onLoadedMetadata={(e) => {
                         const video = e.currentTarget;
