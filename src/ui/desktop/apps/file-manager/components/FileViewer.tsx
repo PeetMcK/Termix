@@ -635,7 +635,7 @@ export function FileViewer({
         </div>
       )}
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden relative">
         {showLargeFileWarning && (
           <div className="h-full flex items-center justify-center bg-background">
             <div className="bg-card border border-destructive/30 rounded-lg p-6 max-w-md mx-4 shadow-lg">
@@ -846,8 +846,10 @@ export function FileViewer({
         )}
 
         {fileTypeInfo.type === "video" && !showLargeFileWarning && (
-          <div className="p-6 flex items-center justify-center h-full">
-            <div className="w-full max-w-4xl">
+          <div
+            className="absolute flex items-center justify-center"
+            style={{ inset: "5px" }}
+          >
               {(() => {
                 const ext = file.name.split(".").pop()?.toLowerCase() || "";
                 const mimeType = (() => {
@@ -876,32 +878,23 @@ export function FileViewer({
                   ? getAgentStreamUrl(agentId, file.path)
                   : `data:${mimeType};base64,${content}`;
 
-                // Debug: log streaming URL for agents
-                if (agentId) {
-                  console.log("Video streaming URL:", videoUrl);
-                }
-
                 return (
-                  <div className="relative">
                     <video
                       controls
-                      className="w-full rounded-lg shadow-sm"
+                      className="rounded-lg shadow-sm"
                       style={{
-                        maxHeight: "calc(100vh - 200px)",
+                        maxWidth: "100%",
+                        maxHeight: "100%",
+                        objectFit: "contain",
                         backgroundColor: "#000",
                       }}
                       crossOrigin="anonymous"
                       preload={agentId ? "auto" : "metadata"}
                       onError={(e) => {
-                        const video = e.currentTarget;
-                        const error = video.error;
-                        console.error("Video playback error:", {
-                          code: error?.code,
-                          message: error?.message,
-                          networkState: video.networkState,
-                          readyState: video.readyState,
-                          src: video.currentSrc,
-                        });
+                        console.error(
+                          "Video playback error:",
+                          e.currentTarget.error,
+                        );
                       }}
                       onLoadedMetadata={(e) => {
                         const video = e.currentTarget;
@@ -936,10 +929,8 @@ export function FileViewer({
                         )}
                       </div>
                     </video>
-                  </div>
                 );
               })()}
-            </div>
           </div>
         )}
 

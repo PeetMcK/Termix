@@ -3478,9 +3478,14 @@ export async function renameAgentItem(
 
 // Generate streaming URL for agent media files (video, audio)
 // This allows the browser to handle streaming with Range requests
-export function getAgentStreamUrl(agentId: string, filePath: string): string {
+// Set download=true to force download instead of playing in browser
+export function getAgentStreamUrl(agentId: string, filePath: string, download = false): string {
   // Check both cookie and localStorage for JWT token
   const token = getCookie("jwt") || localStorage.getItem("jwt");
   const baseUrl = `http://localhost:30009/stream/${agentId}${filePath}`;
-  return token ? `${baseUrl}?token=${encodeURIComponent(token)}` : baseUrl;
+  const params = new URLSearchParams();
+  if (token) params.set("token", token);
+  if (download) params.set("download", "true");
+  const queryString = params.toString();
+  return queryString ? `${baseUrl}?${queryString}` : baseUrl;
 }

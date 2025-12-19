@@ -9,6 +9,7 @@ import {
   getSSHStatus,
   connectSSH,
   downloadAgentFile,
+  getAgentStreamUrl,
 } from "@/ui/main-axios";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
@@ -337,14 +338,22 @@ export function FileWindow({
 
   const handleDownload = async () => {
     try {
-      let response;
-
+      // For agent mode, use the HTTP streaming endpoint for downloads
       if (isAgentMode && agentId) {
-        response = await downloadAgentFile(agentId, file.path);
-      } else {
-        await ensureSSHConnection();
-        response = await downloadSSHFile(sshSessionId, file.path);
+        const streamUrl = getAgentStreamUrl(agentId, file.path, true); // true = download mode
+        const link = document.createElement("a");
+        link.href = streamUrl;
+        link.download = file.name;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        toast.success(t("fileManager.fileDownloadedSuccessfully"));
+        return;
       }
+
+      // For SSH mode, use the existing WebSocket method
+      await ensureSSHConnection();
+      const response = await downloadSSHFile(sshSessionId, file.path);
 
       if (response?.content) {
         const byteCharacters = atob(response.content);
@@ -373,9 +382,8 @@ export function FileWindow({
 
       const err = error as { message?: string };
       if (
-        !isAgentMode &&
-        (err.message?.includes("connection") ||
-          err.message?.includes("established"))
+        err.message?.includes("connection") ||
+        err.message?.includes("established")
       ) {
         toast.error(
           `SSH connection failed. Please check your connection to ${sshHost?.name} (${sshHost?.ip}:${sshHost?.port})`,

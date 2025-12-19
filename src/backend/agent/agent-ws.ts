@@ -1026,12 +1026,27 @@ streamApp.get(/^\/stream\/([^\/]+)\/(.+)$/, async (req, res) => {
     const fileInfo = await requestAgentFileInfo(agentId, filePath);
     const fileSize = fileInfo.size;
 
-    authLogger.info(`Streaming file: ${filePath}, size: ${fileSize}`, {
+    // Check if download mode is requested
+    const isDownload = req.query.download === "true";
+
+    authLogger.info(`Streaming file: ${filePath}, size: ${fileSize}, download: ${isDownload}`, {
       operation: "agent_stream_start",
       agentId,
       filePath,
       fileSize,
+      isDownload,
     });
+
+    // Build common headers
+    const baseHeaders: Record<string, string | number> = {
+      "Content-Type": fileInfo.mimeType || "application/octet-stream",
+      "Accept-Ranges": "bytes",
+    };
+
+    // Add Content-Disposition for downloads to force browser to download instead of play
+    if (isDownload) {
+      baseHeaders["Content-Disposition"] = `attachment; filename="${encodeURIComponent(fileInfo.fileName)}"`;
+    }
 
     // Handle Range requests for seeking
     const range = req.headers.range;
@@ -1050,16 +1065,14 @@ streamApp.get(/^\/stream\/([^\/]+)\/(.+)$/, async (req, res) => {
       }
 
       res.writeHead(206, {
+        ...baseHeaders,
         "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-        "Accept-Ranges": "bytes",
         "Content-Length": end - start + 1,
-        "Content-Type": fileInfo.mimeType || "application/octet-stream",
       });
     } else {
       res.writeHead(200, {
+        ...baseHeaders,
         "Content-Length": fileSize,
-        "Content-Type": fileInfo.mimeType || "application/octet-stream",
-        "Accept-Ranges": "bytes",
       });
     }
 

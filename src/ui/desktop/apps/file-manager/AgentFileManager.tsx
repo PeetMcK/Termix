@@ -25,13 +25,13 @@ import type { AgentConfig, FileItem } from "../../../types/index.js";
 import {
   listAgentFiles,
   uploadAgentFile,
-  downloadAgentFile,
   createAgentFile,
   createAgentFolder,
   deleteAgentItem,
   copyAgentItem,
   moveAgentItem,
   renameAgentItem,
+  getAgentStreamUrl,
 } from "@/ui/main-axios.ts";
 
 interface AgentFileManagerProps {
@@ -238,30 +238,15 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
 
   async function handleDownloadFile(file: FileItem) {
     try {
-      const response = await downloadAgentFile(agentConfig.id, file.path);
-
-      if (response?.content) {
-        const byteCharacters = atob(response.content);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
-          byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], {
-          type: response.mimeType || "application/octet-stream",
-        });
-
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = url;
-        link.download = response.fileName || file.name;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-
-        toast.success(t("fileManager.fileDownloadedSuccessfully", { name: file.name }));
-      }
+      // Use HTTP streaming endpoint for downloads (avoids WebSocket message size limits)
+      const streamUrl = getAgentStreamUrl(agentConfig.id, file.path, true);
+      const link = document.createElement("a");
+      link.href = streamUrl;
+      link.download = file.name;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      toast.success(t("fileManager.fileDownloadedSuccessfully", { name: file.name }));
     } catch (error: unknown) {
       const err = error as { message?: string };
       toast.error(t("fileManager.failedToDownloadFile") + ": " + (err.message || ""));
@@ -340,16 +325,34 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
     if (file.type === "directory") {
       setCurrentPath(file.path);
     } else {
-      // Open file in viewer window
-      const windowCount = Date.now() % 10;
-      const baseOffsetX = 120 + windowCount * 30;
-      const baseOffsetY = 120 + windowCount * 30;
+      // Check if file is a video
+      const videoExtensions = ["mp4", "avi", "mov", "wmv", "flv", "mkv", "webm", "m4v"];
+      const extension = file.name.split(".").pop()?.toLowerCase() || "";
+      const isVideo = videoExtensions.includes(extension);
 
-      const maxOffsetX = Math.max(0, window.innerWidth - 800 - 100);
-      const maxOffsetY = Math.max(0, window.innerHeight - 600 - 100);
+      let windowWidth: number;
+      let windowHeight: number;
+      let offsetX: number;
+      let offsetY: number;
 
-      const offsetX = Math.min(baseOffsetX, maxOffsetX);
-      const offsetY = Math.min(baseOffsetY, maxOffsetY);
+      if (isVideo) {
+        // Video files: 1/4 canvas size, positioned in lower right
+        windowWidth = Math.floor(window.innerWidth / 2);
+        windowHeight = Math.floor(window.innerHeight / 2);
+        offsetX = Math.floor(window.innerWidth / 2);
+        offsetY = Math.floor(window.innerHeight / 2);
+      } else {
+        // Other files: default sizing with cascading position
+        windowWidth = 800;
+        windowHeight = 600;
+        const windowCount = Date.now() % 10;
+        const baseOffsetX = 120 + windowCount * 30;
+        const baseOffsetY = 120 + windowCount * 30;
+        const maxOffsetX = Math.max(0, window.innerWidth - windowWidth - 100);
+        const maxOffsetY = Math.max(0, window.innerHeight - windowHeight - 100);
+        offsetX = Math.min(baseOffsetX, maxOffsetX);
+        offsetY = Math.min(baseOffsetY, maxOffsetY);
+      }
 
       const createWindowComponent = (windowId: string) => (
         <FileWindow
@@ -367,8 +370,8 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
         title: file.name,
         x: offsetX,
         y: offsetY,
-        width: 800,
-        height: 600,
+        width: windowWidth,
+        height: windowHeight,
         isMaximized: false,
         isMinimized: false,
         component: createWindowComponent,
