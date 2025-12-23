@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import {
   Download,
@@ -110,6 +110,48 @@ export function FileManagerContextMenu({
   const { t } = useTranslation();
   const [menuPosition, setMenuPosition] = useState({ x, y });
   const [isMounted, setIsMounted] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  const adjustPosition = useCallback(() => {
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const padding = 10;
+
+    // Get actual menu dimensions if available, otherwise use estimates
+    const menuWidth = menuRef.current?.offsetWidth || 220;
+    const menuHeight = menuRef.current?.offsetHeight || 300;
+
+    let adjustedX = x;
+    let adjustedY = y;
+
+    // Adjust horizontal position
+    if (x + menuWidth > viewportWidth - padding) {
+      adjustedX = viewportWidth - menuWidth - padding;
+    }
+    if (adjustedX < padding) {
+      adjustedX = padding;
+    }
+
+    // Adjust vertical position
+    if (y + menuHeight > viewportHeight - padding) {
+      adjustedY = viewportHeight - menuHeight - padding;
+    }
+    if (adjustedY < padding) {
+      adjustedY = padding;
+    }
+
+    setMenuPosition({ x: adjustedX, y: adjustedY });
+  }, [x, y]);
+
+  // Adjust position after menu renders and we know its actual size
+  useEffect(() => {
+    if (isMounted && menuRef.current) {
+      // Use requestAnimationFrame to ensure the menu has rendered
+      requestAnimationFrame(() => {
+        adjustPosition();
+      });
+    }
+  }, [isMounted, adjustPosition]);
 
   useEffect(() => {
     if (!isVisible) {
@@ -118,27 +160,7 @@ export function FileManagerContextMenu({
     }
 
     setIsMounted(true);
-
-    const adjustPosition = () => {
-      const menuWidth = 200;
-      const menuHeight = 300;
-      const viewportWidth = window.innerWidth;
-      const viewportHeight = window.innerHeight;
-
-      let adjustedX = x;
-      let adjustedY = y;
-
-      if (x + menuWidth > viewportWidth) {
-        adjustedX = viewportWidth - menuWidth - 10;
-      }
-
-      if (y + menuHeight > viewportHeight) {
-        adjustedY = viewportHeight - menuHeight - 10;
-      }
-
-      setMenuPosition({ x: adjustedX, y: adjustedY });
-    };
-
+    // Initial position adjustment
     adjustPosition();
 
     let cleanupFn: (() => void) | null = null;
@@ -511,6 +533,7 @@ export function FileManagerContextMenu({
       />
 
       <div
+        ref={menuRef}
         data-context-menu
         className={cn(
           "fixed bg-dark-bg border border-dark-border rounded-lg shadow-xl min-w-[180px] max-w-[250px] z-[99995] overflow-hidden",
