@@ -116,6 +116,7 @@ export function FileWindow({
 
       // Media extensions that use streaming for agents (no WebSocket download needed)
       const streamingMediaExtensions = [
+        "jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff", "ico",
         "mp3", "wav", "ogg", "aac", "flac", "m4a", "wma",
         "mp4", "avi", "mov", "wmv", "flv", "mkv", "webm", "m4v",
       ];

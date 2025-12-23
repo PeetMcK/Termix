@@ -57,10 +57,53 @@ export function DraggableWindow({
   const windowRef = useRef<HTMLDivElement>(null);
   const titleBarRef = useRef<HTMLDivElement>(null);
 
+  // Ensure window stays within viewport bounds on initial render
+  useEffect(() => {
+    if (isMaximized) return;
+
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+
+    let newX = position.x;
+    let newY = position.y;
+    let needsUpdate = false;
+
+    // Ensure right edge doesn't go off screen
+    if (newX + size.width > viewportWidth) {
+      newX = Math.max(0, viewportWidth - size.width);
+      needsUpdate = true;
+    }
+
+    // Ensure bottom edge doesn't go off screen
+    if (newY + size.height > viewportHeight) {
+      newY = Math.max(0, viewportHeight - size.height);
+      needsUpdate = true;
+    }
+
+    // Ensure left edge doesn't go off screen
+    if (newX < 0) {
+      newX = 0;
+      needsUpdate = true;
+    }
+
+    // Ensure top edge doesn't go off screen
+    if (newY < 0) {
+      newY = 0;
+      needsUpdate = true;
+    }
+
+    if (needsUpdate) {
+      setPosition({ x: newX, y: newY });
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Only run on mount
+
   useEffect(() => {
     if (targetSize && !isMaximized) {
-      const maxWidth = Math.min(window.innerWidth * 0.9, 1200);
-      const maxHeight = Math.min(window.innerHeight * 0.8, 800);
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+      const maxWidth = Math.min(viewportWidth * 0.9, 1200);
+      const maxHeight = Math.min(viewportHeight * 0.8, 800);
 
       let newWidth = Math.min(targetSize.width + 50, maxWidth);
       let newHeight = Math.min(targetSize.height + 150, maxHeight);
@@ -77,12 +120,16 @@ export function DraggableWindow({
       newWidth = Math.max(newWidth, minWidth);
       newHeight = Math.max(newHeight, minHeight);
 
-      setSize({ width: newWidth, height: newHeight });
+      // Calculate centered position
+      let newX = (viewportWidth - newWidth) / 2;
+      let newY = (viewportHeight - newHeight) / 2;
 
-      setPosition({
-        x: Math.max(0, (window.innerWidth - newWidth) / 2),
-        y: Math.max(0, (window.innerHeight - newHeight) / 2),
-      });
+      // Ensure window stays within viewport bounds
+      newX = Math.max(0, Math.min(newX, viewportWidth - newWidth));
+      newY = Math.max(0, Math.min(newY, viewportHeight - newHeight));
+
+      setSize({ width: newWidth, height: newHeight });
+      setPosition({ x: newX, y: newY });
     }
   }, [targetSize, isMaximized, minWidth, minHeight]);
 

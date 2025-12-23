@@ -750,36 +750,46 @@ export function FileViewer({
                 }}
               />
             ) : (
-              <PhotoProvider maskOpacity={0.7}>
-                <PhotoView src={`data:image/*;base64,${content}`}>
-                  <img
-                    src={`data:image/*;base64,${content}`}
-                    alt={file.name}
-                    className="max-w-full max-h-full object-contain rounded-lg shadow-sm cursor-pointer hover:shadow-lg transition-shadow"
-                    style={{ maxHeight: "calc(100vh - 200px)" }}
-                    onLoad={(e) => {
-                      setImageLoading(false);
-                      setImageLoadError(false);
+              (() => {
+                // Use streaming URL for agents, base64 data URL for SSH
+                const imageUrl = agentId
+                  ? getAgentStreamUrl(agentId, file.path)
+                  : `data:image/*;base64,${content}`;
 
-                      const img = e.currentTarget;
-                      if (
-                        onMediaDimensionsChange &&
-                        img.naturalWidth &&
-                        img.naturalHeight
-                      ) {
-                        onMediaDimensionsChange({
-                          width: img.naturalWidth,
-                          height: img.naturalHeight,
-                        });
-                      }
-                    }}
-                    onError={() => {
-                      setImageLoading(false);
-                      setImageLoadError(true);
-                    }}
-                  />
-                </PhotoView>
-              </PhotoProvider>
+                return (
+                  <PhotoProvider maskOpacity={0.7}>
+                    <PhotoView src={imageUrl}>
+                      <img
+                        src={imageUrl}
+                        alt={file.name}
+                        className="max-w-full max-h-full object-contain rounded-lg shadow-sm cursor-pointer hover:shadow-lg transition-shadow"
+                        style={{ maxHeight: "calc(100vh - 200px)" }}
+                        crossOrigin={agentId ? "anonymous" : undefined}
+                        onLoad={(e) => {
+                          setImageLoading(false);
+                          setImageLoadError(false);
+
+                          const img = e.currentTarget;
+                          if (
+                            onMediaDimensionsChange &&
+                            img.naturalWidth &&
+                            img.naturalHeight
+                          ) {
+                            onMediaDimensionsChange({
+                              width: img.naturalWidth,
+                              height: img.naturalHeight,
+                            });
+                          }
+                        }}
+                        onError={() => {
+                          setImageLoading(false);
+                          setImageLoadError(true);
+                        }}
+                      />
+                    </PhotoView>
+                  </PhotoProvider>
+                );
+              })()
             )}
 
             {imageLoading && !imageLoadError && (

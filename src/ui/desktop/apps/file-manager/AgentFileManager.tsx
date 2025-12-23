@@ -66,6 +66,34 @@ function formatFileSize(bytes?: number): string {
   return `${formattedSize} ${units[unitIndex]}`;
 }
 
+// Get image dimensions by loading in a hidden image element
+async function getImageDimensions(url: string): Promise<{ width: number; height: number } | null> {
+  return new Promise((resolve) => {
+    const img = document.createElement("img");
+    img.crossOrigin = "anonymous";
+
+    const timeout = setTimeout(() => {
+      img.src = "";
+      resolve(null);
+    }, 5000);
+
+    img.onload = () => {
+      clearTimeout(timeout);
+      const dimensions = { width: img.naturalWidth, height: img.naturalHeight };
+      img.src = "";
+      resolve(dimensions);
+    };
+
+    img.onerror = () => {
+      clearTimeout(timeout);
+      img.src = "";
+      resolve(null);
+    };
+
+    img.src = url;
+  });
+}
+
 // Get video dimensions by loading metadata in a hidden video element
 async function getVideoDimensions(url: string): Promise<{ width: number; height: number } | null> {
   return new Promise((resolve) => {
@@ -440,8 +468,10 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
       }
 
       // Check file type for window sizing
+      const imageExtensions = ["jpg", "jpeg", "png", "gif", "bmp", "webp", "tiff", "ico"];
       const videoExtensions = ["mp4", "avi", "mov", "wmv", "flv", "mkv", "webm", "m4v"];
       const documentExtensions = ["txt", "pdf", "md", "markdown", "mdown", "mkdn", "mdx"];
+      const isImage = imageExtensions.includes(extension);
       const isVideo = videoExtensions.includes(extension);
       const isDocument = documentExtensions.includes(extension);
 
@@ -460,6 +490,36 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
         windowHeight = containerHeight - headerHeight;
         offsetX = containerWidth - windowWidth;
         offsetY = headerHeight;
+      } else if (isImage) {
+        // Images: size based on actual dimensions, positioned in lower right
+        const containerHeight = containerRef.current?.clientHeight || window.innerHeight;
+        const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
+
+        // Get actual image dimensions
+        const streamUrl = getAgentStreamUrl(agentConfig.id, file.path);
+        const imageDimensions = await getImageDimensions(streamUrl);
+
+        // Use actual aspect ratio or fallback to 4:3
+        const aspectRatio = imageDimensions
+          ? imageDimensions.width / imageDimensions.height
+          : 4 / 3;
+
+        // Vertical images (portrait) get 70% height, horizontal get 50%
+        const isVertical = imageDimensions ? imageDimensions.height > imageDimensions.width : false;
+        const heightRatio = isVertical ? 0.7 : 0.5;
+        windowHeight = Math.floor(containerHeight * heightRatio);
+
+        // Account for window chrome (title bar ~40px, header ~80px, footer ~30px = ~150px)
+        const windowChromeHeight = 150;
+        const imageAreaHeight = windowHeight - windowChromeHeight;
+        windowWidth = Math.max(400, Math.floor(imageAreaHeight * aspectRatio) + 50);
+
+        // Cap width to reasonable size
+        windowWidth = Math.min(windowWidth, containerWidth * 0.8);
+
+        // Position in lower right corner
+        offsetX = containerWidth - windowWidth - 10;
+        offsetY = containerHeight - windowHeight - 10;
       } else if (isVideo) {
         const containerHeight = containerRef.current?.clientHeight || window.innerHeight;
         const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
@@ -510,7 +570,7 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
           initialWidth={windowWidth}
           initialHeight={windowHeight}
           agentId={agentConfig.id}
-          disableAutoResize={isVideo || isDocument}
+          disableAutoResize={isImage || isVideo || isDocument}
         />
       );
 
