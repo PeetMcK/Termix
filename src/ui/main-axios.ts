@@ -3476,6 +3476,46 @@ export async function renameAgentItem(
   await sendAgentFileOp<AgentFileOpResult>(agentId, "rename_item", { path, newName });
 }
 
+export async function compressAgentFiles(
+  agentId: string,
+  paths: string[],
+  archiveName: string,
+  format: string = "zip"
+): Promise<{ success: boolean; message: string }> {
+  const result = await sendAgentFileOp<AgentFileOpResult>(agentId, "compress_files", {
+    paths,
+    archiveName,
+    format,
+  });
+  return { success: result.success, message: result.message || "" };
+}
+
+interface AgentDirStatsResponse extends AgentFileResponse {
+  totalSize: number;
+  fileCount: number;
+  folderCount: number;
+  error?: string;
+}
+
+export async function getAgentDirStats(
+  agentId: string,
+  path: string
+): Promise<{
+  totalSize: number;
+  fileCount: number;
+  folderCount: number;
+}> {
+  const result = await sendAgentFileOp<AgentDirStatsResponse>(agentId, "get_dir_stats", { path });
+  if (result.error) {
+    throw new Error(result.error);
+  }
+  return {
+    totalSize: result.totalSize,
+    fileCount: result.fileCount,
+    folderCount: result.folderCount,
+  };
+}
+
 // Generate streaming URL for agent media files (video, audio)
 // This allows the browser to handle streaming with Range requests
 // Set download=true to force download instead of playing in browser

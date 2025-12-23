@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { TOTPDialog } from "@/ui/desktop/navigation/TOTPDialog.tsx";
 import { SSHAuthDialog } from "@/ui/desktop/navigation/SSHAuthDialog.tsx";
-import { PermissionsDialog } from "./components/PermissionsDialog";
+import { PropertiesDialog } from "./components/PropertiesDialog";
 import { CompressDialog } from "./components/CompressDialog";
 import {
   Upload,
@@ -2125,13 +2125,14 @@ function FileManagerContent({ initialHost, onClose }: FileManagerProps) {
         />
       )}
 
-      <PermissionsDialog
+      <PropertiesDialog
         file={permissionsDialogFile}
         open={permissionsDialogFile !== null}
         onOpenChange={(open) => {
           if (!open) setPermissionsDialogFile(null);
         }}
-        onSave={handleSavePermissions}
+        onSavePermissions={handleSavePermissions}
+        sshSessionId={sshSessionId || undefined}
       />
     </div>
   );

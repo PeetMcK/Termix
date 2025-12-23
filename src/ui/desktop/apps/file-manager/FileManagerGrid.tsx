@@ -21,8 +21,10 @@ import {
   Move,
   GitCompare,
   Edit,
+  X,
 } from "lucide-react";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import type { FileItem } from "../../../types/index.js";
 import { SimpleLoader } from "@/ui/desktop/navigation/animations/SimpleLoader.tsx";
 
@@ -95,6 +97,8 @@ interface FileManagerGridProps {
   onCancelCreate?: () => void;
   onNewFile?: () => void;
   onNewFolder?: () => void;
+  externalDragActive?: boolean;
+  onDismissExternalDrag?: () => void;
 }
 
 const getFileTypeColor = (file: FileItem): string => {
@@ -215,6 +219,8 @@ export function FileManagerGrid({
   onCancelCreate,
   onNewFile,
   onNewFolder,
+  externalDragActive,
+  onDismissExternalDrag,
 }: FileManagerGridProps) {
   const { t } = useTranslation();
   const gridRef = useRef<HTMLDivElement>(null);
@@ -676,13 +682,42 @@ export function FileManagerGrid({
         setDragState({ type: "none", files: [], counter: 0 });
       } else if (dragState.type === "external") {
         if (onUpload && e.dataTransfer.files.length > 0) {
-          onUpload(e.dataTransfer.files);
+          // Check for folders using webkitGetAsEntry
+          const items = e.dataTransfer.items;
+          const folderNames: string[] = [];
+          const validFiles: File[] = [];
+
+          if (items) {
+            for (let i = 0; i < items.length; i++) {
+              const entry = items[i].webkitGetAsEntry?.();
+              if (entry?.isDirectory) {
+                folderNames.push(entry.name);
+              } else {
+                const file = e.dataTransfer.files[i];
+                if (file) validFiles.push(file);
+              }
+            }
+          }
+
+          if (folderNames.length > 0) {
+            const folderList = folderNames.join(", ");
+            toast.error(
+              t("fileManager.folderUploadNotSupported", { folders: folderList })
+            );
+          }
+
+          if (validFiles.length > 0) {
+            // Create a FileList-like object from valid files
+            const dataTransfer = new DataTransfer();
+            validFiles.forEach((file) => dataTransfer.items.add(file));
+            onUpload(dataTransfer.files);
+          }
         }
       }
 
       setDragState({ type: "none", files: [], counter: 0 });
     },
-    [onUpload, onDownload, dragState],
+    [onUpload, onDownload, dragState, t],
   );
 
   const handleFileClick = (file: FileItem, event: React.MouseEvent) => {
@@ -988,7 +1023,7 @@ export function FileManagerGrid({
           ref={gridRef}
           className={cn(
             "absolute inset-0 p-4 overflow-y-auto thin-scrollbar",
-            dragState.type === "external" &&
+            (dragState.type === "external" || externalDragActive) &&
               "bg-muted/20 border-2 border-dashed border-primary",
           )}
           onClick={handleGridClick}
@@ -1003,9 +1038,25 @@ export function FileManagerGrid({
           onContextMenu={(e) => onContextMenu?.(e)}
           tabIndex={0}
         >
-          {dragState.type === "external" && (
-            <div className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10 pointer-events-none">
-              <div className="text-center p-8 bg-background/95 border-2 border-dashed border-primary rounded-lg shadow-lg">
+          {(dragState.type === "external" || externalDragActive) && (
+            <div
+              className="absolute inset-0 flex items-center justify-center bg-background/50 backdrop-blur-sm z-10"
+              onDragOver={(e) => {
+                e.preventDefault();
+                e.dataTransfer.dropEffect = "copy";
+              }}
+              onDrop={handleDrop}
+            >
+              <div className="relative text-center p-8 bg-background/95 border-2 border-dashed border-primary rounded-lg shadow-lg pointer-events-none">
+                <button
+                  onClick={() => {
+                    setDragState({ type: "none", files: [], counter: 0 });
+                    onDismissExternalDrag?.();
+                  }}
+                  className="absolute top-2 right-2 p-1 rounded-md hover:bg-muted pointer-events-auto"
+                >
+                  <X className="w-5 h-5 text-muted-foreground" />
+                </button>
                 <Upload className="w-16 h-16 mx-auto mb-4 text-primary" />
                 <p className="text-xl font-semibold text-foreground mb-2">
                   {t("fileManager.dragFilesToUpload")}

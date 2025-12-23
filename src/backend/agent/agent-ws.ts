@@ -142,6 +142,7 @@ async function handleAgentMessage(ws: WebSocket, message: AgentMessage) {
     case "file_content":
     case "file_op_result":
     case "file_error":
+    case "dir_stats":
       handleAgentFileOpResponse(message.type, message.data as Record<string, unknown>);
       break;
 
@@ -659,7 +660,9 @@ async function handleAppTerminalMessage(ws: WebSocket, userId: string, message: 
     case "delete_item":
     case "copy_item":
     case "move_item":
-    case "rename_item": {
+    case "rename_item":
+    case "compress_files":
+    case "get_dir_stats": {
       authLogger.info(`[FileOp] Received ${message.type} request from app`, {
         operation: "file_op_request",
         type: message.type,

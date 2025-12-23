@@ -324,13 +324,33 @@ export function FileViewer({
   const [numPages, setNumPages] = useState<number | null>(null);
   const [pageNumber, setPageNumber] = useState(1);
   const [pdfScale, setPdfScale] = useState(1.2);
+  const [pdfFitToWidth, setPdfFitToWidth] = useState(true);
+  const [pdfContainerWidth, setPdfContainerWidth] = useState<number | null>(null);
   const [pdfError, setPdfError] = useState(false);
+  const pdfContainerRef = useRef<HTMLDivElement>(null);
   const [markdownEditMode, setMarkdownEditMode] = useState(false);
   const editorRef = useRef<{
     view?: { dispatch: (transaction: unknown) => void };
   } | null>(null);
 
   const fileTypeInfo = getFileType(file.name);
+
+  // Measure PDF container width for fit-to-width mode
+  useEffect(() => {
+    if (fileTypeInfo.type !== "pdf" || !pdfContainerRef.current) return;
+
+    const updateWidth = () => {
+      if (pdfContainerRef.current) {
+        setPdfContainerWidth(pdfContainerRef.current.clientWidth - 40); // 40px padding
+      }
+    };
+
+    updateWidth();
+    const resizeObserver = new ResizeObserver(updateWidth);
+    resizeObserver.observe(pdfContainerRef.current);
+
+    return () => resizeObserver.disconnect();
+  }, [fileTypeInfo.type]);
 
   const WARNING_SIZE = 50 * 1024 * 1024;
   const MAX_SIZE = Number.MAX_SAFE_INTEGER;
@@ -1210,57 +1230,64 @@ export function FileViewer({
           <div className="h-full flex flex-col bg-background">
             <div className="flex-shrink-0 bg-muted/30 border-b border-border p-4">
               <div className="flex items-center justify-between">
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setPageNumber(Math.max(1, pageNumber - 1))}
-                      disabled={pageNumber <= 1}
-                    >
-                      {t("fileManager.previous")}
-                    </Button>
-                    <span className="text-sm text-foreground px-3 py-1 bg-background rounded border">
-                      {t("fileManager.pageXOfY", {
-                        current: pageNumber,
-                        total: numPages || 0,
-                      })}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() =>
-                        setPageNumber(Math.min(numPages || 1, pageNumber + 1))
+                <div className="flex items-center gap-1 text-sm text-foreground">
+                  <span>Page:</span>
+                  <input
+                    type="text"
+                    value={pageNumber}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      if (!isNaN(val) && val >= 1 && val <= (numPages || 1)) {
+                        setPageNumber(val);
                       }
-                      disabled={!numPages || pageNumber >= numPages}
-                    >
-                      {t("fileManager.next")}
-                    </Button>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setPdfScale(Math.max(0.5, pdfScale - 0.2))}
-                    >
-                      {t("fileManager.zoomOut")}
-                    </Button>
-                    <span className="text-sm text-foreground px-3 py-1 bg-background rounded border min-w-[80px] text-center">
-                      {Math.round(pdfScale * 100)}%
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setPdfScale(Math.min(3.0, pdfScale + 0.2))}
-                    >
-                      {t("fileManager.zoomIn")}
-                    </Button>
-                  </div>
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.currentTarget.blur();
+                      }
+                    }}
+                    className="w-12 px-2 py-1 bg-background rounded border text-center"
+                  />
+                  <span>/ {numPages || 0}</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <Button
+                    variant={pdfFitToWidth ? "default" : "outline"}
+                    size="sm"
+                    onClick={() => setPdfFitToWidth(true)}
+                  >
+                    Fit
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="px-2"
+                    onClick={() => {
+                      setPdfFitToWidth(false);
+                      setPdfScale(Math.max(0.5, pdfScale - 0.2));
+                    }}
+                  >
+                    −
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="px-2"
+                    onClick={() => {
+                      setPdfFitToWidth(false);
+                      setPdfScale(Math.min(3.0, pdfScale + 0.2));
+                    }}
+                  >
+                    +
+                  </Button>
+                  <span className="text-sm text-foreground px-2 py-1 bg-background rounded border min-w-[60px] text-center">
+                    {pdfFitToWidth ? "Fit" : `${Math.round(pdfScale * 100)}%`}
+                  </span>
                 </div>
               </div>
             </div>
 
-            <div className="flex-1 overflow-auto p-6 bg-gray-100 dark:bg-gray-900">
+            <div ref={pdfContainerRef} className="flex-1 overflow-auto p-6 bg-gray-100 dark:bg-gray-900">
               <div className="flex justify-center">
                 {pdfError ? (
                   <div className="text-center text-muted-foreground p-8">
@@ -1311,7 +1338,9 @@ export function FileViewer({
                   >
                     <Page
                       pageNumber={pageNumber}
-                      scale={pdfScale}
+                      {...(pdfFitToWidth && pdfContainerWidth
+                        ? { width: pdfContainerWidth }
+                        : { scale: pdfScale })}
                       className="shadow-lg"
                       loading={
                         <div className="text-center p-4">

@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { useTranslation } from "react-i18next";
 import { CompressDialog } from "./components/CompressDialog";
+import { PropertiesDialog } from "./components/PropertiesDialog";
 import {
   Upload,
   FolderPlus,
@@ -32,6 +33,7 @@ import {
   moveAgentItem,
   renameAgentItem,
   getAgentStreamUrl,
+  compressAgentFiles,
 } from "@/ui/main-axios.ts";
 
 interface AgentFileManagerProps {
@@ -62,6 +64,35 @@ function formatFileSize(bytes?: number): string {
   const formattedSize =
     size < 10 && unitIndex > 0 ? size.toFixed(1) : Math.round(size).toString();
   return `${formattedSize} ${units[unitIndex]}`;
+}
+
+// Get video dimensions by loading metadata in a hidden video element
+async function getVideoDimensions(url: string): Promise<{ width: number; height: number } | null> {
+  return new Promise((resolve) => {
+    const video = document.createElement("video");
+    video.preload = "metadata";
+    video.crossOrigin = "anonymous";
+
+    const timeout = setTimeout(() => {
+      video.src = "";
+      resolve(null); // Timeout fallback
+    }, 5000);
+
+    video.onloadedmetadata = () => {
+      clearTimeout(timeout);
+      const dimensions = { width: video.videoWidth, height: video.videoHeight };
+      video.src = "";
+      resolve(dimensions);
+    };
+
+    video.onerror = () => {
+      clearTimeout(timeout);
+      video.src = "";
+      resolve(null);
+    };
+
+    video.src = url;
+  });
 }
 
 function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps) {
@@ -99,10 +130,11 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
   const [createIntent, setCreateIntent] = useState<CreateIntent | null>(null);
   const [editingFile, setEditingFile] = useState<FileItem | null>(null);
   const [compressDialogFiles, setCompressDialogFiles] = useState<FileItem[]>([]);
+  const [propertiesDialogFile, setPropertiesDialogFile] = useState<FileItem | null>(null);
 
   const { selectedFiles, clearSelection, setSelection } = useFileSelection();
 
-  const { dragHandlers } = useDragAndDrop({
+  const { dragHandlers, isDragging, resetDragState } = useDragAndDrop({
     onFilesDropped: handleFilesDropped,
     onError: (error) => toast.error(error),
     maxFileSize: 5120,
@@ -189,9 +221,62 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
   }, [currentPath, lastRefreshTime, loadDirectory]);
 
   function handleFilesDropped(fileList: FileList) {
-    Array.from(fileList).forEach((file) => {
-      handleUploadFile(file);
-    });
+    const filesToUpload = Array.from(fileList);
+
+    // Check for existing files that would be overwritten (only files, not directories)
+    const existingFiles = files.filter((f) => f.type === "file");
+    const existingFileNames = existingFiles.map((f) => f.name.toLowerCase());
+    const conflictingFiles = filesToUpload.filter((file) =>
+      existingFileNames.includes(file.name.toLowerCase())
+    );
+
+    if (conflictingFiles.length > 0) {
+      // Show confirmation for overwriting with three options
+      const conflictNames = conflictingFiles.map((f) => f.name).join(", ");
+      const message = conflictingFiles.length === 1
+        ? t("fileManager.confirmOverwriteFile", { name: conflictNames })
+        : t("fileManager.confirmOverwriteFiles", {
+            count: conflictingFiles.length,
+            names: conflictNames
+          });
+
+      confirmWithToast(message, [
+        {
+          label: t("fileManager.keepBoth"),
+          onClick: () => {
+            // Keep both - rename uploaded files to avoid conflicts
+            filesToUpload.forEach((file) => {
+              const isConflicting = existingFileNames.includes(file.name.toLowerCase());
+              if (isConflicting) {
+                const uniqueName = generateUniqueName(file.name, "file");
+                const renamedFile = new File([file], uniqueName, { type: file.type });
+                handleUploadFile(renamedFile);
+              } else {
+                handleUploadFile(file);
+              }
+            });
+          },
+        },
+        {
+          label: t("fileManager.cancel"),
+          onClick: () => {},
+        },
+        {
+          label: t("fileManager.replace"),
+          onClick: () => {
+            // Overwrite - proceed with all uploads
+            filesToUpload.forEach((file) => {
+              handleUploadFile(file);
+            });
+          },
+        },
+      ]);
+    } else {
+      // No conflicts - proceed immediately
+      filesToUpload.forEach((file) => {
+        handleUploadFile(file);
+      });
+    }
   }
 
   async function handleUploadFile(file: File) {
@@ -326,27 +411,77 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
     if (file.type === "directory") {
       setCurrentPath(file.path);
     } else {
-      // Check if file is a video
-      const videoExtensions = ["mp4", "avi", "mov", "wmv", "flv", "mkv", "webm", "m4v"];
+      // Supported file extensions that can be previewed
+      const supportedExtensions = [
+        // Images
+        "png", "jpg", "jpeg", "gif", "bmp", "svg", "webp",
+        // Video
+        "mp4", "avi", "mkv", "mov", "wmv", "flv", "webm", "m4v",
+        // Audio
+        "mp3", "wav", "flac", "ogg", "aac", "m4a",
+        // Text
+        "txt", "readme",
+        // Markdown
+        "md", "markdown", "mdown", "mkdn", "mdx",
+        // PDF
+        "pdf",
+        // Code
+        "js", "ts", "jsx", "tsx", "py", "java", "cpp", "c", "cs", "php", "rb", "go", "rs",
+        "html", "css", "scss", "less", "json", "xml", "yaml", "yml", "toml", "ini", "conf",
+        "sh", "bash", "zsh", "sql", "vue", "svelte",
+      ];
+
       const extension = file.name.split(".").pop()?.toLowerCase() || "";
+
+      // If file type is not supported, download directly
+      if (!supportedExtensions.includes(extension)) {
+        handleDownloadFile(file);
+        return;
+      }
+
+      // Check file type for window sizing
+      const videoExtensions = ["mp4", "avi", "mov", "wmv", "flv", "mkv", "webm", "m4v"];
+      const documentExtensions = ["txt", "pdf", "md", "markdown", "mdown", "mkdn", "mdx"];
       const isVideo = videoExtensions.includes(extension);
+      const isDocument = documentExtensions.includes(extension);
 
       let windowWidth: number;
       let windowHeight: number;
       let offsetX: number;
       let offsetY: number;
 
-      if (isVideo) {
-        // Video files: half height of container, maintain 16:9 aspect ratio
+      if (isDocument) {
+        // Documents: 600px wide, full height minus header, flush right and bottom
+        const containerHeight = containerRef.current?.clientHeight || window.innerHeight;
+        const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
+        const headerHeight = 60; // Top header bar height
+
+        windowWidth = 600;
+        windowHeight = containerHeight - headerHeight;
+        offsetX = containerWidth - windowWidth;
+        offsetY = headerHeight;
+      } else if (isVideo) {
         const containerHeight = containerRef.current?.clientHeight || window.innerHeight;
         const containerWidth = containerRef.current?.clientWidth || window.innerWidth;
 
-        windowHeight = Math.floor(containerHeight / 2);
+        // Get actual video dimensions
+        const streamUrl = getAgentStreamUrl(agentConfig.id, file.path);
+        const videoDimensions = await getVideoDimensions(streamUrl);
+
+        // Use actual aspect ratio or fallback to 16:9
+        const aspectRatio = videoDimensions
+          ? videoDimensions.width / videoDimensions.height
+          : 16 / 9;
+
+        // Vertical videos (portrait) get 80% height, horizontal get 50%
+        const isVertical = videoDimensions ? videoDimensions.height > videoDimensions.width : false;
+        const heightRatio = isVertical ? 0.8 : 0.5;
+        windowHeight = Math.floor(containerHeight * heightRatio);
 
         // Account for window chrome (title bar ~40px, header ~80px, footer ~30px = ~150px)
         const windowChromeHeight = 150;
         const videoAreaHeight = windowHeight - windowChromeHeight;
-        windowWidth = Math.floor(videoAreaHeight * 16 / 9) + 20; // 16:9 + small padding
+        windowWidth = Math.max(400, Math.floor(videoAreaHeight * aspectRatio) + 20);
 
         // Position in lower right corner
         offsetX = containerWidth - windowWidth - 10;
@@ -375,7 +510,7 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
           initialWidth={windowWidth}
           initialHeight={windowHeight}
           agentId={agentConfig.id}
-          disableAutoResize={isVideo}
+          disableAutoResize={isVideo || isDocument}
         />
       );
 
@@ -758,6 +893,8 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
             onCancelCreate={handleCancelCreate}
             onNewFile={handleCreateNewFile}
             onNewFolder={handleCreateNewFolder}
+            externalDragActive={isDragging}
+            onDismissExternalDrag={resetDragState}
           />
 
           <FileManagerContextMenu
@@ -794,7 +931,7 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
             onAddShortcut={() => {}}
             isPinned={() => false}
             currentPath={currentPath}
-            onProperties={() => {}}
+            onProperties={(file) => setPropertiesDialogFile(file)}
             onExtractArchive={() => {}}
             onCompress={() => setCompressDialogFiles(contextMenu.files)}
             onCopyPath={handleCopyPath}
@@ -806,10 +943,45 @@ function AgentFileManagerContent({ agentConfig, onClose }: AgentFileManagerProps
         open={compressDialogFiles.length > 0}
         onOpenChange={(open) => !open && setCompressDialogFiles([])}
         fileNames={compressDialogFiles.map((f) => f.name)}
-        onCompress={() => {
-          toast.info("Compression not yet supported for agents");
-          setCompressDialogFiles([]);
+        onCompress={async (archiveName: string, format: string) => {
+          if (compressDialogFiles.length === 0) return;
+
+          const paths = compressDialogFiles.map((f) => f.path);
+          const fileNames = compressDialogFiles.map((f) => f.name);
+
+          toast.info(
+            t("fileManager.compressingFiles", {
+              count: fileNames.length,
+              name: archiveName,
+            })
+          );
+
+          try {
+            await compressAgentFiles(agentConfig.id, paths, archiveName, format);
+            toast.success(
+              t("fileManager.filesCompressedSuccessfully", {
+                name: archiveName,
+              })
+            );
+            handleRefreshDirectory();
+          } catch (error: unknown) {
+            const err = error as { message?: string };
+            toast.error(
+              `${t("fileManager.compressFailed")}: ${err.message || t("fileManager.unknownError")}`
+            );
+          } finally {
+            setCompressDialogFiles([]);
+          }
         }}
+      />
+
+      <PropertiesDialog
+        file={propertiesDialogFile}
+        open={propertiesDialogFile !== null}
+        onOpenChange={(open) => {
+          if (!open) setPropertiesDialogFile(null);
+        }}
+        agentId={agentConfig.id}
       />
     </div>
   );
